@@ -1,8 +1,8 @@
 <template>
-  <!--top navbar--><!--還來不及處理，之後會讓前後台有不同 top navbar-->
+  <!--top navbar-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid align-items-center">
-      <router-link href="#" to="/" class="navbar-brand d-flex align-items-center">
+      <router-link to="/" class="navbar-brand d-flex align-items-center">
         六腳青旅
         <span class="material-icons ms-2"> api </span>
       </router-link>
@@ -21,7 +21,6 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link
-              href="#"
               to="/admin/product"
               class="nav-link"
               aria-current="true"
@@ -31,9 +30,9 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link href="#" to="/admin/order" class="nav-link" active-class="active"
-              >訂單列表</router-link
-            >
+            <router-link to="/admin/order" class="nav-link" active-class="active">
+              訂單列表
+            </router-link>
           </li>
         </ul>
         <ul class="navbar-nav">
@@ -105,7 +104,7 @@
   </div>
   <!-- 主要內容 -->
   <div class="container py-4">
-    <router-view></router-view>
+    <router-view v-if="checkSuccess"></router-view>
   </div>
 </template>
 <script>
@@ -114,6 +113,7 @@ import { Modal } from 'bootstrap';
 export default {
   data() {
     return {
+      checkSuccess: false,
       accountBsModal: '',
       accountData: {
         hexLoginName: '',
@@ -124,6 +124,40 @@ export default {
     };
   },
   methods: {
+    checkLogin() {
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+      const loginName = document.cookie.replace(
+        /(?:(?:^|.*;\s*)hexLoginName\s*=\s*([^;]*).*$)|^.*$/,
+        '$1',
+      );
+      const tokenStart = document.cookie.replace(
+        /(?:(?:^|.*;\s*)hexTokenStart\s*=\s*([^;]*).*$)|^.*$/,
+        '$1',
+      );
+      const tokenExpired = document.cookie.replace(
+        /(?:(?:^|.*;\s*)hexTokenExpired\s*=\s*([^;]*).*$)|^.*$/,
+        '$1',
+      );
+      this.accountData.hexLoginName = loginName;
+      this.accountData.hexToken = token;
+      this.accountData.hexTokenStart = tokenStart;
+      this.accountData.hexTokenExpired = tokenExpired;
+      if (token) {
+        this.$http.defaults.headers.common.Authorization = `${token}`;
+        const data = { api_token: this.token };
+        this.$http.post(`${process.env.VUE_APP_API}/api/user/check`, data).then((res) => {
+          if (res.data.success) {
+            this.checkSuccess = true;
+          } else {
+            alert('您尚未登入');
+            this.$router.push('/login');
+          }
+        });
+      } else {
+        alert('您尚未登入');
+        this.$router.push('/login');
+      }
+    },
     openModal(target) {
       target.show();
     },
@@ -137,29 +171,8 @@ export default {
     },
   },
   mounted() {
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    const loginName = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexLoginName\s*=\s*([^;]*).*$)|^.*$/,
-      '$1',
-    );
-    const tokenStart = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexTokenStart\s*=\s*([^;]*).*$)|^.*$/,
-      '$1',
-    );
-    const tokenExpired = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexTokenExpired\s*=\s*([^;]*).*$)|^.*$/,
-      '$1',
-    );
-    this.accountData.hexLoginName = loginName;
-    this.accountData.hexToken = token;
-    this.accountData.hexTokenStart = tokenStart;
-    this.accountData.hexTokenExpired = tokenExpired;
-    if (!token) {
-      alert('您尚未登入');
-      this.$router.push('/');
-    }
-    this.$http.defaults.headers.common.Authorization = token;
     this.accountBsModal = new Modal(this.$refs.accountModal);
+    this.checkLogin();
   },
 };
 </script>

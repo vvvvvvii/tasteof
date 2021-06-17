@@ -5,24 +5,31 @@ const routes = [
     path: '/',
     name: '首頁',
     component: () => import('../views/Home.vue'),
-  },
-  {
-    path: '/product_list',
-    name: '前台產品頁',
-    component: () => import('../views/ProductList.vue'),
-  },
-  {
-    path: '/product/:id',
-    name: '前台產品細節頁',
-    component: () => import('../views/Product.vue'),
-    props: (route) => ({
-      id: route.params.id,
-    }),
-  },
-  {
-    path: '/cart',
-    name: '前台購物車頁',
-    component: () => import('../views/Cart.vue'),
+    children: [
+      {
+        path: '',
+        name: '首頁',
+        component: () => import('../views/Index.vue'),
+      },
+      {
+        path: 'product_list',
+        name: '前台產品頁',
+        component: () => import('../views/ProductList.vue'),
+      },
+      {
+        path: 'product/:id',
+        name: '前台產品細節頁',
+        component: () => import('../views/Product.vue'),
+        props: (route) => ({
+          id: route.params.id,
+        }),
+      },
+      {
+        path: 'cart',
+        name: '前台購物車頁',
+        component: () => import('../views/Cart.vue'),
+      },
+    ],
   },
   {
     path: '/login',

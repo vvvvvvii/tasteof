@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="py-4">
     <div class="container-fluid">
       <div class="row">
         <div class="col-8">
