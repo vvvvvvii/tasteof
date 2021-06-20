@@ -20,9 +20,14 @@
           </button>
           <div class="delete-modal-inner-bg mb-4">
             <!--若要刪除的是商品，跳出下列文字-->
-            <div v-if="tempItem.hasOwnProperty('title')">
+            <div v-if="tempItem.hasOwnProperty('content')">
               <p class="h5">{{ tempItem.title }}</p>
               <p>商品一經刪除及無法復原，是否確認刪除？</p>
+            </div>
+            <!--若要刪除的是優惠券，跳出下列文字-->
+            <div v-else-if="tempItem.hasOwnProperty('code')">
+              <p class="h5">{{ tempItem.title }}：{{ tempItem.code }}</p>
+              <p>優惠券一經刪除及無法復原，是否確認刪除？</p>
             </div>
             <!--若要刪除的是訂單，跳出下列文字-->
             <div v-else>
@@ -62,7 +67,6 @@ export default {
   watch: {
     temp() {
       this.tempItem = { ...this.temp }; // 當 temp props 有變時，把 tempItem 改掉
-      console.log(this.tempItem);
     },
   },
   created() {

@@ -26,12 +26,17 @@
               aria-current="true"
               active-class="active"
             >
-              產品列表
+              管理產品
             </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/admin/order" class="nav-link" active-class="active">
-              訂單列表
+              管理訂單
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/admin/coupon" class="nav-link" active-class="active">
+              管理優惠券
             </router-link>
           </li>
         </ul>

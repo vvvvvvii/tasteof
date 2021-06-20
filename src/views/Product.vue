@@ -118,7 +118,6 @@ export default {
       const { addCartBtn } = this.$refs;
       addCartBtn.classList.add('disabled');
       addCartBtn.children[0].classList.remove('d-none');
-      console.log(addCartBtn);
       const data = {
         data: {
           product_id: this.moreInfo.productInfo.id,
