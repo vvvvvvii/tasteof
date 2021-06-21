@@ -108,6 +108,8 @@
         </tr>
       </tbody>
     </table>
+    <!--alert-->
+    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
     <!--pagination-->
     <pagination :page="pagination" @emit-pagination="getData"></pagination>
     <!--add / edit modal-->
@@ -121,6 +123,7 @@
   </div>
 </template>
 <script>
+import alert from '@/components/Alert.vue';
 import pagination from '@/components/Pagination.vue';
 import { Modal } from 'bootstrap';
 import productEditModal from '@/components/ProductEditModal.vue';
@@ -149,9 +152,12 @@ export default {
       productModal: {},
       deleteModal: {},
       searchProduct: '',
+      showAlert: false,
+      alertMsg: '',
     };
   },
   components: {
+    alert,
     pagination,
     productEditModal,
     productDeleteModal,
@@ -169,11 +175,11 @@ export default {
             this.products = data.products;
             this.pagination = res.data.pagination; // 為什麼沒加這句就抓不到？
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
       this.$http
         .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/all`)
@@ -181,12 +187,19 @@ export default {
           if (res.data.success) {
             this.totalProducts = Object.values(res.data.products);
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
+    },
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
     },
     openModal(item, target) {
       switch (target) {
@@ -241,15 +254,16 @@ export default {
           .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product`, item)
           .then((res) => {
             if (res.data.success) {
-              alert('新增完成');
+              this.customAlert('新增完成');
               this.getData();
               this.productModal.hide();
+              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
-              alert(res.data.message);
+              this.customAlert(res.data.message);
             }
           })
           .catch((err) => {
-            console.log(err.response);
+            this.customAlert(err.response);
           });
       } else if (target === '完成編輯') {
         // 若是開編輯產品的 modal
@@ -262,14 +276,16 @@ export default {
           .then((res) => {
             alert('編輯成功');
             if (res.data.success) {
+              this.customAlert('編輯成功');
               this.getData();
               this.productModal.hide();
+              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
-              alert(res.data.message);
+              this.customAlert(res.data.message);
             }
           })
           .catch((err) => {
-            console.log(err.response);
+            this.customAlert(err.response);
           });
       }
     },
@@ -279,16 +295,17 @@ export default {
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${id}`)
         .then((res) => {
           if (res.data.success) {
-            alert('刪除成功');
+            this.customAlert('刪除成功');
             this.getData();
             this.clearModal();
             this.deleteModal.hide();
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
-            alert(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
   },

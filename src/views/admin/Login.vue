@@ -56,17 +56,33 @@
       </div>
     </div>
   </div>
+  <!--alert-->
+  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
+import alert from '@/components/Alert.vue';
+
 export default {
   data() {
     return {
       userName: '',
       password: '',
       check: false,
+      showAlert: false,
+      alertMsg: '',
     };
   },
+  components: {
+    alert,
+  },
   methods: {
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
+    },
     checkLogin() {
       if (this.userName !== '' && this.password !== '' && this.check) {
         // 帳密不為空且有勾選同意條款
@@ -77,7 +93,8 @@ export default {
           })
           .then((res) => {
             if (res.data.success) {
-              alert('登入成功，請稍候'); // 印出登入成功或失敗、晚點再來調整警告視窗樣式
+              this.customAlert('登入成功，請稍候');
+              window.setTimeout(this.closeCustomAlert, 5000);
               // token expired 放到 cookie，時效內不用一直登入
               const { token, expired } = res.data;
               // 把 token 開始及結束時間整理成好閱讀的格式
@@ -104,11 +121,15 @@ export default {
               this.$router.push('/admin/product');
               return;
             }
-            alert('登入失敗，請確認帳密是否正確');
+            this.customAlert('登入失敗，請確認帳密是否正確');
+            window.setTimeout(this.closeCustomAlert, 5000);
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+            this.customAlert(err.response);
+          });
       } else {
-        alert('請輸入帳密並同意相關條款'); // 晚點再來調整警告視窗樣式
+        this.customAlert('請輸入帳密並同意相關條款');
+        window.setTimeout(this.closeCustomAlert, 5000);
       }
     },
   },

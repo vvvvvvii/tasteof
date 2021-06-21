@@ -98,6 +98,8 @@
         </template>
       </tbody>
     </table>
+    <!--alert-->
+    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
     <!--add / edit modal-->
     <order-edit-modal
       :modal-title="modalTitle"
@@ -111,6 +113,7 @@
   </div>
 </template>
 <script>
+import alert from '@/components/Alert.vue';
 import pagination from '@/components/Pagination.vue';
 import { Modal } from 'bootstrap';
 import orderEditModal from '@/components/OrderEditModal.vue';
@@ -125,9 +128,16 @@ export default {
       orderModal: {},
       deleteModal: {},
       searchOrder: '',
+      showAlert: false,
+      alertMsg: '',
     };
   },
-  components: { pagination, orderEditModal, orderDeleteModal },
+  components: {
+    alert,
+    pagination,
+    orderEditModal,
+    orderDeleteModal,
+  },
   methods: {
     getData(currentPage = 1) {
       // 若未傳入則預設為第一頁
@@ -149,12 +159,19 @@ export default {
             });
             this.pagination = res.data.pagination;
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
+    },
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
     },
     openModal(item, target) {
       switch (target) {
@@ -180,16 +197,17 @@ export default {
       this.$http
         .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/order/${id}`, item)
         .then((res) => {
-          alert('編輯成功');
           if (res.data.success) {
-            this.getData();
             this.orderModal.hide();
+            this.customAlert('編輯成功');
+            this.getData();
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
-            alert(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
     deleteOrder() {
@@ -198,16 +216,17 @@ export default {
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/order/${id}`)
         .then((res) => {
           if (res.data.success) {
-            alert('刪除成功');
+            this.customAlert('刪除成功');
             this.getData();
             this.clearModal();
             this.deleteModal.hide();
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
-            alert(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
     deleteAll() {
@@ -215,14 +234,15 @@ export default {
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/orders/all`)
         .then((res) => {
           if (res.data.success) {
-            alert('刪除成功');
+            this.customAlert('刪除成功');
             this.getData();
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
   },

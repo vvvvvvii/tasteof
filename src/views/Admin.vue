@@ -111,8 +111,11 @@
   <div class="container py-4">
     <router-view v-if="checkSuccess"></router-view>
   </div>
+  <!--alert-->
+  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
+import alert from '@/components/Alert.vue';
 import { Modal } from 'bootstrap';
 
 export default {
@@ -126,7 +129,12 @@ export default {
         hexTokenStart: '',
         hexTokenExpired: '',
       },
+      showAlert: false,
+      alertMsg: '',
     };
+  },
+  components: {
+    alert,
   },
   methods: {
     checkLogin() {
@@ -154,14 +162,23 @@ export default {
           if (res.data.success) {
             this.checkSuccess = true;
           } else {
-            alert('您尚未登入');
+            this.customAlert('您尚未登入');
+            window.setTimeout(this.closeCustomAlert, 5000);
             this.$router.push('/login');
           }
         });
       } else {
-        alert('您尚未登入');
+        this.customAlert('您尚未登入');
+        window.setTimeout(this.closeCustomAlert, 5000);
         this.$router.push('/login');
       }
+    },
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
     },
     openModal(target) {
       target.show();
@@ -170,7 +187,8 @@ export default {
       Object.keys(this.accountData).forEach((item) => {
         document.cookie = `${item}=${this.accountData.item};expires=Thu, 01-Jan-70 00:00:01 GMT;path=/`;
       });
-      alert('已成功登出');
+      this.customAlert('已成功登出');
+      window.setTimeout(this.closeCustomAlert, 5000);
       this.accountBsModal.hide();
       this.$router.push('/'); // 自動跳轉畫面
     },

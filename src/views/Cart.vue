@@ -173,8 +173,12 @@
       </div>
     </Form>
   </div>
+  <!--alert-->
+  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
+import alert from '@/components/Alert.vue';
+
 export default {
   data() {
     return {
@@ -191,10 +195,12 @@ export default {
         message: '',
       },
       cart: {},
+      showAlert: false,
+      alertMsg: '',
     };
   },
-  created() {
-    this.getCartInfo();
+  components: {
+    alert,
   },
   methods: {
     getCartInfo() {
@@ -204,12 +210,19 @@ export default {
           if (res.data.success) {
             this.cart = res.data.data;
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
+    },
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
     },
     changeCartNum(qty, id) {
       const data = {
@@ -224,11 +237,11 @@ export default {
           if (res.data.success) {
             this.getCartInfo();
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
     deleteProduct(id) {
@@ -236,13 +249,15 @@ export default {
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`)
         .then((res) => {
           if (res.data.success) {
+            this.customAlert('已清除商品');
             this.getCartInfo();
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
     deleteAllProducts() {
@@ -251,13 +266,15 @@ export default {
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/carts`)
         .then((res) => {
           if (res.data.success) {
+            this.customAlert('已清除購物車');
             this.getCartInfo();
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
       //   }
     },
@@ -265,25 +282,28 @@ export default {
       const data = {
         data: this.customerDetail,
       };
-      console.log(data);
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)
         .then((res) => {
           if (res.data.success) {
-            console.log(`已建立訂單編號${res.data.orderId}`);
+            this.customAlert(`已建立訂單編號${res.data.orderId}`);
             this.getCartInfo();
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
     isIdNum(value) {
       const idNum = /^[A-Z][0-9]{9}$/;
       return idNum.test(value) ? true : '請輸入正確的身分證字號';
     },
+  },
+  created() {
+    this.getCartInfo();
   },
 };
 </script>

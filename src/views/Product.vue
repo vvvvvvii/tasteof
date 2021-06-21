@@ -74,8 +74,11 @@
       </button>
     </div>
   </div>
+  <!--alert-->
+  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
+import alert from '@/components/Alert.vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
@@ -88,30 +91,14 @@ export default {
         startDate: '',
         tktNum: 1,
       },
+      showAlert: false,
+      alertMsg: '',
     };
   },
   props: ['id'],
   components: {
+    alert,
     flatPickr,
-  },
-  created() {
-    const seed = this.id;
-    this.$http
-      .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${seed}`)
-      .then((res) => {
-        if (res.data.success) {
-          this.moreInfo.productInfo = res.data.product;
-          // 如果 imagesUrl 裡有空字串，把它刪掉再顯示，避免圖片顯示錯誤
-          this.moreInfo.productInfo.imagesUrl = this.moreInfo.productInfo.imagesUrl.filter(
-            (e) => e !== '',
-          );
-        } else {
-          console.log(res.data.message);
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
   },
   methods: {
     addCart() {
@@ -129,18 +116,46 @@ export default {
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
         .then((res) => {
           if (res.data.success) {
+            this.customAlert('已加入購物車');
+            window.setTimeout(this.closeCustomAlert, 5000);
             this.moreInfo.startDate = '';
             this.moreInfo.tktNum = 1;
             addCartBtn.classList.remove('disabled');
             addCartBtn.children[0].classList.add('d-none');
           } else {
-            console.log(res.data.message);
+            this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          this.customAlert(err.response);
         });
     },
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
+    },
+  },
+  created() {
+    const seed = this.id;
+    this.$http
+      .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${seed}`)
+      .then((res) => {
+        if (res.data.success) {
+          this.moreInfo.productInfo = res.data.product;
+          // 如果 imagesUrl 裡有空字串，把它刪掉再顯示，避免圖片顯示錯誤
+          this.moreInfo.productInfo.imagesUrl = this.moreInfo.productInfo.imagesUrl.filter(
+            (e) => e !== '',
+          );
+        } else {
+          this.customAlert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        this.customAlert(err.response);
+      });
   },
 };
 </script>
