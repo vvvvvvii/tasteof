@@ -29,6 +29,7 @@
                     type="text"
                     id="couponTitle"
                     class="form-control"
+                    :disabled="tempCoupon.over_due"
                     v-model="tempCoupon.title"
                   />
                 </div>
@@ -38,6 +39,7 @@
                     type="text"
                     id="couponCode"
                     class="form-control"
+                    :disabled="tempCoupon.over_due"
                     v-model="tempCoupon.code"
                   />
                 </div>
@@ -50,6 +52,7 @@
                     min="1"
                     max="99"
                     placeholder="原價將乘以此百分比，成為折扣後的新價錢"
+                    :disabled="tempCoupon.over_due"
                     v-model.number="tempCoupon.percent"
                   />
                 </div>
@@ -58,6 +61,7 @@
                   <flat-pickr
                     ref="startDate"
                     class="form-control"
+                    :disabled="tempCoupon.over_due"
                     v-model="tempCoupon.due_date"
                   ></flat-pickr>
                 </div>
@@ -67,13 +71,19 @@
                   type="checkbox"
                   class="form-check-input"
                   id="couponEnabled"
+                  :disabled="tempCoupon.over_due"
                   v-model="tempCoupon.is_enabled"
                 />
                 <label class="form-check-label" for="couponEnabled">優惠是否啟用</label>
               </div>
             </form>
             <div class="d-flex justify-content-center">
-              <button type="button" class="btn btn-primary w-25 d-block" @click="emitData">
+              <button
+                type="button"
+                class="btn btn-primary w-25 d-block"
+                @click="emitData"
+                :disabled="tempCoupon.over_due"
+              >
                 {{ modalTitle }}
               </button>
               <button

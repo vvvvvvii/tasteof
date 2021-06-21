@@ -104,8 +104,16 @@ export default {
             const { data } = res;
             this.coupons = data.coupons;
             if (Object.keys(this.coupons).length !== 0) {
+              // coupons 有東西時
               // 把時間戳轉成易閱讀的日期
               this.coupons.forEach((item, index) => {
+                if (Math.floor(new Date() / 1000) > item.due_date) {
+                  // 如果現在的時間戳大於該項目，代表優惠到期日已經過了
+                  this.coupons[index].is_enabled = 0;
+                  this.coupons[index].over_due = true;
+                } else {
+                  this.coupons[index].over_due = false;
+                }
                 const time = new Date(item.due_date * 1000)
                   .toISOString()
                   .split('T')[0]
