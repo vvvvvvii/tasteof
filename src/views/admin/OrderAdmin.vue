@@ -151,11 +151,14 @@ export default {
             this.orders = data.orders;
             // 把時間戳轉成易閱讀的日期
             this.orders.forEach((item, index) => {
-              const time = new Date(item.create_at * 1000)
-                .toISOString()
-                .split('T')[0]
-                .replace(/-/g, ' / ');
-              this.orders[index].create_at = time;
+              if (typeof item.create_at === 'number') {
+                // 避免已經轉成亦閱讀的日期後，因編輯重跑 getData() ，無法重複轉換而錯誤
+                const time = new Date(item.create_at * 1000)
+                  .toISOString()
+                  .split('T')[0]
+                  .replace(/-/g, ' / ');
+                this.orders[index].create_at = time;
+              }
             });
             this.pagination = res.data.pagination;
           } else {
