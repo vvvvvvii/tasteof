@@ -117,6 +117,7 @@
       :modal-title="modalTitle"
       :temp="temp"
       @emit-product-modal="addNewProduct"
+      v-if="pagination.total_pages > 1"
     ></product-edit-modal>
     <!--delete modal-->
     <product-delete-modal :temp="temp" @emit-delete-modal="deleteProduct"></product-delete-modal>
@@ -173,7 +174,7 @@ export default {
           if (res.data.success) {
             const { data } = res;
             this.products = data.products;
-            this.pagination = res.data.pagination; // 為什麼沒加這句就抓不到？
+            this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
           }

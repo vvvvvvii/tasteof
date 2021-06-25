@@ -55,7 +55,11 @@
     <!--alert-->
     <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
     <!--pagination-->
-    <pagination :page="pagination" @emit-pagination="getData"></pagination>
+    <pagination
+      v-if="pagination.total_pages > 1"
+      :page="pagination"
+      @emit-pagination="getData"
+    ></pagination>
     <!--add / edit modal-->
     <coupon-edit-modal
       :modal-title="modalTitle"

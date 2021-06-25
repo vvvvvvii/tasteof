@@ -224,6 +224,9 @@ export default {
     closeCustomAlert() {
       this.showAlert = false;
     },
+    backToHomePage() {
+      this.$router.push('/');
+    },
     changeCartNum(qty, id) {
       const data = {
         data: {
@@ -268,7 +271,8 @@ export default {
           if (res.data.success) {
             this.customAlert('已清除購物車');
             this.getCartInfo();
-            window.setTimeout(this.closeCustomAlert, 5000);
+            window.setTimeout(this.closeCustomAlert, 3500);
+            window.setTimeout(this.backToHomePage, 4000);
           } else {
             this.customAlert(res.data.message);
           }
@@ -288,7 +292,9 @@ export default {
           if (res.data.success) {
             this.customAlert(`已建立訂單編號${res.data.orderId}`);
             this.getCartInfo();
-            window.setTimeout(this.closeCustomAlert, 5000);
+            window.setTimeout(this.closeCustomAlert, 3500);
+            // 自動導回首頁，也達成購物車表單清空的功能（直接在此函式清空會讓 veevalidate 秀出未填的錯誤）
+            window.setTimeout(this.backToHomePage, 4000);
           } else {
             this.customAlert(res.data.message);
           }

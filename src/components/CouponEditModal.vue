@@ -58,10 +58,20 @@
                 </div>
                 <div class="col-6 mb-2">
                   <label for="couponDueDate" class="form-label">優惠到期日</label>
-                  <flat-pickr
-                    ref="startDate"
+                  <!-- 解決 flatpickr 在 disabled 時沒有顯示的問題 -->
+                  <input
+                    v-if="tempCoupon.over_due"
+                    type="text"
                     class="form-control"
                     :disabled="tempCoupon.over_due"
+                    :placeholder="tempCoupon.due_date"
+                  />
+                  <flat-pickr
+                    v-else
+                    id="couponDueDate"
+                    ref="couponDueDate"
+                    class="form-control"
+                    :config="config"
                     v-model="tempCoupon.due_date"
                   ></flat-pickr>
                 </div>
@@ -109,6 +119,11 @@ export default {
   data() {
     return {
       tempCoupon: {},
+      config: {
+        altFormat: 'F j, Y',
+        dateFormat: 'Y-m-d',
+        minDate: 'today',
+      },
     };
   },
   components: {

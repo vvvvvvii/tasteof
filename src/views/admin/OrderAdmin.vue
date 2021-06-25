@@ -109,7 +109,11 @@
     <!--delete modal-->
     <order-delete-modal :temp="temp" @emit-delete-modal="deleteOrder"></order-delete-modal>
     <!--pagination-->
-    <pagination :page="pagination" @emit-pagination="getData"></pagination>
+    <pagination
+      v-if="pagination.total_pages > 1"
+      :page="pagination"
+      @emit-pagination="getData"
+    ></pagination>
   </div>
 </template>
 <script>

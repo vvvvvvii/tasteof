@@ -3,7 +3,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid align-items-center">
       <router-link to="/" class="navbar-brand d-flex align-items-center">
-        六腳青旅
+        旅味
         <span class="material-icons ms-2"> api </span>
       </router-link>
       <button

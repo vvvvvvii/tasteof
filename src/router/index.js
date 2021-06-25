@@ -57,6 +57,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404 頁',
+    component: () => import('../views/NotFound404.vue'),
+  },
 ];
 
 const router = createRouter({

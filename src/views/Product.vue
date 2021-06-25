@@ -45,7 +45,12 @@
     <div class="mb-3 row">
       <label for="startDate" class="col-sm-2 col-form-label">使用日期</label>
       <div class="col-sm-3">
-        <flat-pickr ref="startDate" v-model="moreInfo.startDate"></flat-pickr>
+        <flat-pickr
+          id="startDate"
+          ref="startDate"
+          :config="config"
+          v-model="moreInfo.startDate"
+        ></flat-pickr>
       </div>
       <label for="tktNum" class="col-sm-2 col-form-label">購買數量</label>
       <div class="col-sm-3">
@@ -85,7 +90,11 @@ import 'flatpickr/dist/flatpickr.css';
 export default {
   data() {
     return {
-      date: null,
+      config: {
+        altFormat: 'F j, Y',
+        dateFormat: 'Y-m-d',
+        minDate: 'today',
+      },
       moreInfo: {
         productInfo: {},
         startDate: '',
