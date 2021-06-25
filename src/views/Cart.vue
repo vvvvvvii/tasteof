@@ -156,18 +156,26 @@
           <!--cart 是空物件或價格為 0 時不可點清空或結帳（確保購物車為空時不可點擊）-->
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-secondary d-flex justify-content-center align-items-center"
             @click="deleteAllProducts()"
+            ref="deleteOrderBtn"
             :disabled="Object.keys(cart).length == 0 || cart.total == 0"
           >
-            清空購物車
+            <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="ms-1">清空購物車</p>
           </button>
           <button
             type="submit"
-            class="btn btn-primary ms-2"
+            class="btn btn-primary ms-2 d-flex justify-content-center align-items-center"
+            ref="addOrderBtn"
             :disabled="Object.keys(cart).length == 0 || cart.total == 0"
           >
-            結帳
+            <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="ms-1">結帳</p>
           </button>
         </div>
       </div>
@@ -265,12 +273,17 @@ export default {
     },
     deleteAllProducts() {
       //   if (confirm('真的要全數清空嗎Ｑ口Ｑ')) {
+      const { deleteOrderBtn } = this.$refs;
+      deleteOrderBtn.classList.add('disabled');
+      deleteOrderBtn.children[0].classList.remove('d-none');
       this.$http
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/carts`)
         .then((res) => {
           if (res.data.success) {
             this.customAlert('已清除購物車');
             this.getCartInfo();
+            deleteOrderBtn.classList.remove('disabled');
+            deleteOrderBtn.children[0].classList.add('d-none');
             window.setTimeout(this.closeCustomAlert, 3500);
             window.setTimeout(this.backToHomePage, 4000);
           } else {
@@ -283,6 +296,9 @@ export default {
       //   }
     },
     addOrder() {
+      const { addOrderBtn } = this.$refs;
+      addOrderBtn.classList.add('disabled');
+      addOrderBtn.children[0].classList.remove('d-none');
       const data = {
         data: this.customerDetail,
       };
@@ -292,6 +308,8 @@ export default {
           if (res.data.success) {
             this.customAlert(`已建立訂單編號${res.data.orderId}`);
             this.getCartInfo();
+            addOrderBtn.classList.remove('disabled');
+            addOrderBtn.children[0].classList.add('d-none');
             window.setTimeout(this.closeCustomAlert, 3500);
             // 自動導回首頁，也達成購物車表單清空的功能（直接在此函式清空會讓 veevalidate 秀出未填的錯誤）
             window.setTimeout(this.backToHomePage, 4000);

@@ -94,10 +94,15 @@
                   </ul>
                   <button
                     type="button"
-                    class="btn btn-primary mx-auto w-50 d-block"
+                    class="btn btn-primary w-50 mx-auto
+                    d-flex justify-content-center align-items-center"
+                    ref="logoutBtn"
                     @click="logout"
                   >
-                    登出
+                    <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="ms-1">登出</p>
                   </button>
                 </div>
               </div>
@@ -184,9 +189,14 @@ export default {
       target.show();
     },
     logout() {
+      const { logoutBtn } = this.$refs;
+      logoutBtn.classList.add('disabled');
+      logoutBtn.children[0].classList.remove('d-none');
       Object.keys(this.accountData).forEach((item) => {
         document.cookie = `${item}=${this.accountData.item};expires=Thu, 01-Jan-70 00:00:01 GMT;path=/`;
       });
+      logoutBtn.classList.remove('disabled');
+      logoutBtn.children[0].classList.add('d-none');
       this.customAlert('已成功登出');
       window.setTimeout(this.closeCustomAlert, 5000);
       this.accountBsModal.hide();

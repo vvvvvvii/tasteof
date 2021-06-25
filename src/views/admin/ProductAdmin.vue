@@ -111,13 +111,16 @@
     <!--alert-->
     <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
     <!--pagination-->
-    <pagination :page="pagination" @emit-pagination="getData"></pagination>
+    <pagination
+      :page="pagination"
+      @emit-pagination="getData"
+      v-if="pagination.total_pages > 1"
+    ></pagination>
     <!--add / edit modal-->
     <product-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
       @emit-product-modal="addNewProduct"
-      v-if="pagination.total_pages > 1"
     ></product-edit-modal>
     <!--delete modal-->
     <product-delete-modal :temp="temp" @emit-delete-modal="deleteProduct"></product-delete-modal>

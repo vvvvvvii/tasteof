@@ -1,7 +1,7 @@
 <template>
   <div
     id="deleteModal"
-    ref="productModal"
+    ref="deleteModal"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="deleteModalLabel"

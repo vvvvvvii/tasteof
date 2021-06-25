@@ -67,7 +67,7 @@
       <p>總金額：{{ moreInfo.productInfo.price * moreInfo.tktNum }}</p>
       <button
         type="button"
-        class="btn btn-primary d-flex align-items-center"
+        class="btn btn-primary d-flex justify-content-center align-items-center"
         ref="addCartBtn"
         @click="addCart()"
         :disabled="moreInfo.startDate === '' || moreInfo.tktNum < 1"

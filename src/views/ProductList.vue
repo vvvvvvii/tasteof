@@ -95,7 +95,6 @@ export default {
           if (res.data.success) {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
-            this.$refs.mainLoader.classList.add('d-none'); // 取完全部資料才讓 loader 消失
           } else {
             this.customAlert(res.data.message);
           }
