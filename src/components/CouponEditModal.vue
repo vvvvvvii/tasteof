@@ -90,11 +90,15 @@
             <div class="d-flex justify-content-center">
               <button
                 type="button"
-                class="btn btn-primary w-25 d-block"
+                class="btn btn-primary w-25 d-flex justify-content-center align-items-center"
+                ref="couponAdminBtn"
                 @click="emitData"
                 :disabled="tempCoupon.over_due"
               >
-                {{ modalTitle }}
+                <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="ms-1">{{ modalTitle }}</p>
               </button>
               <button
                 type="button"

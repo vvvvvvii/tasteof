@@ -65,6 +65,7 @@
       :modal-title="modalTitle"
       :temp="temp"
       @emit-coupon-modal="addNewCoupon"
+      ref="couponModal"
     ></coupon-edit-modal>
   </div>
   <!--delete modal-->
@@ -165,6 +166,9 @@ export default {
       this.temp = {};
     },
     addNewCoupon(target, temp) {
+      const { couponAdminBtn } = this.$refs.couponModal.$refs;
+      couponAdminBtn.classList.add('disabled');
+      couponAdminBtn.children[0].classList.remove('d-none');
       const item = {};
       item.data = { ...temp };
       item.data.is_enabled = item.data.is_enabled ? 1 : 0;
@@ -177,12 +181,18 @@ export default {
               this.couponModal.hide();
               this.customAlert('新增完成');
               this.getData();
+              couponAdminBtn.classList.remove('disabled');
+              couponAdminBtn.children[0].classList.add('d-none');
               window.setTimeout(this.closeCustomAlert, 5000);
             } else {
+              couponAdminBtn.classList.remove('disabled');
+              couponAdminBtn.children[0].classList.add('d-none');
               this.customAlert(res.data.message);
             }
           })
           .catch((err) => {
+            couponAdminBtn.classList.remove('disabled');
+            couponAdminBtn.children[0].classList.add('d-none');
             this.customAlert(err.response);
           });
       } else if (target === '完成編輯') {
@@ -198,35 +208,21 @@ export default {
               this.couponModal.hide();
               this.customAlert('編輯成功');
               this.getData();
+              couponAdminBtn.classList.remove('disabled');
+              couponAdminBtn.children[0].classList.add('d-none');
               window.setTimeout(this.closeCustomAlert, 5000);
             } else {
+              couponAdminBtn.classList.remove('disabled');
+              couponAdminBtn.children[0].classList.add('d-none');
               this.customAlert(res.data.message);
             }
           })
           .catch((err) => {
+            couponAdminBtn.classList.remove('disabled');
+            couponAdminBtn.children[0].classList.add('d-none');
             this.customAlert(err.response);
           });
       }
-    },
-    editCoupon(temp) {
-      const item = {};
-      item.data = { ...temp };
-      const { id } = temp;
-      this.$http
-        .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon/${id}`, item)
-        .then((res) => {
-          if (res.data.success) {
-            this.couponModal.hide();
-            this.customAlert('編輯成功');
-            this.getData();
-            window.setTimeout(this.closeCustomAlert, 5000);
-          } else {
-            this.customAlert(res.data.message);
-          }
-        })
-        .catch((err) => {
-          this.customAlert(err.response);
-        });
     },
     deleteCoupon() {
       const { id } = this.temp;

@@ -105,6 +105,7 @@
       :modal-title="modalTitle"
       :temp="temp"
       @emit-order-modal="editOrder"
+      ref="orderModal"
     ></order-edit-modal>
     <!--delete modal-->
     <order-delete-modal :temp="temp" @emit-delete-modal="deleteOrder"></order-delete-modal>
@@ -198,6 +199,9 @@ export default {
       this.temp = {};
     },
     editOrder(tempOrder) {
+      const { orderAdminBtn } = this.$refs.orderModal.$refs;
+      orderAdminBtn.classList.add('disabled');
+      orderAdminBtn.children[0].classList.remove('d-none');
       const item = {};
       item.data = { ...tempOrder };
       const { id } = tempOrder;
@@ -208,12 +212,18 @@ export default {
             this.orderModal.hide();
             this.customAlert('編輯成功');
             this.getData();
+            orderAdminBtn.classList.remove('disabled');
+            orderAdminBtn.children[0].classList.add('d-none');
             window.setTimeout(this.closeCustomAlert, 5000);
           } else {
+            orderAdminBtn.classList.remove('disabled');
+            orderAdminBtn.children[0].classList.add('d-none');
             this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
+          orderAdminBtn.classList.remove('disabled');
+          orderAdminBtn.children[0].classList.add('d-none');
           this.customAlert(err.response);
         });
     },

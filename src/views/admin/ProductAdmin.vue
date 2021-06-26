@@ -121,6 +121,7 @@
       :modal-title="modalTitle"
       :temp="temp"
       @emit-product-modal="addNewProduct"
+      ref="productModal"
     ></product-edit-modal>
     <!--delete modal-->
     <product-delete-modal :temp="temp" @emit-delete-modal="deleteProduct"></product-delete-modal>
@@ -248,6 +249,9 @@ export default {
       };
     },
     addNewProduct(target, tempProduct) {
+      const { productAdminBtn } = this.$refs.productModal.$refs;
+      productAdminBtn.classList.add('disabled');
+      productAdminBtn.children[0].classList.remove('d-none');
       const item = {};
       item.data = { ...tempProduct };
       item.data.is_enabled = item.data.is_enabled ? 1 : 0;
@@ -260,14 +264,20 @@ export default {
             if (res.data.success) {
               this.customAlert('新增完成');
               this.getData();
+              productAdminBtn.classList.remove('disabled');
+              productAdminBtn.children[0].classList.add('d-none');
               this.productModal.hide();
               window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
+              productAdminBtn.classList.remove('disabled');
+              productAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
+            productAdminBtn.classList.remove('disabled');
+            productAdminBtn.children[0].classList.add('d-none');
           });
       } else if (target === '完成編輯') {
         // 若是開編輯產品的 modal
@@ -282,14 +292,20 @@ export default {
             if (res.data.success) {
               this.customAlert('編輯成功');
               this.getData();
+              productAdminBtn.classList.remove('disabled');
+              productAdminBtn.children[0].classList.add('d-none');
               this.productModal.hide();
               window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
+              productAdminBtn.classList.remove('disabled');
+              productAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
+            productAdminBtn.classList.remove('disabled');
+            productAdminBtn.children[0].classList.add('d-none');
           });
       }
     },

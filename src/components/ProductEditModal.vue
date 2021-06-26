@@ -1,7 +1,6 @@
 <template>
   <div
     id="productModal"
-    ref="productModal"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="productModalLabel"
@@ -191,6 +190,7 @@
                   <button
                     type="button"
                     class="btn btn-primary w-25 d-flex justify-content-center align-items-center"
+                    ref="productAdminBtn"
                     @click="$emit('emit-product-modal', modalTitle, tempProduct)"
                   >
                     <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
