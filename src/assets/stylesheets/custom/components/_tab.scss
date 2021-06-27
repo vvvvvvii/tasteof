@@ -1,0 +1,15 @@
+.tab {
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  &-img {
+    border-radius: 1rem;
+    width: 124px;
+    height: 124px;
+  }
+  &-title {
+    margin-left: 1rem;
+    font-size: 2rem;
+    color: #000;
+  }
+}

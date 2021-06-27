@@ -1,0 +1,77 @@
+<template>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container align-items-center">
+      <!-- 平板以下 logo 顯示 -->
+      <h1 class="d-lg-none">
+        <router-link href="#" to="/" class="logo">
+          旅味
+        </router-link>
+      </h1>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+        <!-- 平板以上 logo 顯示 -->
+        <h1 class="d-lg-block d-none">
+          <router-link href="#" to="/" class="logo">
+            旅味
+          </router-link>
+        </h1>
+        <ul
+          class="navbar-nav text-center align-items-center
+          border-lg-bottom-0 border-bottom pb-lg-0 pb-3"
+        >
+          <li class="nav-item px-3">
+            <router-link to="/product_list" class="nav-link" active-class="active">
+              活動
+            </router-link>
+          </li>
+          <li class="nav-item d-lg-block d-none">
+            <span class="border-start"></span>
+          </li>
+          <li class="nav-item px-3">
+            <router-link to="/product_list" class="nav-link" active-class="active">
+              票券
+            </router-link>
+          </li>
+          <li class="nav-item d-lg-block d-none">
+            <span class="border-start"></span>
+          </li>
+          <li class="nav-item px-3">
+            <router-link to="/product_list" class="nav-link" active-class="active">
+              包車
+            </router-link>
+          </li>
+          <li class="nav-item d-lg-block d-none">
+            <span class="border-start"></span>
+          </li>
+          <li class="nav-item px-3">
+            <router-link to="/product_list" class="nav-link" active-class="active">
+              靈感
+            </router-link>
+          </li>
+        </ul>
+        <ul class="navbar-nav h3 flex-row justify-content-around">
+          <li class="nav-item">
+            <router-link to="/cart" class="nav-link px-3" active-class="active">
+              <i class="bi bi-cart4"></i>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-3">
+              <i class="bi bi-person-circle"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</template>

@@ -7,7 +7,7 @@ import {
 import AllRules from '@vee-validate/rules';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
-import Bootstrap from 'bootstrap';
+import 'bootstrap'; // import Bootstrap from 'bootstrap';
 import router from './router';
 import App from './App.vue';
 
@@ -23,7 +23,7 @@ setLocale('zh_TW');
 createApp(App)
   .use(router)
   .use(VueAxios, axios)
-  .use(Bootstrap)
+  // .use(Bootstrap)
   .component('Form', Form)
   .component('Field', Field)
   .component('ErrorMessage', ErrorMessage)
