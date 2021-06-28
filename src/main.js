@@ -7,7 +7,10 @@ import {
 import AllRules from '@vee-validate/rules';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
-import 'bootstrap'; // import Bootstrap from 'bootstrap';
+import 'bootstrap';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import SwiperCore, { Autoplay, Navigation } from 'swiper/core';
+
 import router from './router';
 import App from './App.vue';
 
@@ -19,12 +22,14 @@ configure({
   validateOnInput: true, // 調整為輸入字元立即進行驗證
 });
 setLocale('zh_TW');
+SwiperCore.use([Autoplay, Navigation]);
 
 createApp(App)
   .use(router)
   .use(VueAxios, axios)
-  // .use(Bootstrap)
   .component('Form', Form)
   .component('Field', Field)
   .component('ErrorMessage', ErrorMessage)
+  .component('Swiper', Swiper)
+  .component('SwiperSlide', SwiperSlide)
   .mount('#app');

@@ -1,0 +1,13 @@
+.tag {
+  &-sm {
+    padding: 0.25rem;
+    border: 0;
+    border-radius: 0.25rem;
+  }
+  &-warning {
+    background: $warning;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

@@ -185,6 +185,15 @@
                     />
                     <label class="form-check-label" for="productEnabled">產品是否啟用</label>
                   </div>
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="mainProduct"
+                      v-model="tempProduct.is_mainProduct"
+                    />
+                    <label class="form-check-label" for="mainProduct">是否為主打商品</label>
+                  </div>
                 </form>
                 <div class="d-flex justify-content-center">
                   <button

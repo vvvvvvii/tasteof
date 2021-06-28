@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-light-primary">
+  <div class="bg-light">
     <div class="container p-4">
       <div class="d-flex justify-content-between">
         <!--search input-->
@@ -25,14 +25,38 @@
           新增產品
         </button>
       </div>
-      <small class="ms-6" v-if="searchProduct === ''">
-        <p class="ms-6 text-dark-primary" v-if="totalProducts.length == 0">目前尚無產品</p>
-        <p v-else>目前有 {{ totalProducts.length }} 項產品</p>
-      </small>
-      <small class="ms-6" v-else>
-        <p class="ms-6 text-dark-primary" v-if="filterProduct.length == 0">目前尚無產品</p>
-        <p v-else>目前有 {{ filterProduct.length }} 項產品</p>
-      </small>
+      <div class="mb-4">
+        <small v-if="searchProduct === ''">
+          <p class="ms-6 text-dark-primary" v-if="totalProducts.length == 0">目前尚無產品</p>
+          <p v-else>目前有 {{ totalProducts.length }} 項產品</p>
+        </small>
+        <small v-else>
+          <p class="ms-6 text-dark-primary" v-if="filterProduct.length == 0">目前尚無產品</p>
+          <p v-else>目前有 {{ filterProduct.length }} 項產品</p>
+        </small>
+      </div>
+      <div class="row g-0 align-items-center">
+        <div class="col-1">
+          <p class="fw-bold">主力商品：</p>
+        </div>
+        <div class="col-11">
+          <p v-if="mainProduct.length == 0">請新增主力商品</p>
+          <ul class="d-flex flex-wrap">
+            <li
+              v-for="(item, key) in mainProduct"
+              :key="key"
+              class="ms-1 mb-1"
+              title="刪除此項主力商品"
+              @click="deleteMainProduct(item)"
+            >
+              <button type="button" class="tag-sm tag-warning">
+                {{ item.title }}
+                <i class="bi bi-x"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   <div class="container py-4">
@@ -62,9 +86,8 @@
               class="badge rounded-pill"
               :class="{
                 'bg-danger': item.category === '城市導覽',
-                'bg-primary': item.category === '體驗票券',
-                'bg-info': item.category === '包車服務',
-                'bg-success': item.category === '推薦住宿',
+                'bg-warning': item.category === '體驗票券',
+                'bg-success': item.category === '包車服務',
               }"
             >
               {{ item.category }}
@@ -73,12 +96,22 @@
           <td class="pe-4">
             <p>
               {{ item.title }}
-              <span
-                class="material-icons align-bottom d-inline"
-                :class="{ 'text-success': item.is_enabled, 'text-secondary': !item.is_enabled }"
-              >
-                {{ item.is_enabled ? 'check_circle' : 'do_disturb' }}
-              </span>
+              <i
+                class="bi align-bottom d-inline"
+                :class="{
+                  'text-success': item.is_enabled,
+                  'bi-check-circle-fill': item.is_enabled,
+                  'text-gray': !item.is_enabled,
+                  'bi-dash-circle': !item.is_enabled,
+                }"
+              ></i>
+              <i
+                class="bi align-bottom d-inline ms-1"
+                :class="{
+                  'text-warning': item.is_mainProduct,
+                  'bi-star-fill': item.is_mainProduct,
+                }"
+              ></i>
             </p>
             <small class="collapse" :id="'collapseProduct-' + key">{{ item.description }}</small>
           </td>
@@ -146,12 +179,14 @@ export default {
         description: '',
         content: '',
         is_enabled: true,
+        is_mainProduct: false,
         imageUrl: '',
         otherImageUrl: '',
         imagesUrl: [],
       },
       products: [],
       totalProducts: [],
+      mainProduct: [],
       pagination: {},
       modalTitle: '',
       productModal: {},
@@ -191,6 +226,12 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.totalProducts = Object.values(res.data.products);
+            // 如果有勾主力商品，則放進 mainProduct 陣列
+            this.totalProducts.forEach((item) => {
+              if (item.is_mainProduct) {
+                this.mainProduct.push(item);
+              }
+            });
           } else {
             this.customAlert(res.data.message);
           }
@@ -288,7 +329,6 @@ export default {
             item,
           )
           .then((res) => {
-            alert('編輯成功');
             if (res.data.success) {
               this.customAlert('編輯成功');
               this.getData();
@@ -320,6 +360,24 @@ export default {
             this.clearModal();
             this.deleteModal.hide();
             window.setTimeout(this.closeCustomAlert, 5000);
+          } else {
+            this.customAlert(res.data.message);
+          }
+        })
+        .catch((err) => {
+          this.customAlert(err.response);
+        });
+    },
+    deleteMainProduct(product) {
+      const item = {};
+      item.data = { ...product };
+      item.data.is_mainProduct = false; // 把點擊的刪掉 = 把該商品的 is_mainProduct 調成 false
+      const { id } = item.data;
+      this.$http
+        .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${id}`, item)
+        .then((res) => {
+          if (res.data.success) {
+            this.customAlert('刪除成功');
           } else {
             this.customAlert(res.data.message);
           }

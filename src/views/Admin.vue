@@ -113,9 +113,7 @@
     </div>
   </div>
   <!-- 主要內容 -->
-  <div class="container py-4">
-    <router-view v-if="checkSuccess"></router-view>
-  </div>
+  <router-view v-if="checkSuccess"></router-view>
   <!--alert-->
   <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>

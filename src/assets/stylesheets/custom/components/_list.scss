@@ -1,0 +1,14 @@
+.list-item {
+  max-height: 400px;
+  padding: 237px 30px 80px 30px;
+  color: $white;
+  &-title {
+    font-size: 2rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid $white;
+  }
+  &-subtitle {
+    font-size: 1rem;
+  }
+}
