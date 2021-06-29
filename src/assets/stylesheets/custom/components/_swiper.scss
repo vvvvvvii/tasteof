@@ -1,0 +1,8 @@
+.swiper-button-prev,
+.swiper-button-next {
+  opacity: 0.4;
+  color: $white;
+  &:hover {
+    opacity: 0.8;
+  }
+}

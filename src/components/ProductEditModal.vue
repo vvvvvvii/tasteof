@@ -65,32 +65,32 @@
                   </div>
                   <ul class="row g-1">
                     <li class="col-4 mb-2">
-                      <a
+                      <button
                         v-if="tempProduct.imageUrl"
-                        href="#"
-                        class="modal-img"
+                        class="modal-img-outer"
+                        type="button"
                         @click="deleteImgs($event, 'mainImg')"
                       >
-                        <img :src="tempProduct.imageUrl" alt="主圖片" />
-                        <span class="material-icons">
+                        <img :src="tempProduct.imageUrl" alt="主圖片" class="modal-img" />
+                        <span class="modal-delete-btn material-icons">
                           delete
                         </span>
-                      </a>
+                      </button>
                       <div v-else class="modal-img-default"></div>
                     </li>
                     <li class="col-4 mb-2" v-for="(item, key) in tempProduct.imagesUrl" :key="item">
-                      <a
+                      <button
                         v-if="item"
-                        href="#"
-                        class="modal-img"
+                        class="modal-img-outer"
+                        type="button"
                         @click="deleteImgs($event, 'subImg')"
                         :data-img="key"
                       >
-                        <img :src="item" alt="副圖片" />
-                        <span class="material-icons">
+                        <img :src="item" alt="副圖片" class="modal-img" />
+                        <span class="modal-delete-btn material-icons">
                           delete
                         </span>
-                      </a>
+                      </button>
                       <div v-else class="modal-img-default"></div>
                     </li>
                   </ul>

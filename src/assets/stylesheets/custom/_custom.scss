@@ -1,11 +1,13 @@
 @import './utils/border';
 @import './components/list';
+@import './components/modal';
 @import './components/tab';
 @import './components/tag';
+@import './components/swiper';
 
 .logo {
   display: block;
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/logo.png?raw=true);
+  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/logo.png?raw=true);
   background-repeat: no-repeat;
   background-size: cover;
   text-indent: 101%;
@@ -16,9 +18,9 @@
 
 .banner {
   height: 360px;
-  background: url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/banner.png?raw=true);
-  background-image: -webkit-cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
-  background-image: cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
+  background: url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/banner.png?raw=true);
+  background-image: -webkit-cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
+  background-image: cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

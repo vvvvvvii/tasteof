@@ -10,6 +10,7 @@ import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import 'bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import SwiperCore, { Autoplay, Navigation } from 'swiper/core';
+// import mitt from 'mitt';
 
 import router from './router';
 import App from './App.vue';
