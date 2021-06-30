@@ -1,9 +1,12 @@
 @import './utils/border';
+@import './components/card';
 @import './components/list';
 @import './components/modal';
+@import './components/pagination';
+@import './components/searchBox';
+@import './components/swiper';
 @import './components/tab';
 @import './components/tag';
-@import './components/swiper';
 
 .logo {
   display: block;
@@ -34,4 +37,11 @@
   @include media-breakpoint-up(lg) {
     height: 548px;
   }
+}
+
+.arrangementSelect {
+  width: 200px;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid $primary;
 }

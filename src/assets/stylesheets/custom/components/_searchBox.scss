@@ -1,0 +1,22 @@
+.searchBox {
+  border: 0.5px solid $secondary;
+  border-radius: 16px 16px 0 0;
+  &-header {
+    border-radius: inherit;
+    background: $secondary;
+    color: $white;
+    padding: 1.25rem 1rem;
+  }
+  &-body {
+    background: $white;
+    padding: 24px;
+    > input,
+    > select {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      border: 0.5px solid $gray;
+    }
+  }
+}

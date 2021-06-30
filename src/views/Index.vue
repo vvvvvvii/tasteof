@@ -46,13 +46,13 @@
           </li>
         </ul>
       </div>
-      <div class="mb-7">
+      <div class="mb-7" v-if="mainProducts.length > 0">
         <h2 class="h2 text-primary mb-6">本季主打</h2>
-        <!-- :autoplay="{
+        <Swiper
+          :autoplay="{
             delay: 5000,
             disableOnInteraction: false,
-          }" -->
-        <Swiper
+          }"
           :navigation="true"
           :loop="true"
           :slides-per-view="3"
@@ -60,7 +60,7 @@
           class="mySwiper"
         >
           <SwiperSlide class="list-item rounded-2" v-for="item in mainProducts" :key="item.id">
-            <router-link :to="`/product/${item.id}`">
+            <router-link :to="`/product/${item.id}`" title="查看更多">
               <div class="list-item-img-outer">
                 <img :src="item.imageUrl" class="list-item-img" />
               </div>
@@ -74,6 +74,27 @@
       </div>
       <div>
         <h2 class="h2 text-primary mb-6">更多玩樂靈感</h2>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="list-item">
+              <!-- <router-link :to="`/product/${item.id}`" title="查看更多"> -->
+              <div class="list-item-img-outer">
+                <img class="list-item-img" />
+              </div>
+              <div class="list-item-inner">
+                <h3 class="list-item-title"></h3>
+                <p class="list-item-subtitle"></p>
+              </div>
+              <!-- </router-link> -->
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div></div>
+            <div></div>
+          </div>
+          <div class="col-lg-6"></div>
+          <div class="col-lg-6"></div>
+        </div>
       </div>
     </div>
   </div>

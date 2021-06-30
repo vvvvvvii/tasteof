@@ -18,10 +18,9 @@
         <!--add product btn-->
         <button
           type="button"
-          class="btn btn-outline-dark d-inline-flex me-2"
+          class="btn btn-outline-primary d-inline-flex me-2"
           @click="openModal($event, 'addProduct')"
         >
-          <span class="material-icons me-1"> tag_faces </span>
           新增產品
         </button>
       </div>

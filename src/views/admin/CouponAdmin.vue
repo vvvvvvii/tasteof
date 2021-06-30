@@ -4,10 +4,9 @@
     <div class="text-end">
       <button
         type="button"
-        class="btn btn-outline-dark d-inline-flex"
+        class="btn btn-outline-primary d-inline-flex"
         @click="openModal($event, 'addCoupon')"
       >
-        <span class="material-icons me-1"> tag_faces </span>
         新增優惠券
       </button>
     </div>
@@ -25,9 +24,11 @@
         <tr v-for="item in coupons" :key="item.id">
           <td width="150">
             {{ item.title }}
-            <span class="material-icons me-1 align-bottom d-inline">{{
-              item.is_enabled === 1 ? 'check_circle' : 'do_disturb'
-            }}</span>
+            <span
+              class="material-icons me-1 align-bottom d-inline"
+              :class="{ 'text-success': item.is_enabled, 'text-gray': !item.is_enabled }"
+              >{{ item.is_enabled === 1 ? 'check_circle' : 'do_disturb' }}</span
+            >
           </td>
           <td width="150">{{ item.code }}</td>
           <td width="120">{{ item.percent }}%</td>

@@ -1,0 +1,26 @@
+.card {
+  flex-direction: row;
+  height: 222px;
+  border: 0.5px solid transparent;
+  border-radius: 0;
+  color: $black;
+  &:hover {
+    border-color: $primary;
+    color: $black;
+  }
+  &-img {
+    width: 222px;
+    border-radius: 0;
+  }
+  &-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+}

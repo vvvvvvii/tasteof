@@ -55,6 +55,11 @@ const routes = [
         name: '後台優惠券頁',
         component: () => import('../views/admin/CouponAdmin.vue'),
       },
+      {
+        path: 'article',
+        name: '後台文章頁',
+        component: () => import('../views/admin/ArticleAdmin.vue'),
+      },
     ],
   },
   {

@@ -16,7 +16,7 @@
           />
         </div>
         <!--delete all order btn-->
-        <button type="button" class="btn btn-outline-dark d-inline-flex me-2" @click="deleteAll">
+        <button type="button" class="btn btn-outline-danger d-inline-flex me-2" @click="deleteAll">
           刪除所有訂單
         </button>
       </div>
@@ -58,7 +58,7 @@
             <td width="120">
               <span
                 class="material-icons"
-                :class="{ 'text-success': item.is_paid, 'text-secondary': !item.is_paid }"
+                :class="{ 'text-success': item.is_paid, 'text-gray': !item.is_paid }"
               >
                 {{ item.is_paid ? 'credit_score' : 'credit_card_off' }}
               </span>

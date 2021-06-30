@@ -2,20 +2,11 @@
   <!--top navbar-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid align-items-center">
-      <router-link to="/" class="navbar-brand d-flex align-items-center">
-        旅味
-      </router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <h1>
+        <router-link href="#" to="/" class="logo">
+          旅味
+        </router-link>
+      </h1>
       <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -36,6 +27,11 @@
           <li class="nav-item">
             <router-link to="/admin/coupon" class="nav-link" active-class="active">
               管理優惠券
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/admin/article" class="nav-link" active-class="active">
+              管理文章
             </router-link>
           </li>
         </ul>
