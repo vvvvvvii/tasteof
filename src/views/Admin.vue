@@ -4,7 +4,6 @@
     <div class="container-fluid align-items-center">
       <router-link to="/" class="navbar-brand d-flex align-items-center">
         旅味
-        <span class="material-icons ms-2"> api </span>
       </router-link>
       <button
         class="navbar-toggler"

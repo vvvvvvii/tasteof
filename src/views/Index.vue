@@ -59,12 +59,16 @@
           :space-between="30"
           class="mySwiper"
         >
-          <SwiperSlide class="list-item rounded-3" v-for="item in mainProducts" :key="item.id">
-            <img :src="item.imageUrl" class="list-item-img rounded-3" />
-            <div class="list-item-inner">
-              <h3 class="list-item-title">{{ item.title }}</h3>
-              <p class="list-item-subtitle">NT {{ item.price }}</p>
-            </div>
+          <SwiperSlide class="list-item rounded-2" v-for="item in mainProducts" :key="item.id">
+            <router-link :to="`/product/${item.id}`">
+              <div class="list-item-img-outer">
+                <img :src="item.imageUrl" class="list-item-img" />
+              </div>
+              <div class="list-item-inner">
+                <h3 class="list-item-title">{{ item.title }}</h3>
+                <p class="list-item-subtitle">NT {{ item.price }}</p>
+              </div>
+            </router-link>
           </SwiperSlide>
         </Swiper>
       </div>
