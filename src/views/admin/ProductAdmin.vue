@@ -152,6 +152,7 @@
     <product-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
+      :tag-category="tagCategory"
       @emit-product-modal="addNewProduct"
       ref="productModal"
     ></product-edit-modal>
@@ -182,7 +183,20 @@ export default {
         imageUrl: '',
         otherImageUrl: '',
         imagesUrl: [],
+        packageOptions: [],
+        tagCheck: [],
       },
+      tagCategory: [
+        '親子',
+        '浪漫',
+        '冒險',
+        '自然',
+        '烹飪',
+        '美食',
+        '知性文化',
+        '水上活動',
+        '獨家代理',
+      ],
       products: [],
       totalProducts: [],
       mainProduct: [],

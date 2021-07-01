@@ -21,11 +21,11 @@
           </button>
           <div class="container-fluid">
             <div class="row">
-              <!--圖片上傳預覽區-->
+              <!--圖片上傳預覽區、標籤選擇-->
               <div class="col-4">
-                <div class="bg-light-primary p-3 rounded-3">
+                <div class="bg-light p-3 rounded-2">
                   <div class="mb-2">
-                    <label for="imgUrl" class="form-label">產品圖片</label>
+                    <label for="imgUrl" class="form-label">產品封面圖片</label>
                     <input
                       type="text"
                       id="imgUrl"
@@ -36,7 +36,7 @@
                   </div>
                   <button
                     type="button"
-                    class="btn btn-dark-primary mb-2"
+                    class="btn btn-outline-primary mb-2"
                     data-bs-toggle="collapse"
                     href="#collapseAddImgs"
                     aria-expanded="false"
@@ -63,7 +63,7 @@
                       </button>
                     </div>
                   </div>
-                  <ul class="row g-1">
+                  <ul class="row g-1 mb-4">
                     <li class="col-4 mb-2">
                       <button
                         v-if="tempProduct.imageUrl"
@@ -94,6 +94,18 @@
                       <div v-else class="modal-img-default"></div>
                     </li>
                   </ul>
+                  <h5 class="h4 mb-2">選擇標籤</h5>
+                  <div class="row">
+                    <div v-for="(tag, tagIndex) in tagCategory" :key="tagIndex" class="col-4">
+                      <input
+                        type="checkbox"
+                        :id="`tagCheck-${tagIndex}`"
+                        v-model="tempProduct.tagCheck"
+                        :value="tag"
+                      />
+                      <label :for="`tagCheck-${tagIndex}`" class="ms-1">{{ tag }}</label>
+                    </div>
+                  </div>
                 </div>
               </div>
               <!--文字登打區-->
@@ -124,37 +136,16 @@
                       </select>
                     </div>
                     <div class="col-6 mb-2">
-                      <label for="productUnit" class="form-label">計費單位</label>
+                      <label for="productDuration" class="form-label">行程長度</label>
                       <input
                         type="text"
-                        id="productUnit"
+                        id="productDuration"
                         class="form-control"
-                        v-model="tempProduct.unit"
-                        placeholder="每人"
-                      />
-                    </div>
-                    <div class="col-6 mb-2">
-                      <label for="productOriginalPrice" class="form-label">原價</label>
-                      <input
-                        type="number"
-                        id="productOriginalPrice"
-                        class="form-control"
-                        min="0"
-                        v-model.number="tempProduct.origin_price"
-                      />
-                    </div>
-                    <div class="col-6 mb-2">
-                      <label for="productPrice" class="form-label">售價</label>
-                      <input
-                        type="number"
-                        id="productPrice"
-                        class="form-control"
-                        min="0"
-                        v-model.number="tempProduct.price"
+                        v-model.trim="tempProduct.duration"
                       />
                     </div>
                   </div>
-                  <div class="mb-2">
+                  <div class="mb-4">
                     <label for="productDescription" class="form-label">產品描述</label>
                     <textarea
                       name="productDescription"
@@ -166,15 +157,162 @@
                     ></textarea>
                   </div>
                   <div class="mb-2">
-                    <label for="productContent" class="form-label">適用規定</label>
-                    <textarea
-                      name="productContent"
-                      id="productContent"
+                    <div class="d-flex justify-content-between mb-4">
+                      <label class="form-label">行程所含地點</label>
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary d-block w-25"
+                        @click="addNewAttraction"
+                      >
+                        加新地點
+                      </button>
+                    </div>
+                    <div class="row">
+                      <div
+                        v-for="(item, key) in tempProduct.attractionArr"
+                        :key="key"
+                        class="col-3 mb-2"
+                      >
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model.trim="tempProduct.attractionArr[key]"
+                          />
+                          <button
+                            class="btn btn-outline-primary"
+                            type="button"
+                            @click="deleteAttraction(key)"
+                          >
+                            <i class="bi bi-trash-fill"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-2">
+                    <label for="productAgeDestriction" class="form-label">年齡限制</label>
+                    <input
+                      type="text"
+                      id="productAgeDestriction"
                       class="form-control"
-                      cols="30"
+                      v-model.trim="tempProduct.ageDestriction"
+                    />
+                  </div>
+                  <div class="mb-6">
+                    <label for="productPolicy" class="form-label">適用規定</label>
+                    <textarea
+                      name="productPolicy"
+                      id="productPolicy"
+                      class="form-control"
+                      cols="50"
                       rows="3"
-                      v-model="tempProduct.content"
+                      v-model="tempProduct.policy"
                     ></textarea>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-primary d-block w-50 mb-6 mx-auto"
+                    @click="addPackageOption"
+                  >
+                    新增方案
+                  </button>
+                  <div v-for="(item, key) in tempProduct.packageOptions" :key="key">
+                    <div class="mb-2">
+                      <label :for="`productPackageOptions-${key}`" class="form-label">{{
+                        `方案 ${key + 1} 名稱`
+                      }}</label>
+                      <input
+                        type="text"
+                        :id="`productPackageOptions-${key}`"
+                        class="form-control"
+                        v-model.trim="item.optionName"
+                      />
+                    </div>
+                    <div class="row">
+                      <div class="col-4 mb-2">
+                        <label :for="`productOriginalPrice-${key}`" class="form-label">原價</label>
+                        <input
+                          type="number"
+                          :id="`productOriginalPrice-${key}`"
+                          class="form-control"
+                          min="0"
+                          v-model.number="item.origin_price"
+                        />
+                      </div>
+                      <div class="col-4 mb-2">
+                        <label :for="`productPrice-${key}`" class="form-label">售價</label>
+                        <input
+                          type="number"
+                          :id="`productPrice-${key}`"
+                          class="form-control"
+                          min="0"
+                          v-model.number="item.price"
+                        />
+                      </div>
+                      <div class="col-4 mb-2">
+                        <label :for="`productUnit-${key}`" class="form-label">計費單位</label>
+                        <input
+                          type="text"
+                          :id="`productUnit-${key}`"
+                          class="form-control"
+                          v-model="item.unit"
+                          placeholder="每人"
+                        />
+                      </div>
+                      <div class="col-6 mb-2">
+                        <label :for="`productMeetingPoint-${key}`" class="form-label"
+                          >集合地點</label
+                        >
+                        <input
+                          type="text"
+                          :id="`productMeetingPoint-${key}`"
+                          class="form-control"
+                          v-model.trim="item.meetingPoint"
+                        />
+                      </div>
+                      <div class="col-6 mb-4">
+                        <label :for="`productMeetingTime-${key}`" class="form-label"
+                          >集合時間</label
+                        >
+                        <input
+                          type="text"
+                          :id="`productMeetingTime-${key}`"
+                          class="form-control"
+                          v-model.trim="item.meetingTime"
+                        />
+                      </div>
+                    </div>
+                    <div class="mb-6">
+                      <div class="d-flex justify-content-between mb-4">
+                        <label class="form-label">方案內含</label>
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary d-block w-25"
+                          @click="addNewContent(key)"
+                        >
+                          加新內容
+                        </button>
+                      </div>
+                      <div class="row">
+                        <div v-for="(i, index) in item.contentArr" :key="index" class="col-6 mb-2">
+                          <div class="input-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="item.contentArr[index]"
+                            />
+                            <button
+                              class="btn btn-outline-primary"
+                              type="button"
+                              @click="deleteContent(key, index)"
+                            >
+                              <i class="bi bi-trash-fill"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="form-check">
                     <input
@@ -229,10 +367,13 @@
 import alert from '@/components/Alert.vue';
 
 export default {
-  props: ['modalTitle', 'temp'],
+  props: ['modalTitle', 'temp', 'tagCategory'],
   data() {
     return {
-      tempProduct: { ...this.temp },
+      tempProduct: {
+        ...this.temp,
+        tagCheck: [],
+      },
       showAlert: false,
       alertMsg: '',
     };
@@ -264,14 +405,57 @@ export default {
         this.tempProduct.imagesUrl.splice(deleteItem, 1);
       }
     },
+    addNewAttraction() {
+      if (Object.keys(this.tempProduct).includes('attractionArr') === false) {
+        this.tempProduct.attractionArr = [];
+        this.tempProduct.attractionArr[0] = {};
+      } else {
+        // 新增一個空物件讓新地點可以放入
+        this.tempProduct.attractionArr[this.tempProduct.attractionArr.length] = {};
+      }
+    },
+    deleteAttraction(index) {
+      this.tempProduct.attractionArr.splice(index, 1);
+    },
+    addNewContent(key) {
+      if (Object.keys(this.tempProduct.packageOptions[key]).includes('contentArr') === false) {
+        this.tempProduct.packageOptions[key].contentArr = [];
+        this.tempProduct.packageOptions[key].contentArr[0] = '';
+      } else {
+        // 新增一個空字串讓新地點可以放入
+        this.tempProduct.packageOptions[key].contentArr[
+          this.tempProduct.packageOptions[key].contentArr.length
+        ] = '';
+      }
+    },
+    deleteContent(key, index) {
+      this.tempProduct.packageOptions[key].contentArr.splice(index, 1);
+    },
+    addPackageOption() {
+      if (Object.keys(this.tempProduct).includes('packageOptions') === false) {
+        this.tempProduct.packageOptions = [];
+        this.tempProduct.packageOptions[0] = {};
+      } else {
+        // 新增一個空物件讓新方案的內容可以放入
+        this.tempProduct.packageOptions[this.tempProduct.packageOptions.length] = {};
+      }
+    },
   },
   watch: {
     temp() {
-      this.tempProduct = { ...this.temp }; // 當 temp props 有變時，把 tempProduct 改掉
+      this.tempProduct = {
+        ...this.temp,
+      }; // 當 temp props 有變時，把 tempProduct 改掉
+      if (Object.keys(this.tempProduct).includes('tagCheck') === false) {
+        this.tempProduct.tagCheck = [];
+      }
     },
   },
   created() {
-    this.tempProduct = { ...this.temp };
+    this.tempProduct = {
+      ...this.temp,
+      tagCheck: [],
+    };
   },
 };
 </script>
