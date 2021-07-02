@@ -8,7 +8,14 @@
               <h3 class="fw-bold">搜尋</h3>
             </div>
             <div class="searchBox-body">
-              <input type="text" placeholder="目的地" class="mb-3" />
+              <label for="searchProductDestination"></label>
+              <input
+                type="search"
+                id="searchProductDestination"
+                placeholder="目的地"
+                class="mb-3"
+                v-model="searchProduct"
+              />
               <select name="activityPeriod" class="mb-6">
                 <option value="default" selected disabled>行程長度</option>
                 <option value="lessThan4hrs">小於 4 小時</option>
@@ -41,9 +48,15 @@
         </div>
         <div class="col-8">
           <div class="d-flex justify-content-between mb-6">
-            <h2>
+            <h2 v-if="searchProduct === ''">
               全部
-              <span class="h3 ms-5">{{ totalProducts.length }} 項活動</span>
+              <span class="h3 ms-5" v-if="totalProducts.length == 0">目前尚無活動</span>
+              <span class="h3 ms-5" v-else> {{ totalProducts.length }} 項活動</span>
+            </h2>
+            <h2 v-else>
+              {{ searchProduct }}
+              <span class="h3 ms-5" v-if="filterProduct.length == 0">目前尚無活動</span>
+              <span class="h3 ms-5" v-else> {{ filterProduct.length }} 項活動</span>
             </h2>
             <select
               name="productArrangement"
@@ -56,7 +69,7 @@
             </select>
           </div>
           <ul class="mb-8">
-            <li class="mb-3" v-for="item in products" :key="item.id">
+            <li class="mb-3" v-for="item in filterProduct" :key="item.id">
               <router-link :to="`/product/${item.id}`" class="card">
                 <img class="card-img" :src="item.imageUrl" :alt="item.title" />
                 <div class="card-body">
@@ -73,7 +86,11 @@
             </li>
           </ul>
           <!--pagination-->
-          <pagination :page="pagination" @emit-pagination="getData"></pagination>
+          <pagination
+            :page="pagination"
+            @emit-pagination="getData"
+            v-if="pagination.total_pages > 1"
+          ></pagination>
         </div>
       </div>
       <!--alert-->
@@ -123,6 +140,7 @@ export default {
         '水上活動',
         '獨家代理',
       ],
+      searchProduct: '',
       pagination: {},
     };
   },
@@ -206,7 +224,6 @@ export default {
             });
           });
           console.log(this.totalProducts);
-
           break;
         case 'cheapToExpensive':
           this.getData();
@@ -215,6 +232,14 @@ export default {
           this.getData();
           break;
       }
+    },
+  },
+  computed: {
+    filterProduct() {
+      if (this.searchProduct !== '') {
+        return this.totalProducts.filter((item) => item.title.match(this.searchProduct));
+      }
+      return this.products;
     },
   },
   created() {
