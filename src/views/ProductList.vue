@@ -45,7 +45,12 @@
               全部
               <span class="h3 ms-5">{{ totalProducts.length }} 項活動</span>
             </h2>
-            <select name="productArrangement" class="arrangementSelect">
+            <select
+              name="productArrangement"
+              class="arrangementSelect"
+              @change="productArrangment($event)"
+            >
+              <option value="default" selected>產品排列方式</option>
               <option value="expensiveToCheap">價格由高至低</option>
               <option value="cheapToExpensive">價格由低至高</option>
             </select>
@@ -146,7 +151,6 @@ export default {
                 }
               });
             });
-            console.log(this.products);
             this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
@@ -160,6 +164,20 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.totalProducts = res.data.products;
+            this.totalProducts.forEach((item, index) => {
+              // 個別取出每個產品
+              let packageOptionsPrice = item.packageOptions.map((i) => i.price); // 取出該產品的所有方案中的價格
+              packageOptionsPrice = packageOptionsPrice.sort((x, y) => x - y); // 價格小排到大
+              // this.products[index].lowestPrice = packageOptionsPrice[0];
+              const [lowestPrice] = packageOptionsPrice; // 該產品最低價格為陣列第一個數
+              this.totalProducts[index].lowestPrice = lowestPrice;
+              // 找到該價格對應的單位
+              item.packageOptions.forEach((i) => {
+                if (i.price === lowestPrice) {
+                  this.totalProducts[index].lowestPriceUnit = i.unit;
+                }
+              });
+            });
           } else {
             this.customAlert(res.data.message);
           }
@@ -174,6 +192,29 @@ export default {
     },
     closeCustomAlert() {
       this.showAlert = false;
+    },
+    productArrangment(e) {
+      let priceArr = this.totalProducts.map((item) => item.lowestPrice);
+      switch (e.target.value) {
+        case 'expensiveToCheap':
+          priceArr = priceArr.sort((x, y) => y - x);
+          this.totalProducts.forEach((item) => {
+            priceArr.forEach((price, index) => {
+              if (item.lowestPrice === price) {
+                this.totalProducts[index] = item;
+              }
+            });
+          });
+          console.log(this.totalProducts);
+
+          break;
+        case 'cheapToExpensive':
+          this.getData();
+          break;
+        default:
+          this.getData();
+          break;
+      }
     },
   },
   created() {
