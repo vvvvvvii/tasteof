@@ -178,6 +178,7 @@ export default {
         unit: '',
         description: '',
         content: '',
+        duration: {},
         is_enabled: true,
         is_mainProduct: false,
         imageUrl: '',
@@ -187,6 +188,11 @@ export default {
         tagCheck: [],
       },
       tagCategory: [
+        '雙北',
+        '中彰投',
+        '嘉南',
+        '高屏',
+        '花東',
         '親子',
         '浪漫',
         '冒險',
@@ -309,6 +315,22 @@ export default {
       const item = {};
       item.data = { ...tempProduct };
       item.data.is_enabled = item.data.is_enabled ? 1 : 0;
+      console.log(item.data.tagCheck);
+      if (item.data.tagCheck.indexOf('體驗票券') > -1) {
+        item.data.tagCheck.splice(item.data.tagCheck.indexOf('體驗票券'), 1);
+      } else if (item.data.tagCheck.indexOf('城市導覽') > -1) {
+        item.data.tagCheck.splice(item.data.tagCheck.indexOf('城市導覽'), 1);
+      } else if (item.data.tagCheck.indexOf('包車服務') > -1) {
+        item.data.tagCheck.splice(item.data.tagCheck.indexOf('包車服務'), 1);
+      }
+      console.log(item.data.tagCheck);
+      // if (item.data.tagCheck.includes('體驗票券' || '城市導覽' || '包車服務')) {
+      //   item.data.tagCheck.splice(
+      //     item.data.tagCheck.indexOf('體驗票券' || '城市導覽' || '包車服務'),
+      //     1,
+      //   );
+      // }
+      item.data.tagCheck.push(item.data.category);
       delete item.data.otherImageUrl; // 用這句把 otherImageUrl 刪掉
       if (target === '新增') {
         // 若是開新增產品的 modal

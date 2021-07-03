@@ -136,13 +136,33 @@
                       </select>
                     </div>
                     <div class="col-6 mb-2">
-                      <label for="productDuration" class="form-label">行程長度</label>
-                      <input
-                        type="text"
-                        id="productDuration"
-                        class="form-control"
-                        v-model.trim="tempProduct.duration"
-                      />
+                      <label for="productDurationDay" class="form-label">行程長度</label>
+                      <div class="d-flex">
+                        <input
+                          type="number"
+                          id="productDurationDay"
+                          class="form-control"
+                          min="0"
+                          max=""
+                          v-model.number="tempProduct.duration.day"
+                        />天
+                        <input
+                          type="number"
+                          id="productDurationHours"
+                          class="form-control"
+                          min="0"
+                          max="23"
+                          v-model.number="tempProduct.duration.hours"
+                        />小時
+                        <input
+                          type="number"
+                          id="productDurationMin"
+                          class="form-control"
+                          min="0"
+                          max="59"
+                          v-model.number="tempProduct.duration.min"
+                        />分
+                      </div>
                     </div>
                   </div>
                   <div class="mb-4">
@@ -448,6 +468,13 @@ export default {
       }; // 當 temp props 有變時，把 tempProduct 改掉
       if (Object.keys(this.tempProduct).includes('tagCheck') === false) {
         this.tempProduct.tagCheck = [];
+      }
+      if (Object.keys(this.tempProduct).includes('duration') === false) {
+        this.tempProduct.duration = {
+          day: 0,
+          hours: 0,
+          min: 0,
+        };
       }
     },
   },
