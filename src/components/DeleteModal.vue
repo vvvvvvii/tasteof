@@ -20,7 +20,7 @@
           </button>
           <div class="delete-modal-inner-bg mb-4">
             <!--若要刪除的是商品，跳出下列文字-->
-            <div v-if="tempItem.hasOwnProperty('content')">
+            <div v-if="tempItem.hasOwnProperty('is_mainProduct')">
               <p class="h5">{{ tempItem.title }}</p>
               <p>商品一經刪除及無法復原，是否確認刪除？</p>
             </div>
@@ -30,9 +30,14 @@
               <p>優惠券一經刪除及無法復原，是否確認刪除？</p>
             </div>
             <!--若要刪除的是訂單，跳出下列文字-->
-            <div v-else>
+            <div v-else-if="tempItem.hasOwnProperty('user')">
               <p class="h5">訂單編號：{{ tempItem.id }}</p>
               <p>訂單一經刪除及無法復原，是否確認刪除？</p>
+            </div>
+            <!--若要刪除的是文章，跳出下列文字-->
+            <div v-else-if="tempItem.hasOwnProperty('author')">
+              <p class="h5">{{ tempItem.title }}</p>
+              <p>文章一經刪除及無法復原，是否確認刪除？</p>
             </div>
           </div>
           <div class="d-flex justify-content-center">

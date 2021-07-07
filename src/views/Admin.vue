@@ -76,15 +76,15 @@
                   <span class="logout-icon material-icons text-danger mb-2">
                     account_circle
                   </span>
-                  <h2 class="mb-6 text-danger">{{ this.accountData.hexLoginName }}</h2>
+                  <h2 class="mb-6 text-danger">{{ accountData.hexLoginName }}</h2>
                   <ul class="text-start d-inline-block text-dark">
                     <li class="mb-2">
                       登入時間：<br />
-                      {{ this.accountData.hexTokenStart }}
+                      {{ accountData.hexTokenStart }}
                     </li>
                     <li class="mb-6">
                       有效期限：<br />
-                      {{ this.accountData.hexTokenExpired }}
+                      {{ accountData.hexTokenExpired }}
                     </li>
                   </ul>
                   <button

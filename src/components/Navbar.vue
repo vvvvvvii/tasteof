@@ -30,7 +30,14 @@
           border-lg-bottom-0 border-bottom pb-lg-0 pb-3"
         >
           <li class="nav-item px-3">
-            <router-link to="/product_list" class="nav-link" active-class="active">
+            <!-- exact-path: Allows matching only using the path section of the url,
+            effectively ignoring the query and the hash sections. -->
+            <router-link
+              to="/product_list?search=城市導覽"
+              class="nav-link"
+              active-class="active"
+              exact-path
+            >
               活動
             </router-link>
           </li>
@@ -38,7 +45,12 @@
             <span class="border-start"></span>
           </li>
           <li class="nav-item px-3">
-            <router-link to="/product_list" class="nav-link" active-class="active">
+            <router-link
+              to="/product_list?search=體驗票券"
+              class="nav-link"
+              active-class="active"
+              exact-path
+            >
               票券
             </router-link>
           </li>
@@ -46,7 +58,12 @@
             <span class="border-start"></span>
           </li>
           <li class="nav-item px-3">
-            <router-link to="/product_list" class="nav-link" active-class="active">
+            <router-link
+              to="/product_list?search=包車服務"
+              class="nav-link"
+              active-class="active"
+              exact-path
+            >
               包車
             </router-link>
           </li>
@@ -54,7 +71,7 @@
             <span class="border-start"></span>
           </li>
           <li class="nav-item px-3">
-            <router-link to="/product_list" class="nav-link" active-class="active">
+            <router-link to="/article_list" class="nav-link" active-class="active">
               靈感
             </router-link>
           </li>

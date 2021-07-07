@@ -211,12 +211,12 @@
                     </div>
                   </div>
                   <div class="mb-2">
-                    <label for="productAgeDestriction" class="form-label">年齡限制</label>
+                    <label for="productAgeRestriction" class="form-label">年齡限制</label>
                     <input
                       type="text"
-                      id="productAgeDestriction"
+                      id="productAgeRestriction"
                       class="form-control"
-                      v-model.trim="tempProduct.ageDestriction"
+                      v-model.trim="tempProduct.ageRestriction"
                     />
                   </div>
                   <div class="mb-6">

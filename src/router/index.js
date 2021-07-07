@@ -25,6 +25,19 @@ const routes = [
         }),
       },
       {
+        path: 'article_list',
+        name: '前台文章頁',
+        component: () => import('../views/ArticleList.vue'),
+      },
+      {
+        path: 'article/:id',
+        name: '前台文章細節頁',
+        component: () => import('../views/Article.vue'),
+        props: (route) => ({
+          id: route.params.id,
+        }),
+      },
+      {
         path: 'cart',
         name: '前台購物車頁',
         component: () => import('../views/Cart.vue'),

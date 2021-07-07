@@ -23,7 +23,7 @@
             <div class="row">
               <!--圖片上傳預覽區-->
               <div class="col-4">
-                <div class="bg-light-primary p-3 rounded-3">
+                <div class="bg-light p-3 rounded-2">
                   <div class="mb-2">
                     <label for="imgUrl" class="form-label">文章圖片</label>
                     <input
@@ -63,7 +63,7 @@
                       </button>
                     </div>
                   </div>
-                  <ul class="row g-1">
+                  <ul class="row g-1 mb-4">
                     <li class="col-4 mb-2">
                       <button
                         v-if="tempArticle.image"
@@ -94,38 +94,50 @@
                       <div v-else class="modal-img-default"></div>
                     </li>
                   </ul>
+                  <h5 class="h4 mb-2">選擇標籤</h5>
+                  <div class="row">
+                    <div v-for="(tag, tagIndex) in tagCategory" :key="tagIndex" class="col-4">
+                      <input
+                        type="checkbox"
+                        :id="`tagCheck-${tagIndex}`"
+                        v-model="tempArticle.tagCheck"
+                        :value="tag"
+                      />
+                      <label :for="`tagCheck-${tagIndex}`" class="ms-1">{{ tag }}</label>
+                    </div>
+                  </div>
                 </div>
               </div>
               <!--文字登打區-->
               <div class="col-8">
                 <form class="mb-4">
                   <div class="mb-2">
-                    <label for="articleTitle" class="form-label">文章標題</label>
-                    <input
-                      type="text"
-                      id="articleTitle"
-                      class="form-control"
-                      v-model="tempArticle.title"
-                    />
-                  </div>
-                  <div class="mb-2">
-                    <label for="articleTag" class="form-label">文章標籤</label>
-                    <div class="d-flex">
-                      <input
-                        name="articleTag"
-                        id="articleTag"
-                        class="form-control"
-                        v-model="tempArticle.tempTag"
-                      />
-                      <button
-                        type="button"
-                        class="btn btn-outline-dark-primary rounded-pill ms-2"
-                        @click="tempArticle.tag[key]"
-                      >
-                        <span class="material-icons">
-                          add_task
-                        </span>
-                      </button>
+                    <div class="row">
+                      <div class="col-8">
+                        <label for="articleTitle" class="form-label">文章標題</label>
+                        <input
+                          type="text"
+                          id="articleTitle"
+                          class="form-control"
+                          v-model="tempArticle.title"
+                        />
+                      </div>
+                      <div class="col-4">
+                        <label for="articleAuthor" class="form-label">文章作者</label>
+                        <select
+                          name="articleAuthor"
+                          id="articleAuthor"
+                          class="form-select"
+                          v-model="tempArticle.author"
+                        >
+                          <option disabled value="">請選擇作者</option>
+                          <option value="旅味精選">旅味精選</option>
+                          <option value="小王子阿德">小王子阿德</option>
+                          <option value="火車上的瑞秋">火車上的瑞秋</option>
+                          <option value="Edward Ke">Edward Ke</option>
+                          <option value="威爾森打排球">威爾森打排球</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                   <div class="mb-2">
@@ -140,15 +152,12 @@
                     ></textarea>
                   </div>
                   <div class="mb-2">
-                    <label for="articleContent" class="form-label">適用規定</label>
-                    <textarea
-                      name="articleContent"
-                      id="articleContent"
-                      class="form-control"
-                      cols="30"
-                      rows="3"
+                    <label for="articleContent" class="form-label">文章內容</label>
+                    <ckeditor
+                      :editor="editor"
                       v-model="tempArticle.content"
-                    ></textarea>
+                      :config="editorConfig"
+                    ></ckeditor>
                   </div>
                   <div class="form-check">
                     <input
@@ -192,14 +201,24 @@
 </template>
 <script>
 import alert from '@/components/Alert.vue';
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 
 export default {
-  props: ['modalTitle', 'temp'],
+  props: ['modalTitle', 'temp', 'tagCategory'],
   data() {
     return {
-      tempArticle: {},
+      tempArticle: { ...this.temp, tagCheck: [] },
       showAlert: false,
       alertMsg: '',
+      editor: ClassicEditor,
+      editorConfig: {
+        toolbar: {
+          items: ['heading', 'bold', 'image', 'italic', 'link', 'undo', 'redo'],
+        },
+        link: {
+          addTargetToExternalLinks: true,
+        },
+      },
     };
   },
   components: {
@@ -232,12 +251,13 @@ export default {
   },
   watch: {
     temp() {
-      this.tempArticle = JSON.parse(JSON.stringify(this.temp)); // 當 temp props 有變時，把 tempArticle 改掉
-      this.tempArticle.tag = this.temp.tag || [];
+      this.tempArticle = { ...this.temp }; // 當 temp props 有變時，把 tempArticle 改掉
+      this.tempArticle.imagesUrl = this.temp.imagesUrl || [];
+      this.tempArticle.tagCheck = this.temp.tagCheck || [];
     },
   },
   created() {
-    this.tempArticle = JSON.parse(JSON.stringify(this.temp));
+    this.tempArticle = { ...this.temp, tagCheck: [] };
   },
 };
 </script>

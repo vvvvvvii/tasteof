@@ -8,41 +8,28 @@
       <div class="mb-7">
         <h2 class="h2 text-primary mb-3">下個目的地？</h2>
         <ul class="row">
-          <li class="col-4  mb-4">
-            <a href="#" class="tab">
-              <img src="../assets/img/TPE.png" alt="雙北" class="tab-img" />
-              <div class="tab-title">雙北</div>
-            </a>
+          <li class="col-4  mb-4" v-for="(item, key) in cities" :key="key">
+            <router-link
+              :to="`/product_list?search=${item.name}`"
+              class="tab"
+              active-class="active"
+              exact-path
+            >
+              <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
+              <div class="tab-title">{{ item.name }}</div>
+            </router-link>
           </li>
           <li class="col-4  mb-4">
-            <a href="#" class="tab">
-              <img src="../assets/img/TXG.png" alt="中彰投" class="tab-img" />
-              <div class="tab-title">中彰投</div>
-            </a>
-          </li>
-          <li class="col-4  mb-4">
-            <a href="#" class="tab">
-              <img src="../assets/img/TNN.png" alt="嘉南" class="tab-img" />
-              <div class="tab-title">嘉南</div>
-            </a>
-          </li>
-          <li class="col-4  mb-4">
-            <a href="#" class="tab">
-              <img src="../assets/img/KAO.png" alt="高屏" class="tab-img" />
-              <div class="tab-title">高屏</div>
-            </a>
-          </li>
-          <li class="col-4  mb-4">
-            <a href="#" class="tab">
-              <img src="../assets/img/HUN.png" alt="花東" class="tab-img" />
-              <div class="tab-title">花東</div>
-            </a>
-          </li>
-          <li class="col-4  mb-4">
-            <a href="#" class="tab">
+            <!-- 讓 search= 隨機一個 tag -->
+            <router-link
+              :to="`/product_list?search=${randomCity}`"
+              class="tab"
+              active-class="active"
+              exact-path
+            >
               <img src="../assets/img/random.png" alt="來點驚喜" class="tab-img" />
               <div class="tab-title">來點驚喜</div>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -108,6 +95,29 @@ export default {
   data() {
     return {
       mainProducts: [],
+      cities: [
+        {
+          name: '雙北',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/TPE.png?raw=true',
+        },
+        {
+          name: '中彰投',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/TXG.png?raw=true',
+        },
+        {
+          name: '嘉南',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/TNN.png?raw=true',
+        },
+        {
+          name: '高屏',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/KAO.png?raw=true',
+        },
+        {
+          name: '花東',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/HUN.png?raw=true',
+        },
+      ],
+      randomCity: '',
     };
   },
   components: { alert },
@@ -119,6 +129,7 @@ export default {
           if (res.data.success) {
             const { products } = res.data;
             this.mainProducts = products.filter((item) => item.is_mainProduct);
+            this.getRandomCity();
           } else {
             this.customAlert(res.data.message);
           }
@@ -126,6 +137,12 @@ export default {
         .catch((err) => {
           this.customAlert(err.response);
         });
+    },
+    getRandomCity() {
+      const city = this.cities.map((item) => item.name);
+      const { length } = city;
+      const num = Math.floor(Math.random(length) * length);
+      this.randomCity = city[num];
     },
     customAlert(msg) {
       this.alertMsg = msg;

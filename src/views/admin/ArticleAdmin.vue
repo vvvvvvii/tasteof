@@ -26,8 +26,8 @@
       </div>
       <div class="mb-4">
         <small v-if="searchArticle === ''">
-          <p class="ms-6 text-dark-primary" v-if="totalArticles.length == 0">目前尚無文章</p>
-          <p v-else>目前有 {{ totalArticles.length }} 篇文章</p>
+          <p class="ms-6 text-dark-primary" v-if="articles.length == 0">目前尚無文章</p>
+          <p v-else>目前有 {{ articles.length }} 篇文章</p>
         </small>
         <small v-else>
           <p class="ms-6 text-dark-primary" v-if="filterArticle.length == 0">目前尚無文章</p>
@@ -41,24 +41,15 @@
       <thead>
         <tr>
           <th width="150">發布時間</th>
-          <th>文章標題</th>
+          <th width="500">文章標題</th>
           <th width="350">標籤</th>
           <th width="120"></th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(item, key) in filterArticle"
-          :key="item.id"
-          data-bs-toggle="collapse"
-          :href="'#collapseArticle-' + key"
-          aria-expanded="false"
-          :aria-controls="'collapseArticle-' + key"
-          class="light-primary-hover"
-          title="點擊看詳細內容"
-        >
-          <td width="150"></td>
-          <td class="pe-4">
+        <tr v-for="item in filterArticle" :key="item.id" class="light-primary-hover">
+          <td width="150">{{ item.create_at }}</td>
+          <td width="500" class="pe-4">
             <p>
               {{ item.title }}
               <i
@@ -71,9 +62,17 @@
                 }"
               ></i>
             </p>
-            <small class="collapse" :id="'collapseArticle-' + key">{{ item.description }}</small>
           </td>
-          <td width="350"></td>
+          <td width="350">
+            <span
+              v-for="(tag, index) in item.tagCheck"
+              :key="index"
+              class="badge rounded-pill bg-success"
+              :class="{ 'ms-1': index !== 0 }"
+            >
+              {{ tag }}
+            </span>
+          </td>
           <td width="120">
             <a>
               <span class="material-icons" @click="openModal(item, 'editArticle')">
@@ -106,6 +105,7 @@
     <article-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
+      :tag-category="tagCategory"
       @emit-article-modal="addNewArticle"
       ref="articleModal"
     ></article-edit-modal>
@@ -127,17 +127,45 @@ export default {
         title: '',
         description: '',
         image: '',
-        tag: [], //
+        tag: [],
         tempTag: '',
-        create_at: 0, //
-        author: '', //
+        create_at: 0,
+        author: '',
         isPublic: true,
         content: '',
         otherImageUrl: '',
         imagesUrl: [],
+        tagCheck: [],
       },
+      tagCategory: [
+        '基隆',
+        '台北',
+        '新北',
+        '新竹',
+        '苗栗',
+        '桃園',
+        '台中',
+        '彰化',
+        '南投',
+        '雲林',
+        '嘉義',
+        '台南',
+        '高雄',
+        '屏東',
+        '宜蘭',
+        '花蓮',
+        '台東',
+        '離島',
+        '親子',
+        '浪漫',
+        '冒險',
+        '自然',
+        '烹飪',
+        '美食',
+        '知性文化',
+        '水上活動',
+      ],
       articles: [],
-      totalArticles: [],
       pagination: {},
       modalTitle: '',
       articleModal: {},
@@ -164,7 +192,32 @@ export default {
           if (res.data.success) {
             const { data } = res;
             this.articles = data.articles;
+            this.articles.forEach((item, index) => {
+              if (typeof item.create_at === 'number') {
+                // 避免已經轉成亦閱讀的日期後，因編輯重跑 getData() ，無法重複轉換而錯誤
+                const time = new Date(item.create_at * 1000)
+                  .toISOString()
+                  .split('T')[0]
+                  .replace(/-/g, ' / ');
+                this.articles[index].create_at = time;
+              }
+            });
             this.pagination = res.data.pagination;
+          } else {
+            this.customAlert(res.data.message);
+          }
+        })
+        .catch((err) => {
+          this.customAlert(err.response);
+        });
+    },
+    getSingleData(id) {
+      this.$http
+        .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${id}`)
+        .then((res) => {
+          if (res.data.success) {
+            const { data } = res;
+            this.temp = data.article;
           } else {
             this.customAlert(res.data.message);
           }
@@ -189,14 +242,7 @@ export default {
           break;
         case 'editArticle':
           this.modalTitle = '完成編輯';
-          this.temp = { ...item };
-          if (Object.prototype.hasOwnProperty.call(this.temp, 'imagesUrl') === false) {
-            // 如果沒有 imagesUrl 這個屬性（一開始只上傳主圖，未上傳其他圖片），則幫 temp 加上這個屬性
-            this.temp.imagesUrl = [];
-          } else {
-            // 如果 imagesUrl 裡有空字串，把它刪掉再顯示
-            this.temp.imagesUrl = this.temp.imagesUrl.filter((e) => e !== '');
-          }
+          this.getSingleData(item.id);
           this.articleModal.show();
           break;
         case 'deleteArticle':
@@ -207,7 +253,19 @@ export default {
       }
     },
     clearModal() {
-      this.temp = {};
+      this.temp = {
+        title: '',
+        description: '',
+        image: '',
+        tag: [],
+        tempTag: '',
+        create_at: 0,
+        author: '',
+        isPublic: true,
+        content: '',
+        otherImageUrl: '',
+        imagesUrl: [],
+      };
     },
     addNewArticle(target, tempArticle) {
       const { articleAdminBtn } = this.$refs.articleModal.$refs;
@@ -215,8 +273,8 @@ export default {
       articleAdminBtn.children[0].classList.remove('d-none');
       const item = {};
       item.data = { ...tempArticle };
-      item.data.isPublic = item.data.isPublic ? 1 : 0;
       delete item.data.otherImageUrl; // 用這句把 otherImageUrl 刪掉
+      item.data.create_at = Math.floor(new Date() / 1000);
       if (target === '新增') {
         // 若是開新增文章的 modal
         this.$http
@@ -292,7 +350,7 @@ export default {
   computed: {
     filterArticle() {
       if (this.searchArticle !== '') {
-        return this.totalArticles.filter((item) => item.title.match(this.searchArticle));
+        return this.articles.filter((item) => item.title.match(this.searchArticle));
       }
       return this.articles;
     },
@@ -303,6 +361,7 @@ export default {
   mounted() {
     this.articleModal = new Modal(document.getElementById('articleModal'), {
       keyboard: false,
+      focus: false, // 解決 ckeditor link 在 bootstrap modal 點擊不到的問題
     });
     this.deleteModal = new Modal(document.getElementById('deleteModal'), {
       keyboard: false,

@@ -76,8 +76,8 @@
           </div>
           <ul class="mb-8">
             <li class="mb-3" v-for="item in filterProduct" :key="item.id">
-              <router-link :to="`/product/${item.id}`" class="card">
-                <img class="card-img" :src="item.imageUrl" :alt="item.title" />
+              <router-link :to="`/product/${item.id}`" class="card card-row">
+                <img class="card-row-img" :src="item.imageUrl" :alt="item.title" />
                 <div class="card-body">
                   <div>
                     <h5 class="card-title">{{ item.title }}</h5>
@@ -116,7 +116,7 @@ export default {
     return {
       // products: [],
       totalProducts: [],
-      budget: [0, 2000],
+      budget: [100, 7000],
       options: {
         dotSize: 12,
         width: 'auto',
@@ -134,7 +134,7 @@ export default {
         '高屏',
         '花東',
         '城市導覽',
-        '票券體驗',
+        '體驗票券',
         '包車服務',
         '親子',
         '浪漫',
@@ -436,6 +436,18 @@ export default {
   },
   created() {
     this.getData();
+    if (this.$route.query.search) {
+      this.searchProductTag.push(this.$route.query.search);
+    }
+  },
+  watch: {
+    '$route.query': {
+      handler() {
+        if (this.searchProductTag.includes(this.$route.query.search) === false) {
+          this.searchProductTag.push(this.$route.query.search);
+        }
+      },
+    },
   },
 };
 </script>
