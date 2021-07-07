@@ -9,16 +9,16 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content product-modal-bg">
         <div class="modal-body">
-          <button
-            type="button"
-            class="close-modal-btn close-modal-lg-btn bg-light-primary"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <span class="material-icons">
-              clear
-            </span>
-          </button>
+          <div class="text-end">
+            <button
+              type="button"
+              class="bg-transparent border-0 p-2 text-secondary h3"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
           <div class="container-fluid">
             <div class="row">
               <!--圖片上傳預覽區、標籤選擇-->
@@ -128,11 +128,10 @@
                         class="form-select"
                         v-model="tempProduct.category"
                       >
-                        <option selected disabled>請選擇產品分類</option>
+                        <option selected disabled value="">請選擇產品分類</option>
                         <option>城市導覽</option>
                         <option>體驗票券</option>
                         <option>包車服務</option>
-                        <option>推薦住宿</option>
                       </select>
                     </div>
                     <div class="col-6 mb-2">

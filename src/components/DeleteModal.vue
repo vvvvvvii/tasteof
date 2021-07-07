@@ -10,47 +10,49 @@
     <div class="modal-dialog">
       <div class="modal-content delete-modal-bg">
         <div class="modal-body">
-          <button
-            type="button"
-            class="close-modal-btn close-modal-m-btn bg-danger"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <span class="material-icons"> clear </span>
-          </button>
+          <div class="text-end">
+            <button
+              type="button"
+              class="bg-transparent border-0 p-2 text-secondary h3"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
           <div class="delete-modal-inner-bg mb-4">
             <!--若要刪除的是商品，跳出下列文字-->
-            <div v-if="tempItem.hasOwnProperty('is_mainProduct')">
-              <p class="h5">{{ tempItem.title }}</p>
-              <p>商品一經刪除及無法復原，是否確認刪除？</p>
+            <div class="text-center" v-if="tempItem.hasOwnProperty('is_mainProduct')">
+              <p class="h3 mb-2">{{ tempItem.title }}</p>
+              <p>一經刪除及無法復原，是否確認刪除？</p>
             </div>
             <!--若要刪除的是優惠券，跳出下列文字-->
-            <div v-else-if="tempItem.hasOwnProperty('code')">
-              <p class="h5">{{ tempItem.title }}：{{ tempItem.code }}</p>
-              <p>優惠券一經刪除及無法復原，是否確認刪除？</p>
+            <div class="text-center" v-else-if="tempItem.hasOwnProperty('code')">
+              <p class="h3 mb-2">優惠券代碼：{{ tempItem.code }}</p>
+              <p>一經刪除及無法復原，是否確認刪除？</p>
             </div>
             <!--若要刪除的是訂單，跳出下列文字-->
-            <div v-else-if="tempItem.hasOwnProperty('user')">
-              <p class="h5">訂單編號：{{ tempItem.id }}</p>
-              <p>訂單一經刪除及無法復原，是否確認刪除？</p>
+            <div class="text-center" v-else-if="tempItem.hasOwnProperty('user')">
+              <p class="h3 mb-2">訂單編號：{{ tempItem.id }}</p>
+              <p>一經刪除及無法復原，是否確認刪除？</p>
             </div>
             <!--若要刪除的是文章，跳出下列文字-->
-            <div v-else-if="tempItem.hasOwnProperty('author')">
-              <p class="h5">{{ tempItem.title }}</p>
-              <p>文章一經刪除及無法復原，是否確認刪除？</p>
+            <div class="text-center" v-else-if="tempItem.hasOwnProperty('author')">
+              <p class="h3 mb-2">{{ tempItem.title }}</p>
+              <p>一經刪除及無法復原，是否確認刪除？</p>
             </div>
           </div>
           <div class="d-flex justify-content-center">
             <button
               type="button"
-              class="btn btn-dark w-25 d-block"
+              class="btn btn-primary w-25 d-block"
               @click="$emit('emit-delete-modal')"
             >
               確認刪除
             </button>
             <button
               type="button"
-              class="btn btn-outline-light w-25 d-block ms-3"
+              class="btn btn-outline-primary w-25 d-block ms-3"
               data-bs-dismiss="modal"
             >
               取消

@@ -1,28 +1,38 @@
 <template>
-  <div class="bg-light-primary">
+  <div class="bg-light">
     <div class="container p-4">
       <div class="d-flex justify-content-between">
         <!--search input-->
         <div>
-          <label for="searchOrder" class="search-icon">
-            <span class="material-icons"> search </span>
+          <label for="searchOrder">
+            <i class="bi bi-search"></i>
           </label>
           <input
             type="search"
             id="searchOrder"
-            class="search-bar"
+            class="ms-2 rounded-3 px-3"
             placeholder="搜尋訂單編號"
             v-model="searchOrder"
           />
         </div>
         <!--delete all order btn-->
-        <button type="button" class="btn btn-outline-danger d-inline-flex me-2" @click="deleteAll">
+        <button type="button" class="btn btn-outline-primary d-inline-flex me-2" @click="deleteAll">
           刪除所有訂單
         </button>
       </div>
-      <small class="ms-6 text-dark-primary" v-if="filterOrder.length == 0">
+      <div class="mb-4">
+        <small v-if="searchOrder === ''">
+          <p v-if="orders.length == 0">目前尚無訂單</p>
+          <p v-else>此分頁有 {{ orders.length }} 筆訂單</p>
+        </small>
+        <small v-else>
+          <p v-if="filterOrder.length == 0">查找不到相關訂單</p>
+          <p v-else>此分頁為您查到 {{ filterOrder.length }} 筆訂單</p>
+        </small>
+      </div>
+      <!-- <small class="ms-6 text-dark-primary" v-if="filterOrder.length == 0">
         <p>查找不到相關訂單</p>
-      </small>
+      </small> -->
     </div>
   </div>
   <div class="container py-4">

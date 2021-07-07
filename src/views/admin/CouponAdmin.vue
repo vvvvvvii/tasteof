@@ -1,15 +1,19 @@
 <template>
+  <div class="bg-light">
+    <div class="container p-4">
+      <div class="text-end">
+        <button
+          type="button"
+          class="btn btn-outline-primary d-inline-flex"
+          @click="openModal($event, 'addCoupon')"
+        >
+          新增優惠券
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="container p-4">
     <!--add coupon btn-->
-    <div class="text-end">
-      <button
-        type="button"
-        class="btn btn-outline-primary d-inline-flex"
-        @click="openModal($event, 'addCoupon')"
-      >
-        新增優惠券
-      </button>
-    </div>
     <table class="table mb-6">
       <thead>
         <tr>

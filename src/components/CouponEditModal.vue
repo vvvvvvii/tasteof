@@ -10,16 +10,16 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content coupon-modal-bg">
         <div class="modal-body">
-          <button
-            type="button"
-            class="close-modal-btn close-modal-lg-btn bg-light-primary"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <span class="material-icons">
-              clear
-            </span>
-          </button>
+          <div class="text-end">
+            <button
+              type="button"
+              class="bg-transparent border-0 p-2 text-secondary h3"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
           <div class="container-fluid">
             <form class="mb-4">
               <div class="row">

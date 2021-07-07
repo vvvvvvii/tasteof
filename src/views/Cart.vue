@@ -1,185 +1,270 @@
 <template>
-  <div class="container">
-    <table class="table" v-if="cart.total > 0">
-      <!--購物車有東西才顯示這塊-->
-      <thead>
-        <tr>
-          <th scope="col">商品名稱</th>
-          <th scope="col">使用日期</th>
-          <th scope="col">商品單價</th>
-          <th scope="col">數量</th>
-          <th scope="col">商品總價</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-for="item in cart.carts" :key="item.id">
-          <tr>
-            <th scope="row">{{ item.product.title }}</th>
-            <td>{{ item.start_date }}</td>
-            <td>
-              {{ item.product.price }}
-              <span class="ms-1">/ {{ item.product.unit }}</span>
-            </td>
-            <td>
-              <input
-                type="number"
-                v-model.number="item.qty"
-                @change="changeCartNum(item.qty, item.id)"
-                min="1"
-              />
-            </td>
-            <td>{{ item.total }}</td>
-            <td>
-              <a type="button">
-                <span class="material-icons" @click="deleteProduct(item.id)">
-                  delete
-                </span>
-              </a>
-            </td>
-          </tr>
-        </template>
-      </tbody>
-    </table>
-    <p class="fs-5 text-center mb-6" v-else>購物車目前暫無商品唷 ꉂ(ˊᗜˋ*)</p>
-    <Form class="row" v-slot="{ errors }" @submit="addOrder">
-      <div class="col-3 mb-3">
-        <label for="bookNameCartInput" class="form-label">姓名 Name</label>
-        <Field
-          type="text"
-          id="bookNameCartInput"
-          name="姓名"
-          class="form-control"
-          :class="{ 'is-invalid': errors['姓名'] }"
-          rules="required"
-          v-model="customerDetail.user.name"
-        ></Field>
-        <ErrorMessage name="姓名" class="invalid-feedback"></ErrorMessage>
-      </div>
-      <div class="col-3 mb-3">
-        <label for="bookGenderCartInput" class="form-label">稱謂 Gender</label>
-        <Field
-          name="稱謂"
-          class="form-select"
-          id="bookGenderCartInput"
-          :class="{ 'is-invalid': errors['稱謂'] }"
-          rules="required"
-          v-model="customerDetail.user.gender"
-          as="select"
-        >
-          <option selected value="male">Mr. / 先生</option>
-          <option value="female">Ms. / 女士</option>
-        </Field>
-      </div>
-      <div class="col-3 mb-3">
-        <label for="bookIdNumCartInput" class="form-label">身分證字號 Id Number</label>
-        <Field
-          type="text"
-          name="身分證"
-          class="form-control"
-          id="bookIdNumCartInput"
-          :class="{ 'is-invalid': errors['身分證'] }"
-          :rules="isIdNum"
-          v-model="customerDetail.user.idNum"
-        ></Field>
-        <ErrorMessage name="身分證" class="invalid-feedback"></ErrorMessage>
-      </div>
-      <div class="col-3 mb-3">
-        <label for="bookPassportNumCartInput" class="form-label">
-          護照號碼 Passport Number
-        </label>
-        <Field
-          type="text"
-          name="護照號碼"
-          class="form-control"
-          id="bookPassportNumCartInput"
-          :class="{ 'is-invalid': errors['護照號碼'] }"
-          rules="length:9|numeric"
-          v-model="customerDetail.user.passportNum"
-        ></Field>
-        <ErrorMessage name="護照號碼" class="invalid-feedback"></ErrorMessage>
-      </div>
-      <div class="col-3 mb-3">
-        <label for="bookTelCartInput" class="form-label">聯繫電話 Contact Number</label>
-        <Field
-          type="tel"
-          name="電話"
-          class="form-control"
-          id="bookTelCartInput"
-          :class="{ 'is-invalid': errors['電話'] }"
-          rules="required|numeric|max:10"
-          v-model="customerDetail.user.tel"
-        ></Field>
-        <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
-      </div>
-      <div class="col-3 mb-3">
-        <label for="bookEmailCartInput" class="form-label">
-          電子信箱 Email Address
-        </label>
-        <Field
-          type="email"
-          name="email"
-          class="form-control"
-          id="bookEmailCartInput"
-          placeholder="customer@example.com"
-          :class="{ 'is-invalid': errors['email'] }"
-          rules="email|required"
-          v-model="customerDetail.user.email"
-        ></Field>
-        <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
-      </div>
-      <div class="col-6 mb-3">
-        <label for="bookAddrCartInput" class="form-label">地址 Address</label>
-        <Field
-          type="text"
-          name="地址"
-          class="form-control"
-          id="bookAddrCartInput"
-          :class="{ 'is-invalid': errors['地址'] }"
-          rules="required"
-          v-model="customerDetail.user.address"
-        ></Field>
-        <ErrorMessage name="地址" class="invalid-feedback"></ErrorMessage>
-      </div>
-      <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">備註</label>
-        <textarea
-          class="form-control"
-          id="exampleFormControlTextarea1"
-          rows="3"
-          v-model="customerDetail.message"
-        ></textarea>
-      </div>
-      <div class="d-flex justify-content-between">
-        <h5>總金額：{{ cart.final_total || 0 }}</h5>
-        <div class="d-flex">
-          <!--cart 是空物件或價格為 0 時不可點清空或結帳（確保購物車為空時不可點擊）-->
-          <button
-            type="button"
-            class="btn btn-secondary d-flex justify-content-center align-items-center"
-            @click="deleteAllProducts()"
-            ref="deleteOrderBtn"
-            :disabled="Object.keys(cart).length == 0 || cart.total == 0"
-          >
-            <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
-              <span class="visually-hidden">Loading...</span>
+  <div class="container pt-7">
+    <div class="py-8">
+      <div class="bg-light rounded-3 p-7">
+        <div v-if="cart.total > 0">
+          <div class="d-flex justify-content-between mb-6">
+            <h2 class="h3 text-primary">訂單內容</h2>
+            <button
+              type="button"
+              class="btn btn-outline-primary d-flex justify-content-center align-items-center px-5"
+              @click="deleteAllProducts()"
+              ref="deleteOrderBtn"
+              :disabled="Object.keys(cart).length == 0 || cart.total == 0"
+            >
+              <div class="spinner-border spinner-border-sm text-light d-none me-1" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p>清空購物車</p>
+            </button>
+          </div>
+          <table class="table mb-7">
+            <!--購物車有東西才顯示這塊-->
+            <thead>
+              <tr>
+                <th scope="col">商品名稱</th>
+                <th scope="col">使用日期</th>
+                <th scope="col">成人（ 12+ ）</th>
+                <th scope="col">孩童（ 6~12 ）</th>
+                <th scope="col">商品總價</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="item in cart.carts" :key="item.id">
+                <tr>
+                  <th scope="row">
+                    <router-link
+                      :to="`/product/${item.product_id}`"
+                      title="前往產品頁"
+                      class="text-primary"
+                    >
+                      <p>{{ item.product.title }}</p>
+                      <p>{{ item.optionName }}</p>
+                    </router-link>
+                  </th>
+                  <td>{{ item.start_date }}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <button
+                        class="border-0 bg-transparent p-2"
+                        @click="changeTktNum('adult', 'minus', item.qtyDetail, item.id)"
+                      >
+                        <i class="bi bi-dash-lg"></i>
+                      </button>
+                      <p class="p-1">
+                        {{ item.qtyDetail.adult }}
+                      </p>
+                      <button
+                        class="border-0 bg-transparent p-2"
+                        @click="changeTktNum('adult', 'plus', item.qtyDetail, item.id)"
+                      >
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <button
+                        class="border-0 bg-transparent p-2"
+                        @click="changeTktNum('child', 'minus', item.qtyDetail, item.id)"
+                      >
+                        <i class="bi bi-dash-lg"></i>
+                      </button>
+                      <p class="p-1">
+                        {{ item.qtyDetail.child }}
+                      </p>
+                      <button
+                        class="border-0 bg-transparent p-2"
+                        @click="changeTktNum('child', 'plus', item.qtyDetail, item.id)"
+                      >
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                    </div>
+                  </td>
+                  <td>NT {{ item.total }}</td>
+                  <td>
+                    <a type="button">
+                      <span class="material-icons" @click="deleteProduct(item.id)">
+                        delete
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+          <h2 class="h3 text-primary mb-6">客戶資料</h2>
+          <div class="d-flex justify-content-between mb-4">
+            <p>第一位旅客</p>
+            <div class="d-flex flex-column">
+              <button type="button" class="btn btn-primary d-block mb-2 px-5">新增旅客</button>
+              <button type="button" class="btn btn-outline-primary d-block px-5">
+                清空資料
+              </button>
             </div>
-            <p class="ms-1">清空購物車</p>
-          </button>
-          <button
-            type="submit"
-            class="btn btn-primary ms-2 d-flex justify-content-center align-items-center"
-            ref="addOrderBtn"
-            :disabled="Object.keys(cart).length == 0 || cart.total == 0"
-          >
-            <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
-              <span class="visually-hidden">Loading...</span>
+          </div>
+          <Form class="row" v-slot="{ errors }" @submit="addOrder">
+            <div class="col-3 mb-3">
+              <label for="bookNameCartInput" class="form-label">姓名</label>
+              <Field
+                type="text"
+                id="bookNameCartInput"
+                name="姓名"
+                class="form-control"
+                :class="{ 'is-invalid': errors['姓名'] }"
+                rules="required"
+                v-model="customerDetail.user.name"
+              ></Field>
+              <ErrorMessage name="姓名" class="invalid-feedback"></ErrorMessage>
             </div>
-            <p class="ms-1">結帳</p>
-          </button>
+            <div class="col-3 mb-3">
+              <label for="bookGenderCartInput" class="form-label">稱謂</label>
+              <Field
+                name="稱謂"
+                class="form-select"
+                id="bookGenderCartInput"
+                :class="{ 'is-invalid': errors['稱謂'] }"
+                rules="required"
+                v-model="customerDetail.user.gender"
+                as="select"
+              >
+                <option disabled value="">請選擇稱謂</option>
+                <option selected value="male">先生</option>
+                <option value="female">女士</option>
+              </Field>
+            </div>
+            <div class="col-3 mb-3">
+              <label for="bookIdNumCartInput" class="form-label">身分證字號</label>
+              <Field
+                type="text"
+                name="身分證"
+                class="form-control"
+                id="bookIdNumCartInput"
+                :class="{ 'is-invalid': errors['身分證'] }"
+                :rules="isIdNum"
+                v-model="customerDetail.user.idNum"
+              ></Field>
+              <ErrorMessage name="身分證" class="invalid-feedback"></ErrorMessage>
+            </div>
+            <div class="col-3 mb-3">
+              <label for="bookPassportNumCartInput" class="form-label">
+                護照號碼
+              </label>
+              <Field
+                type="text"
+                name="護照號碼"
+                class="form-control"
+                id="bookPassportNumCartInput"
+                :class="{ 'is-invalid': errors['護照號碼'] }"
+                rules="length:9|numeric"
+                v-model="customerDetail.user.passportNum"
+              ></Field>
+              <ErrorMessage name="護照號碼" class="invalid-feedback"></ErrorMessage>
+            </div>
+            <div class="col-3 mb-3">
+              <label for="bookTelCartInput" class="form-label">聯繫電話</label>
+              <Field
+                type="tel"
+                name="電話"
+                class="form-control"
+                id="bookTelCartInput"
+                :class="{ 'is-invalid': errors['電話'] }"
+                rules="required|numeric|max:10"
+                v-model="customerDetail.user.tel"
+              ></Field>
+              <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
+            </div>
+            <div class="col-3 mb-3">
+              <label for="bookEmailCartInput" class="form-label">
+                電子信箱
+              </label>
+              <Field
+                type="email"
+                name="email"
+                class="form-control"
+                id="bookEmailCartInput"
+                placeholder="customer@example.com"
+                :class="{ 'is-invalid': errors['email'] }"
+                rules="email|required"
+                v-model="customerDetail.user.email"
+              ></Field>
+              <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
+            </div>
+            <div class="col-6 mb-3">
+              <label for="bookAddrCartInput" class="form-label">地址</label>
+              <Field
+                type="text"
+                name="地址"
+                class="form-control"
+                id="bookAddrCartInput"
+                :class="{ 'is-invalid': errors['地址'] }"
+                rules="required"
+                v-model="customerDetail.user.address"
+              ></Field>
+              <ErrorMessage name="地址" class="invalid-feedback"></ErrorMessage>
+            </div>
+            <div class="mb-7">
+              <label for="exampleFormControlTextarea1" class="form-label">備註</label>
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                v-model="customerDetail.message"
+              ></textarea>
+            </div>
+            <div class="d-flex flex-column align-items-end">
+              <h5 class="h4 mb-3">
+                總金額
+                <span class="h2 text-primary">NT {{ cart.final_total || 0 }}</span>
+              </h5>
+              <!--cart 是空物件或價格為 0 時不可點清空或結帳（確保購物車為空時不可點擊）-->
+              <button
+                type="submit"
+                class="btn btn-primary d-block px-5"
+                ref="addOrderBtn"
+                :disabled="Object.keys(cart).length == 0 || cart.total == 0"
+              >
+                <p>下一步</p>
+              </button>
+            </div>
+
+            <!-- <button
+              type="submit"
+              class="btn btn-primary w-25 d-flex justify-content-center align-items-center"
+              ref="addOrderBtn"
+              :disabled="Object.keys(cart).length == 0 || cart.total == 0"
+            >
+              <div class="spinner-border spinner-border-sm text-light d-none me-1" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p>下一步</p>
+            </button> -->
+          </Form>
+        </div>
+        <!--無商品時顯示-->
+        <div class="text-center" v-else>
+          <p class="mb-4">
+            購物車目前還沒有商品耶
+            <i class="bi bi-eraser"></i>
+          </p>
+          <p class="mb-2">
+            客倌要不要
+            <router-link :to="`/product_list`" title="前往產品頁" class="text-secondary h3">
+              來這裡挑挑看、選選看
+            </router-link>
+            呢？
+          </p>
+          <p>
+            也可以
+            <router-link :to="`/article_list`" title="前往文章頁" class="text-secondary h3">
+              來這裡尋找玩樂靈感
+            </router-link>
+            唷！
+          </p>
         </div>
       </div>
-    </Form>
+    </div>
   </div>
   <!--alert-->
   <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
@@ -235,11 +320,24 @@ export default {
     backToHomePage() {
       this.$router.push('/');
     },
-    changeCartNum(qty, id) {
+    changeTktNum(tktType, calcType, detail, id) {
+      const qtyDetail = { ...detail };
+      if (tktType === 'adult') {
+        if (calcType === 'plus') {
+          qtyDetail.adult += 1;
+        } else if (calcType === 'minus' && qtyDetail.adult >= 2) {
+          qtyDetail.adult -= 1;
+        }
+      } else if (calcType === 'plus') {
+        qtyDetail.child += 1;
+      } else if (calcType === 'minus' && qtyDetail.child >= 1) {
+        qtyDetail.child -= 1;
+      }
       const data = {
         data: {
           product_id: id,
-          qty,
+          qty: qtyDetail.adult + qtyDetail.child,
+          qtyDetail,
         },
       };
       this.$http

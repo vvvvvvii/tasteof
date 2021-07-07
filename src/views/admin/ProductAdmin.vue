@@ -4,13 +4,13 @@
       <div class="d-flex justify-content-between">
         <!--search input-->
         <div>
-          <label for="searchProduct" class="search-icon">
-            <span class="material-icons"> search </span>
+          <label for="searchProduct">
+            <i class="bi bi-search"></i>
           </label>
           <input
             type="search"
             id="searchProduct"
-            class="search-bar"
+            class="ms-2 rounded-3 px-3"
             placeholder="搜尋產品"
             v-model="searchProduct"
           />
@@ -26,11 +26,11 @@
       </div>
       <div class="mb-4">
         <small v-if="searchProduct === ''">
-          <p class="ms-6 text-dark-primary" v-if="totalProducts.length == 0">目前尚無產品</p>
+          <p v-if="totalProducts.length == 0">目前尚無產品</p>
           <p v-else>目前有 {{ totalProducts.length }} 項產品</p>
         </small>
         <small v-else>
-          <p class="ms-6 text-dark-primary" v-if="filterProduct.length == 0">目前尚無產品</p>
+          <p v-if="filterProduct.length == 0">目前尚無產品</p>
           <p v-else>目前有 {{ filterProduct.length }} 項產品</p>
         </small>
       </div>

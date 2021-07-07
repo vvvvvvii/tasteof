@@ -43,7 +43,6 @@
             :loop="true"
             :slides-per-view="3"
             :spaceBetween="200"
-            :centeredSlides="true"
             class="mySwiper"
           >
             <button
@@ -218,27 +217,61 @@
                   :src="moreInfo.productInfo.imageUrl"
                   :alt="item.optionName"
                 />
-                <div class="card-body">
+                <div class="card-body flex-row">
                   <div>
                     <h3 class="card-title mb-3">
                       {{ item.optionName }}
-                      <span class="h4 ms-2">{{ item.meetingTime }} 集合</span>
+                      <span class="h4 ms-2">集合時間： {{ item.meetingTime }}</span>
                     </h3>
-                    <p v-for="(content, key) in item.contentArr" :key="key">
-                      <i class="bi bi-check2"></i>
-                      {{ content }}
-                    </p>
+                    <template v-for="(content, key) in item.contentArr" :key="key">
+                      <p v-if="key < 4">
+                        <i class="bi bi-check2"></i>
+                        {{ content }}
+                      </p>
+                    </template>
+                    <a
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      v-if="item.contentArr.length > 4"
+                      class="text-secondary"
+                    >
+                      <i class="bi bi-question-diamond-fill"></i>
+                      查看更多方案包含細項
+                    </a>
+                    <!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="exampleModal"
+                      tabindex="-1"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            <h3 class="pb-3 mb-3 border-bottom border-gray">
+                              {{ item.optionName }}
+                            </h3>
+                            <p v-for="(content, key) in item.contentArr" :key="key">
+                              <i class="bi bi-check2"></i>
+                              {{ content }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="d-flex flex-column align-items-end">
-                    <p class="mb-1">
+                  <div class="d-flex flex-column justify-content-end align-items-end">
+                    <p class="mb-2">
                       <span class="h3">NT {{ item.price }}</span>
                       / {{ item.unit }}
                     </p>
                     <button
                       type="button"
-                      class="btn btn-primary w-25 d-flex justify-content-center align-items-center"
+                      class="btn btn-primary d-flex justify-content-center align-items-center"
                       ref="addCartBtn"
-                      @click="addCart()"
+                      @click="addCart(item.optionName)"
                       :disabled="moreInfo.startDate === '' || moreInfo.tktNum.adult < 1"
                     >
                       <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
@@ -403,15 +436,17 @@ export default {
     setThumbsSwiper(swiper) {
       this.thumbsSwiper = swiper;
     },
-    addCart() {
+    addCart(optionName) {
       const { addCartBtn } = this.$refs;
       addCartBtn.classList.add('disabled');
       addCartBtn.children[0].classList.remove('d-none');
       const data = {
         data: {
           product_id: this.moreInfo.productInfo.id,
-          qty: this.moreInfo.tktNum,
+          qty: this.moreInfo.tktNum.adult + this.moreInfo.tktNum.child,
+          qtyDetail: this.moreInfo.tktNum,
           start_date: this.moreInfo.startDate,
+          optionName,
         },
       };
       this.$http
@@ -426,10 +461,12 @@ export default {
             addCartBtn.classList.remove('disabled');
             addCartBtn.children[0].classList.add('d-none');
           } else {
+            console.log(res.data);
             this.customAlert(res.data.message);
           }
         })
         .catch((err) => {
+          console.log(err.data);
           this.customAlert(err.response);
         });
     },
