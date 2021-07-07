@@ -5,7 +5,7 @@ const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/tasteof/dist/' : '/',
   transpileDependencies: [/ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/],
-  parallel: false, // 加這句才可成功 build
+  parallel: false, // 加這句才可成功 build ckeditor
   configureWebpack: {
     plugins: [
       // CKEditor needs its own plugin to be built using webpack.

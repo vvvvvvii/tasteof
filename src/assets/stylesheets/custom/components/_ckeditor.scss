@@ -3,32 +3,24 @@ body {
   --ck-z-default: 100;
   --ck-z-modal: calc(var(--ck-z-default) + 999);
 }
-
-/* We need to overwrite default Materialize strong appearance.
-   See: https://github.com/Dogfalo/materialize/blob/v1-dev/sass/components/_typography.scss#L41.
- */
-
-.ck.ck-content strong {
-  font-weight: bold;
+.ck-content {
+  a {
+    color: $secondary;
+    text-decoration: underline;
+  }
+  strong {
+    font-weight: bold;
+  }
+  ul li {
+    list-style-type: inherit;
+  }
+  ul {
+    /* Default user agent stylesheet. */
+    padding-left: 40px;
+  }
 }
 
-/* We need to overwrite default Materialize list appearance. 
- * See: https://github.com/ckeditor/ckeditor5/issues/1672. 
- */
-.ck.ck-content ul,
-.ck.ck-content ul li {
-  list-style-type: inherit;
-}
-
-.ck.ck-content ul {
-  /* Default user agent stylesheet. */
-  padding-left: 40px;
-}
-
-/* We need to overwrite default Materialize input appearance. 
-  * See: https://github.com/Dogfalo/materialize/blob/v1-dev/sass/components/forms/_input-fields.scss#L10-L40 
-  */
-.ck input.ck-input.ck-input-text {
+.ck.ck-content .ck.ck-content .ck input.ck-input.ck-input-text {
   box-shadow: var(--ck-inner-shadow), 0 0;
   background: var(--ck-color-input-background);
   border: 1px solid var(--ck-color-input-border);
@@ -52,8 +44,9 @@ body {
   a {
     color: $secondary;
     font-weight: bold;
+    text-decoration: underline;
     &:hover {
-      color: $gray;
+      color: $primary;
     }
   }
   p {
