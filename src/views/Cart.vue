@@ -18,7 +18,7 @@
               <p>清空購物車</p>
             </button>
           </div>
-          <table class="table mb-7">
+          <table class="table align-middle mb-7">
             <!--購物車有東西才顯示這塊-->
             <thead>
               <tr>
@@ -33,16 +33,16 @@
             <tbody>
               <template v-for="item in cart.carts" :key="item.id">
                 <tr>
-                  <th scope="row">
+                  <td scope="row">
                     <router-link
                       :to="`/product/${item.product_id}`"
                       title="前往產品頁"
-                      class="text-primary"
+                      class="link-dark text-decoration-underline"
                     >
                       <p>{{ item.product.title }}</p>
                       <p>{{ item.optionName }}</p>
                     </router-link>
-                  </th>
+                  </td>
                   <td>{{ item.start_date }}</td>
                   <td>
                     <div class="d-flex align-items-center">
@@ -82,7 +82,7 @@
                       </button>
                     </div>
                   </td>
-                  <td>NT {{ item.total }}</td>
+                  <td>NT {{ addComma(item.total) }}</td>
                   <td>
                     <a type="button">
                       <span class="material-icons" @click="deleteProduct(item.id)">
@@ -94,138 +94,163 @@
               </template>
             </tbody>
           </table>
-          <h2 class="h3 text-primary mb-6">客戶資料</h2>
           <div class="d-flex justify-content-between mb-4">
-            <p>第一位旅客</p>
-            <div class="d-flex flex-column">
-              <button type="button" class="btn btn-primary d-block mb-2 px-5">新增旅客</button>
-              <button type="button" class="btn btn-outline-primary d-block px-5">
-                清空資料
-              </button>
-            </div>
+            <h2 class="h3 text-primary">客戶資料</h2>
+            <button type="button" class="btn btn-primary d-block px-5" @click="addPax">
+              新增旅客
+            </button>
           </div>
-          <Form class="row" v-slot="{ errors }" @submit="addOrder">
-            <div class="col-3 mb-3">
-              <label for="bookNameCartInput" class="form-label">姓名</label>
-              <Field
-                type="text"
-                id="bookNameCartInput"
-                name="姓名"
-                class="form-control"
-                :class="{ 'is-invalid': errors['姓名'] }"
-                rules="required"
-                v-model="customerDetail.user.name"
-              ></Field>
-              <ErrorMessage name="姓名" class="invalid-feedback"></ErrorMessage>
-            </div>
-            <div class="col-3 mb-3">
-              <label for="bookGenderCartInput" class="form-label">稱謂</label>
-              <Field
-                name="稱謂"
-                class="form-select"
-                id="bookGenderCartInput"
-                :class="{ 'is-invalid': errors['稱謂'] }"
-                rules="required"
-                v-model="customerDetail.user.gender"
-                as="select"
-              >
-                <option disabled value="">請選擇稱謂</option>
-                <option selected value="male">先生</option>
-                <option value="female">女士</option>
-              </Field>
-            </div>
-            <div class="col-3 mb-3">
-              <label for="bookIdNumCartInput" class="form-label">身分證字號</label>
-              <Field
-                type="text"
-                name="身分證"
-                class="form-control"
-                id="bookIdNumCartInput"
-                :class="{ 'is-invalid': errors['身分證'] }"
-                :rules="isIdNum"
-                v-model="customerDetail.user.idNum"
-              ></Field>
-              <ErrorMessage name="身分證" class="invalid-feedback"></ErrorMessage>
-            </div>
-            <div class="col-3 mb-3">
-              <label for="bookPassportNumCartInput" class="form-label">
-                護照號碼
-              </label>
-              <Field
-                type="text"
-                name="護照號碼"
-                class="form-control"
-                id="bookPassportNumCartInput"
-                :class="{ 'is-invalid': errors['護照號碼'] }"
-                rules="length:9|numeric"
-                v-model="customerDetail.user.passportNum"
-              ></Field>
-              <ErrorMessage name="護照號碼" class="invalid-feedback"></ErrorMessage>
-            </div>
-            <div class="col-3 mb-3">
-              <label for="bookTelCartInput" class="form-label">聯繫電話</label>
-              <Field
-                type="tel"
-                name="電話"
-                class="form-control"
-                id="bookTelCartInput"
-                :class="{ 'is-invalid': errors['電話'] }"
-                rules="required|numeric|max:10"
-                v-model="customerDetail.user.tel"
-              ></Field>
-              <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
-            </div>
-            <div class="col-3 mb-3">
-              <label for="bookEmailCartInput" class="form-label">
-                電子信箱
-              </label>
-              <Field
-                type="email"
-                name="email"
-                class="form-control"
-                id="bookEmailCartInput"
-                placeholder="customer@example.com"
-                :class="{ 'is-invalid': errors['email'] }"
-                rules="email|required"
-                v-model="customerDetail.user.email"
-              ></Field>
-              <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
-            </div>
-            <div class="col-6 mb-3">
-              <label for="bookAddrCartInput" class="form-label">地址</label>
-              <Field
-                type="text"
-                name="地址"
-                class="form-control"
-                id="bookAddrCartInput"
-                :class="{ 'is-invalid': errors['地址'] }"
-                rules="required"
-                v-model="customerDetail.user.address"
-              ></Field>
-              <ErrorMessage name="地址" class="invalid-feedback"></ErrorMessage>
-            </div>
+          <Form v-slot="{ errors }" @submit="addOrder">
+            <template v-for="(item, key) in customerDetail.users" :key="key">
+              <div class="d-flex justify-content-between mb-4">
+                <p>{{ `第 ${key + 1} 位旅客` }}</p>
+                <button type="button" class="btn btn-outline-primary d-block px-5">
+                  清空資料
+                </button>
+              </div>
+              <div class="row" :class="{ 'mb-6': key !== customerDetail.users.length - 1 }">
+                <div class="col-3 mb-3">
+                  <label :for="`bookNameCartInput-${key}`" class="form-label">姓名</label>
+                  <Field
+                    type="text"
+                    :id="`bookNameCartInput-${key}`"
+                    :name="`第${key + 1}位姓名`"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors[`第${key + 1}位姓名`] }"
+                    rules="required"
+                    v-model="customerDetail.users[key].name"
+                  ></Field>
+                  <ErrorMessage
+                    :name="`第${key + 1}位姓名`"
+                    class="invalid-feedback"
+                  ></ErrorMessage>
+                </div>
+                <div class="col-3 mb-3">
+                  <label :for="`bookGenderCartInput-${key}`" class="form-label">稱謂</label>
+                  <Field
+                    :name="`第${key + 1}位稱謂`"
+                    class="form-select"
+                    :id="`bookGenderCartInput-${key}`"
+                    :class="{ 'is-invalid': errors[`第${key + 1}位稱謂`] }"
+                    rules="required"
+                    v-model="customerDetail.user.gender"
+                    as="select"
+                  >
+                    <option disabled value="">請選擇稱謂</option>
+                    <option selected value="male">先生</option>
+                    <option value="female">女士</option>
+                  </Field>
+                  <ErrorMessage
+                    :name="`第${key + 1}位稱謂`"
+                    class="invalid-feedback"
+                  ></ErrorMessage>
+                </div>
+                <div class="col-3 mb-3">
+                  <label :for="`bookIdNumCartInput-${key}`" class="form-label">身分證字號</label>
+                  <Field
+                    type="text"
+                    :name="`第${key + 1}位身分證`"
+                    class="form-control"
+                    :id="`bookIdNumCartInput-${key}`"
+                    :class="{ 'is-invalid': errors['`第${key+1}位身分證`'] }"
+                    :rules="isIdNum"
+                    v-model="customerDetail.user.idNum"
+                  ></Field>
+                  <ErrorMessage
+                    :name="`第${key + 1}位身分證`"
+                    class="invalid-feedback"
+                  ></ErrorMessage>
+                </div>
+                <div class="col-3 mb-3">
+                  <label :for="`bookPassportNumCartInput-${key}`" class="form-label">
+                    護照號碼
+                  </label>
+                  <Field
+                    type="text"
+                    :name="`第${key + 1}位護照號碼`"
+                    class="form-control"
+                    :id="`bookPassportNumCartInput-${key}`"
+                    :class="{ 'is-invalid': errors[`第${key + 1}位護照號碼`] }"
+                    rules="length:9|numeric"
+                    v-model="customerDetail.user.passportNum"
+                  ></Field>
+                  <ErrorMessage
+                    :name="`第${key + 1}位護照號碼`"
+                    class="invalid-feedback"
+                  ></ErrorMessage>
+                </div>
+                <div class="col-3 mb-3">
+                  <label :for="`bookTelCartInput-${key}`" class="form-label">聯繫電話</label>
+                  <Field
+                    type="tel"
+                    :name="`第${key + 1}位電話`"
+                    class="form-control"
+                    :id="`bookTelCartInput-${key}`"
+                    :class="{ 'is-invalid': errors[`第${key + 1}位電話`] }"
+                    rules="required|numeric|max:10"
+                    v-model="customerDetail.user.tel"
+                  ></Field>
+                  <ErrorMessage
+                    :name="`第${key + 1}位電話`"
+                    class="invalid-feedback"
+                  ></ErrorMessage>
+                </div>
+                <div class="col-3 mb-3">
+                  <label for="bookEmailCartInput" class="form-label">
+                    電子信箱
+                  </label>
+                  <Field
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    id="bookEmailCartInput"
+                    placeholder="customer@example.com"
+                    :class="{ 'is-invalid': errors['email'] }"
+                    rules="email|required"
+                    v-model="customerDetail.user.email"
+                  ></Field>
+                  <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
+                </div>
+                <div class="col-6 mb-3">
+                  <label :for="`bookAddrCartInput-${key}`" class="form-label">地址</label>
+                  <Field
+                    type="text"
+                    :name="`第${key + 1}位地址`"
+                    class="form-control"
+                    :id="`bookAddrCartInput-${key}`"
+                    :class="{ 'is-invalid': errors[`第${key + 1}位地址`] }"
+                    rules="required"
+                    v-model="customerDetail.user.address"
+                  ></Field>
+                  <ErrorMessage
+                    :name="`第${key + 1}位地址`"
+                    class="invalid-feedback"
+                  ></ErrorMessage>
+                </div>
+              </div>
+            </template>
             <div class="mb-7">
-              <label for="exampleFormControlTextarea1" class="form-label">備註</label>
+              <label :for="exampleFormControlTextarea1" class="form-label">備註</label>
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                :id="exampleFormControlTextarea1"
                 rows="3"
                 v-model="customerDetail.message"
               ></textarea>
             </div>
             <div class="d-flex flex-column align-items-end">
-              <h5 class="h4 mb-3">
+              <h5 class="h3 mb-3">
                 總金額
-                <span class="h2 text-primary">NT {{ cart.final_total || 0 }}</span>
+                <span class="h2 text-primary">NT {{ addComma(cart.final_total) }}</span>
               </h5>
               <!--cart 是空物件或價格為 0 時不可點清空或結帳（確保購物車為空時不可點擊）-->
               <button
                 type="submit"
-                class="btn btn-primary d-block px-5"
+                class="btn btn-primary d-block px-5 py-2"
                 ref="addOrderBtn"
                 :disabled="Object.keys(cart).length == 0 || cart.total == 0"
               >
-                <p>下一步</p>
+                <p class="h3">下一步</p>
               </button>
             </div>
 
@@ -276,15 +301,7 @@ export default {
   data() {
     return {
       customerDetail: {
-        user: {
-          name: '',
-          gender: '',
-          idNum: '',
-          passportNum: '',
-          tel: '',
-          email: '',
-          address: '',
-        },
+        users: [],
         message: '',
       },
       cart: {},
@@ -393,6 +410,15 @@ export default {
         });
       //   }
     },
+    addPax() {
+      if (Object.keys(this.customerDetail).includes('users') === false) {
+        this.customerDetail.users = [];
+        this.customerDetail.users[0] = {};
+      } else {
+        // 新增一個空物件讓新方案的內容可以放入
+        this.customerDetail.users[this.customerDetail.users.length] = {};
+      }
+    },
     addOrder() {
       const { addOrderBtn } = this.$refs;
       addOrderBtn.classList.add('disabled');
@@ -422,6 +448,15 @@ export default {
     isIdNum(value) {
       const idNum = /^[A-Z][0-9]{9}$/;
       return idNum.test(value) ? true : '請輸入正確的身分證字號';
+    },
+  },
+  computed: {
+    addComma() {
+      return (price) => {
+        const parts = price.toString().split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return `${parts.join('.')}`;
+      };
     },
   },
   created() {
