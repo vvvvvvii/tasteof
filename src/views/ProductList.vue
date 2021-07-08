@@ -75,27 +75,30 @@
             </select>
           </div>
           <ul class="mb-8">
-            <li class="mb-3" v-for="item in filterProduct" :key="item.id">
-              <router-link :to="`/product/${item.id}`" class="card card-row">
-                <img class="card-row-img" :src="item.imageUrl" :alt="item.title" />
-                <div class="card-body">
-                  <div>
-                    <h5 class="card-title">{{ item.title }}</h5>
-                    <p>{{ item.description }}</p>
+            <li class="mb-3" v-for="(item, index) in filterProduct" :key="item.id">
+              <template v-if="index >= pagination.page_start - 1 && index < pagination.page_end">
+                <router-link :to="`/product/${item.id}`" class="card card-row">
+                  <img class="card-row-img" :src="item.imageUrl" :alt="item.title" />
+                  <div class="card-body">
+                    <div>
+                      <h5 class="card-title">{{ item.title }}</h5>
+                      <p>{{ item.description }}</p>
+                    </div>
+                    <p class="text-end">
+                      <span class="h3">NT {{ item.lowestPrice }} 起</span>
+                      / {{ item.lowestPriceUnit }}
+                    </p>
                   </div>
-                  <p class="text-end">
-                    <span class="h3">NT {{ item.lowestPrice }} 起</span>
-                    / {{ item.lowestPriceUnit }}
-                  </p>
-                </div>
-              </router-link>
+                </router-link>
+              </template>
             </li>
           </ul>
           <!--pagination-->
           <pagination
             :page="pagination"
-            @emit-pagination="getTotalData"
+            :filter-product="filterProduct"
             v-if="pagination.total_pages > 1"
+            @emit-pagination="changePage"
           ></pagination>
         </div>
       </div>
@@ -114,9 +117,7 @@ export default {
   name: 'Product',
   data() {
     return {
-      products: [],
       totalProducts: [],
-      filterArr: [],
       budget: [100, 7000],
       options: {
         dotSize: 12,
@@ -151,7 +152,13 @@ export default {
       searchProductDestination: '',
       searchActivityDuration: '行程長度',
       searchProductTag: [],
-      pagination: {},
+      pagination: {
+        page_start: 0,
+        page_end: 10,
+        per_page: 10,
+        has_pre: true,
+        has_next: true,
+      },
     };
   },
   components: { alert, pagination, VueSlider },
@@ -185,7 +192,6 @@ export default {
               this.pagination.has_pre = true;
               this.pagination.has_next = true;
             }
-            this.pagination.per_page = 10; // 每頁秀 10 項
             this.pagination.total_pages = Math.ceil(
               this.pagination.totalResult / this.pagination.per_page,
             );
@@ -195,15 +201,8 @@ export default {
             }
             const current = this.pagination.current_page;
             const per = this.pagination.per_page;
-            const minPage = current * per - per + 1; // 11
-            const maxPage = current * per; // 20
-            this.products = [];
-            this.totalProducts.forEach((item, index) => {
-              const num = index + 1;
-              if (num >= minPage && num <= maxPage) {
-                this.products.push(item);
-              }
-            });
+            this.pagination.page_start = current * per - per + 1;
+            this.pagination.page_end = current * per;
           } else {
             this.customAlert(res.data.message);
           }
@@ -250,6 +249,9 @@ export default {
           this.getTotalData();
           break;
       }
+    },
+    changePage(p) {
+      this.pagination = { ...p };
     },
   },
   computed: {
@@ -444,6 +446,12 @@ export default {
           this.searchProductTag.push(this.$route.query.search);
         }
       },
+    },
+    // This resets the data for when the filter is changed
+    filterProduct() {
+      this.pagination.current_page = 1;
+      this.pagination.page_start = 0;
+      this.pagination.page_end = 10;
     },
   },
 };
