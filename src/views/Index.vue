@@ -27,7 +27,7 @@
               active-class="active"
               exact-path
             >
-              <img src="../assets/img/random.png" alt="來點驚喜" class="tab-img" />
+              <img src="" alt="來點驚喜" class="tab-img" />
               <div class="tab-title">來點驚喜</div>
             </router-link>
           </li>
