@@ -211,7 +211,6 @@ export default {
           this.customAlert(err.response);
         });
     },
-    setPagination() {},
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert

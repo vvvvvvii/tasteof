@@ -122,7 +122,13 @@ export default {
         type: ['親子', '浪漫', '冒險', '自然', '烹飪', '美食', '知性文化', '水上活動'],
       },
       searchArticleTag: [],
-      pagination: {},
+      pagination: {
+        page_start: 0,
+        page_end: 10,
+        per_page: 10,
+        has_pre: true,
+        has_next: true,
+      },
     };
   },
   components: { alert, pagination },
@@ -144,9 +150,28 @@ export default {
                   .split('T')[0]
                   .replace(/-/g, ' / ');
                 this.articles[index].create_at = time;
+                this.pagination.totalResult = this.articles.length;
+                if (currentPage === 1) {
+                  this.pagination.has_pre = false;
+                } else if (currentPage === this.pagination.total_pages) {
+                  this.pagination.has_next = false;
+                } else {
+                  this.pagination.has_pre = true;
+                  this.pagination.has_next = true;
+                }
+                this.pagination.total_pages = Math.ceil(
+                  this.pagination.totalResult / this.pagination.per_page,
+                );
+                this.pagination.current_page = currentPage;
+                if (this.pagination.current_page > this.pagination.total_pages) {
+                  this.pagination.current_page = this.pagination.total_pages;
+                }
+                const current = this.pagination.current_page;
+                const per = this.pagination.per_page;
+                this.pagination.page_start = current * per - per + 1;
+                this.pagination.page_end = current * per;
               }
             });
-            this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
           }
@@ -162,6 +187,9 @@ export default {
     closeCustomAlert() {
       this.showAlert = false;
     },
+    changePage(p) {
+      this.pagination = { ...p };
+    },
   },
   computed: {
     filterArticle() {
@@ -175,6 +203,14 @@ export default {
   },
   created() {
     this.getData();
+  },
+  watch: {
+    // This resets the data for when the filter is changed
+    filterProduct() {
+      this.pagination.current_page = 1;
+      this.pagination.page_start = 0;
+      this.pagination.page_end = 10;
+    },
   },
 };
 </script>
