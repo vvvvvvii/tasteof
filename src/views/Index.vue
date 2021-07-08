@@ -59,28 +59,115 @@
           </SwiperSlide>
         </Swiper>
       </div>
-      <div>
+      <div v-if="articles.length > 0">
         <h2 class="h2 text-primary mb-6">更多玩樂靈感</h2>
-        <div class="row">
+        <div class="row mb-3">
           <div class="col-lg-8">
             <div class="list-item">
-              <!-- <router-link :to="`/product/${item.id}`" title="查看更多"> -->
-              <div class="list-item-img-outer">
-                <img class="list-item-img" />
-              </div>
-              <div class="list-item-inner">
-                <h3 class="list-item-title"></h3>
-                <p class="list-item-subtitle"></p>
-              </div>
-              <!-- </router-link> -->
+              <router-link :to="`/article/${articles[0].id}`" title="查看更多">
+                <div class="list-item-img-outer">
+                  <img
+                    class="list-item-img list-item-img-lg object-fit-cover"
+                    :src="`${articles[0].image}`"
+                  />
+                </div>
+                <div class="list-item-inner">
+                  <h3 class="list-item-title">{{ articles[0].title }}</h3>
+                  <span
+                    class="list-item-subtitle"
+                    v-for="(item, key) in articles[0].tagCheck"
+                    :key="key"
+                  >
+                    # {{ item }}
+                  </span>
+                </div>
+              </router-link>
             </div>
           </div>
           <div class="col-lg-4">
-            <div></div>
-            <div></div>
+            <div class="d-flex flex-column">
+              <div class="list-item mb-2">
+                <router-link :to="`/article/${articles[1].id}`" title="查看更多">
+                  <div class="list-item-img-outer">
+                    <img
+                      class="list-item-img list-item-img-sm object-fit-cover"
+                      :src="`${articles[1].image}`"
+                    />
+                  </div>
+                  <div class="list-item-inner">
+                    <h3 class="list-item-title list-item-title-sm">{{ articles[1].title }}</h3>
+                    <span
+                      class="list-item-subtitle list-item-subtitle-sm"
+                      v-for="(item, key) in articles[1].tagCheck"
+                      :key="key"
+                    >
+                      # {{ item }}
+                    </span>
+                  </div>
+                </router-link>
+              </div>
+              <div class="list-item">
+                <router-link :to="`/article/${articles[2].id}`" title="查看更多">
+                  <div class="list-item-img-outer">
+                    <img
+                      class="list-item-img list-item-img-sm object-fit-cover"
+                      :src="`${articles[2].image}`"
+                    />
+                  </div>
+                  <div class="list-item-inner">
+                    <h3 class="list-item-title list-item-title-sm">{{ articles[2].title }}</h3>
+                    <span
+                      class="list-item-subtitle list-item-subtitle-sm"
+                      v-for="(item, key) in articles[2].tagCheck"
+                      :key="key"
+                    >
+                      # {{ item }}
+                    </span>
+                  </div>
+                </router-link>
+              </div>
+            </div>
           </div>
-          <div class="col-lg-6"></div>
-          <div class="col-lg-6"></div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-item">
+              <router-link :to="`/article/${articles[3].id}`" title="查看更多">
+                <div class="list-item-img-outer">
+                  <img class="list-item-img object-fit-cover" :src="`${articles[3].image}`" />
+                </div>
+                <div class="list-item-inner">
+                  <h3 class="list-item-title">{{ articles[3].title }}</h3>
+                  <span
+                    class="list-item-subtitle"
+                    v-for="(item, key) in articles[3].tagCheck"
+                    :key="key"
+                  >
+                    # {{ item }}
+                  </span>
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-item">
+              <router-link :to="`/article/${articles[4].id}`" title="查看更多">
+                <div class="list-item-img-outer">
+                  <img class="list-item-img object-fit-cover" :src="`${articles[4].image}`" />
+                </div>
+                <div class="list-item-inner">
+                  <h3 class="list-item-title">{{ articles[4].title }}</h3>
+                  <span
+                    class="list-item-subtitle"
+                    v-for="(item, key) in articles[4].tagCheck"
+                    :key="key"
+                  >
+                    # {{ item }}
+                  </span>
+                </div>
+              </router-link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -95,6 +182,7 @@ export default {
   data() {
     return {
       mainProducts: [],
+      articles: [],
       cities: [
         {
           name: '雙北',
@@ -138,6 +226,21 @@ export default {
           this.customAlert(err.response);
         });
     },
+    getArticles() {
+      this.$http
+        .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/articles?page=1`)
+        .then((res) => {
+          if (res.data.success) {
+            const { articles } = res.data;
+            this.articles = articles;
+          } else {
+            this.customAlert(res.data.message);
+          }
+        })
+        .catch((err) => {
+          this.customAlert(err.response);
+        });
+    },
     getRandomCity() {
       const city = this.cities.map((item) => item.name);
       const { length } = city;
@@ -154,6 +257,7 @@ export default {
   },
   mounted() {
     this.getMainProduct();
+    this.getArticles();
   },
 };
 </script>

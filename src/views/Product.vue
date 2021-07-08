@@ -321,6 +321,7 @@
 import alert from '@/components/Alert.vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+import emitter from '../assets/js/emitter';
 
 export default {
   data() {
@@ -460,6 +461,7 @@ export default {
             this.moreInfo.tktNum.child = 0;
             addCartBtn.classList.remove('disabled');
             addCartBtn.children[0].classList.add('d-none');
+            emitter.emit('update-cart');
           } else {
             console.log(res.data);
             this.customAlert(res.data.message);
@@ -493,7 +495,7 @@ export default {
       this.showAlert = false;
     },
   },
-  created() {
+  mounted() {
     this.getData();
   },
   watch: {

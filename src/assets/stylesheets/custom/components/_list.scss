@@ -16,6 +16,12 @@
     transform: scale(1);
     -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
     transition: opacity 0.3s, transform 0.3s;
+    &-sm {
+      height: 228px;
+    }
+    &-lg {
+      height: 464px;
+    }
     &-outer {
       // transition 時圖片才不會超出 border-radius
       position: relative;
@@ -57,10 +63,16 @@
     padding-bottom: 1rem;
     margin-bottom: 1rem;
     border-bottom: 2px solid $white;
+    &-sm {
+      font-size: 1.25rem;
+    }
   }
   &-subtitle {
     font-size: 1.25rem;
     font-weight: bold;
+    &-sm {
+      font-size: 1rem;
+    }
   }
 }
 .list-group {

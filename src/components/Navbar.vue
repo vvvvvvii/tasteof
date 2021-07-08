@@ -76,11 +76,12 @@
             </router-link>
           </li>
         </ul>
-        <ul class="navbar-nav h3 flex-row justify-content-around">
+        <ul class="navbar-nav h3 flex-row justify-content-around position-relative">
           <li class="nav-item">
             <router-link to="/cart" class="nav-link px-3" active-class="active">
               <i class="bi bi-cart4"></i>
             </router-link>
+            <div class="cart-num">{{ cart.carts.length }}</div>
           </li>
           <li class="nav-item">
             <a class="nav-link px-3">
@@ -92,3 +93,38 @@
     </div>
   </nav>
 </template>
+<script>
+import emitter from '../assets/js/emitter';
+
+export default {
+  data() {
+    return {
+      cart: {
+        carts: [],
+      },
+    };
+  },
+  methods: {
+    getCartInfo() {
+      this.$http
+        .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`)
+        .then((res) => {
+          if (res.data.success) {
+            this.cart = res.data.data;
+          } else {
+            this.customAlert(res.data.message);
+          }
+        })
+        .catch((err) => {
+          this.customAlert(err.response);
+        });
+    },
+  },
+  mounted() {
+    this.getCartInfo();
+    emitter.on('update-cart', () => {
+      this.getCart();
+    });
+  },
+};
+</script>

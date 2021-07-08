@@ -88,3 +88,23 @@
   width: 100%;
   height: 350px;
 }
+
+.cart-num {
+  position: absolute;
+  top: 2px;
+  right: 55px;
+  padding: 4px 8px;
+  border-radius: 50%;
+  background: $danger;
+  color: $black;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.pax-num {
+  position: absolute;
+  top: 118px;
+  left: 60px;
+  transform: rotateZ(-10deg);
+}

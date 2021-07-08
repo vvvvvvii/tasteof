@@ -1,301 +1,37 @@
 <template>
-  <div class="container pt-7">
-    <div class="py-8">
-      <div class="bg-light rounded-3 p-7">
-        <div v-if="cart.total > 0">
-          <div class="d-flex justify-content-between mb-6">
-            <h2 class="h3 text-primary">訂單內容</h2>
-            <button
-              type="button"
-              class="btn btn-outline-primary d-flex justify-content-center align-items-center px-5"
-              @click="deleteAllProducts()"
-              ref="deleteOrderBtn"
-              :disabled="Object.keys(cart).length == 0 || cart.total == 0"
-            >
-              <div class="spinner-border spinner-border-sm text-light d-none me-1" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p>清空購物車</p>
-            </button>
-          </div>
-          <table class="table align-middle mb-7">
-            <!--購物車有東西才顯示這塊-->
-            <thead>
-              <tr>
-                <th scope="col">商品名稱</th>
-                <th scope="col">使用日期</th>
-                <th scope="col">成人（ 12+ ）</th>
-                <th scope="col">孩童（ 6~12 ）</th>
-                <th scope="col">商品總價</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-for="item in cart.carts" :key="item.id">
-                <tr>
-                  <td scope="row">
-                    <router-link
-                      :to="`/product/${item.product_id}`"
-                      title="前往產品頁"
-                      class="link-dark text-decoration-underline"
-                    >
-                      <p>{{ item.product.title }}</p>
-                      <p>{{ item.optionName }}</p>
-                    </router-link>
-                  </td>
-                  <td>{{ item.start_date }}</td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <button
-                        class="border-0 bg-transparent p-2"
-                        @click="changeTktNum('adult', 'minus', item.qtyDetail, item.id)"
-                      >
-                        <i class="bi bi-dash-lg"></i>
-                      </button>
-                      <p class="p-1">
-                        {{ item.qtyDetail.adult }}
-                      </p>
-                      <button
-                        class="border-0 bg-transparent p-2"
-                        @click="changeTktNum('adult', 'plus', item.qtyDetail, item.id)"
-                      >
-                        <i class="bi bi-plus-lg"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <button
-                        class="border-0 bg-transparent p-2"
-                        @click="changeTktNum('child', 'minus', item.qtyDetail, item.id)"
-                      >
-                        <i class="bi bi-dash-lg"></i>
-                      </button>
-                      <p class="p-1">
-                        {{ item.qtyDetail.child }}
-                      </p>
-                      <button
-                        class="border-0 bg-transparent p-2"
-                        @click="changeTktNum('child', 'plus', item.qtyDetail, item.id)"
-                      >
-                        <i class="bi bi-plus-lg"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td>NT {{ addComma(item.total) }}</td>
-                  <td>
-                    <a type="button">
-                      <span class="material-icons" @click="deleteProduct(item.id)">
-                        delete
-                      </span>
-                    </a>
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-          <div class="d-flex justify-content-between mb-4">
-            <h2 class="h3 text-primary">客戶資料</h2>
-            <button type="button" class="btn btn-primary d-block px-5" @click="addPax">
-              新增旅客
-            </button>
-          </div>
-          <Form v-slot="{ errors }" @submit="addOrder">
-            <template v-for="(item, key) in customerDetail.users" :key="key">
-              <div class="d-flex justify-content-between mb-4">
-                <p>{{ `第 ${key + 1} 位旅客` }}</p>
-                <button type="button" class="btn btn-outline-primary d-block px-5">
-                  清空資料
-                </button>
-              </div>
-              <div class="row" :class="{ 'mb-6': key !== customerDetail.users.length - 1 }">
-                <div class="col-3 mb-3">
-                  <label :for="`bookNameCartInput-${key}`" class="form-label">姓名</label>
-                  <Field
-                    type="text"
-                    :id="`bookNameCartInput-${key}`"
-                    :name="`第${key + 1}位姓名`"
-                    class="form-control"
-                    :class="{ 'is-invalid': errors[`第${key + 1}位姓名`] }"
-                    rules="required"
-                    v-model="customerDetail.users[key].name"
-                  ></Field>
-                  <ErrorMessage
-                    :name="`第${key + 1}位姓名`"
-                    class="invalid-feedback"
-                  ></ErrorMessage>
-                </div>
-                <div class="col-3 mb-3">
-                  <label :for="`bookGenderCartInput-${key}`" class="form-label">稱謂</label>
-                  <Field
-                    :name="`第${key + 1}位稱謂`"
-                    class="form-select"
-                    :id="`bookGenderCartInput-${key}`"
-                    :class="{ 'is-invalid': errors[`第${key + 1}位稱謂`] }"
-                    rules="required"
-                    v-model="customerDetail.user.gender"
-                    as="select"
-                  >
-                    <option disabled value="">請選擇稱謂</option>
-                    <option selected value="male">先生</option>
-                    <option value="female">女士</option>
-                  </Field>
-                  <ErrorMessage
-                    :name="`第${key + 1}位稱謂`"
-                    class="invalid-feedback"
-                  ></ErrorMessage>
-                </div>
-                <div class="col-3 mb-3">
-                  <label :for="`bookIdNumCartInput-${key}`" class="form-label">身分證字號</label>
-                  <Field
-                    type="text"
-                    :name="`第${key + 1}位身分證`"
-                    class="form-control"
-                    :id="`bookIdNumCartInput-${key}`"
-                    :class="{ 'is-invalid': errors['`第${key+1}位身分證`'] }"
-                    :rules="isIdNum"
-                    v-model="customerDetail.user.idNum"
-                  ></Field>
-                  <ErrorMessage
-                    :name="`第${key + 1}位身分證`"
-                    class="invalid-feedback"
-                  ></ErrorMessage>
-                </div>
-                <div class="col-3 mb-3">
-                  <label :for="`bookPassportNumCartInput-${key}`" class="form-label">
-                    護照號碼
-                  </label>
-                  <Field
-                    type="text"
-                    :name="`第${key + 1}位護照號碼`"
-                    class="form-control"
-                    :id="`bookPassportNumCartInput-${key}`"
-                    :class="{ 'is-invalid': errors[`第${key + 1}位護照號碼`] }"
-                    rules="length:9|numeric"
-                    v-model="customerDetail.user.passportNum"
-                  ></Field>
-                  <ErrorMessage
-                    :name="`第${key + 1}位護照號碼`"
-                    class="invalid-feedback"
-                  ></ErrorMessage>
-                </div>
-                <div class="col-3 mb-3">
-                  <label :for="`bookTelCartInput-${key}`" class="form-label">聯繫電話</label>
-                  <Field
-                    type="tel"
-                    :name="`第${key + 1}位電話`"
-                    class="form-control"
-                    :id="`bookTelCartInput-${key}`"
-                    :class="{ 'is-invalid': errors[`第${key + 1}位電話`] }"
-                    rules="required|numeric|max:10"
-                    v-model="customerDetail.user.tel"
-                  ></Field>
-                  <ErrorMessage
-                    :name="`第${key + 1}位電話`"
-                    class="invalid-feedback"
-                  ></ErrorMessage>
-                </div>
-                <div class="col-3 mb-3">
-                  <label for="bookEmailCartInput" class="form-label">
-                    電子信箱
-                  </label>
-                  <Field
-                    type="email"
-                    name="email"
-                    class="form-control"
-                    id="bookEmailCartInput"
-                    placeholder="customer@example.com"
-                    :class="{ 'is-invalid': errors['email'] }"
-                    rules="email|required"
-                    v-model="customerDetail.user.email"
-                  ></Field>
-                  <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
-                </div>
-                <div class="col-6 mb-3">
-                  <label :for="`bookAddrCartInput-${key}`" class="form-label">地址</label>
-                  <Field
-                    type="text"
-                    :name="`第${key + 1}位地址`"
-                    class="form-control"
-                    :id="`bookAddrCartInput-${key}`"
-                    :class="{ 'is-invalid': errors[`第${key + 1}位地址`] }"
-                    rules="required"
-                    v-model="customerDetail.user.address"
-                  ></Field>
-                  <ErrorMessage
-                    :name="`第${key + 1}位地址`"
-                    class="invalid-feedback"
-                  ></ErrorMessage>
-                </div>
-              </div>
-            </template>
-            <div class="mb-7">
-              <label :for="exampleFormControlTextarea1" class="form-label">備註</label>
-              <textarea
-                class="form-control"
-                :id="exampleFormControlTextarea1"
-                rows="3"
-                v-model="customerDetail.message"
-              ></textarea>
-            </div>
-            <div class="d-flex flex-column align-items-end">
-              <h5 class="h3 mb-3">
-                總金額
-                <span class="h2 text-primary">NT {{ addComma(cart.final_total) }}</span>
-              </h5>
-              <!--cart 是空物件或價格為 0 時不可點清空或結帳（確保購物車為空時不可點擊）-->
-              <button
-                type="submit"
-                class="btn btn-primary d-block px-5 py-2"
-                ref="addOrderBtn"
-                :disabled="Object.keys(cart).length == 0 || cart.total == 0"
-              >
-                <p class="h3">下一步</p>
-              </button>
-            </div>
-
-            <!-- <button
-              type="submit"
-              class="btn btn-primary w-25 d-flex justify-content-center align-items-center"
-              ref="addOrderBtn"
-              :disabled="Object.keys(cart).length == 0 || cart.total == 0"
-            >
-              <div class="spinner-border spinner-border-sm text-light d-none me-1" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p>下一步</p>
-            </button> -->
-          </Form>
-        </div>
-        <!--無商品時顯示-->
-        <div class="text-center" v-else>
-          <p class="mb-4">
-            購物車目前還沒有商品耶
-            <i class="bi bi-eraser"></i>
-          </p>
-          <p class="mb-2">
-            客倌要不要
-            <router-link :to="`/product_list`" title="前往產品頁" class="text-secondary h3">
-              來這裡挑挑看、選選看
-            </router-link>
-            呢？
-          </p>
-          <p>
-            也可以
-            <router-link :to="`/article_list`" title="前往文章頁" class="text-secondary h3">
-              來這裡尋找玩樂靈感
-            </router-link>
-            唷！
-          </p>
-        </div>
-      </div>
-    </div>
+  <div class="pt-7">
+    <checkCart
+      v-if="checkCartPageShow"
+      ref="checkCart"
+      :customer="customerDetail"
+      :cart-info="cart"
+      @emit-change-tkt-num="changeTktNum"
+      @emit-delete-product="deleteProduct"
+      @emit-delete-all-products="deleteAllProducts"
+      @emit-add-pax="addPax"
+      @emit-delete-pax="deletePax"
+      @emit-next-page="saveCustomerDetail"
+    ></checkCart>
+    <confirmCart
+      v-if="confirmCartPageShow"
+      ref="confirmCart"
+      :customer="customerDetail"
+      :cart-info="cart"
+      :payment="paymentDetail"
+      @emit-check-coupon="checkCoupon"
+      @emit-pre-page="backToFirstPage"
+      @emit-add-order="addOrder"
+    ></confirmCart>
+    <finishCart v-if="finishCartPageShow" :order-detail="orderDetail"></finishCart>
   </div>
   <!--alert-->
   <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
 import alert from '@/components/Alert.vue';
+import checkCart from '@/components/CheckCart.vue';
+import confirmCart from '@/components/ConfirmCart.vue';
+import finishCart from '@/components/FinishCart.vue';
 
 export default {
   data() {
@@ -305,12 +41,27 @@ export default {
         message: '',
       },
       cart: {},
+      paymentDetail: {
+        method: '',
+        taxIdNum: '',
+        coupons: '',
+      },
+      orderDetail: {
+        total: 0,
+        orderId: '',
+      },
       showAlert: false,
       alertMsg: '',
+      checkCartPageShow: true,
+      confirmCartPageShow: false,
+      finishCartPageShow: false,
     };
   },
   components: {
     alert,
+    checkCart,
+    confirmCart,
+    finishCart,
   },
   methods: {
     getCartInfo() {
@@ -333,9 +84,6 @@ export default {
     },
     closeCustomAlert() {
       this.showAlert = false;
-    },
-    backToHomePage() {
-      this.$router.push('/');
     },
     changeTktNum(tktType, calcType, detail, id) {
       const qtyDetail = { ...detail };
@@ -388,7 +136,7 @@ export default {
     },
     deleteAllProducts() {
       //   if (confirm('真的要全數清空嗎Ｑ口Ｑ')) {
-      const { deleteOrderBtn } = this.$refs;
+      const { deleteOrderBtn } = this.$refs.checkCart.$refs;
       deleteOrderBtn.classList.add('disabled');
       deleteOrderBtn.children[0].classList.remove('d-none');
       this.$http
@@ -419,24 +167,29 @@ export default {
         this.customerDetail.users[this.customerDetail.users.length] = {};
       }
     },
-    addOrder() {
-      const { addOrderBtn } = this.$refs;
-      addOrderBtn.classList.add('disabled');
-      addOrderBtn.children[0].classList.remove('d-none');
-      const data = {
-        data: this.customerDetail,
+    deletePax(num) {
+      this.customerDetail.users.splice(num, 1);
+    },
+    saveCustomerDetail(info) {
+      this.customerDetail = info;
+      this.checkCartPageShow = false; // 關掉第一頁
+      this.confirmCartPageShow = true; // 換成第二頁
+    },
+    backToFirstPage() {
+      this.checkCartPageShow = true;
+      this.confirmCartPageShow = false;
+    },
+    checkCoupon(code) {
+      const codeData = {
+        data: code,
       };
       this.$http
-        .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)
+        .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/coupon`, codeData)
         .then((res) => {
           if (res.data.success) {
-            this.customAlert(`已建立訂單編號${res.data.orderId}`);
-            this.getCartInfo();
-            addOrderBtn.classList.remove('disabled');
-            addOrderBtn.children[0].classList.add('d-none');
-            window.setTimeout(this.closeCustomAlert, 3500);
-            // 自動導回首頁，也達成購物車表單清空的功能（直接在此函式清空會讓 veevalidate 秀出未填的錯誤）
-            window.setTimeout(this.backToHomePage, 4000);
+            const { data } = res;
+            this.customAlert(data.message);
+            data.data.final_total = this.cart.final_total;
           } else {
             this.customAlert(res.data.message);
           }
@@ -445,18 +198,34 @@ export default {
           this.customAlert(err.response);
         });
     },
-    isIdNum(value) {
-      const idNum = /^[A-Z][0-9]{9}$/;
-      return idNum.test(value) ? true : '請輸入正確的身分證字號';
-    },
-  },
-  computed: {
-    addComma() {
-      return (price) => {
-        const parts = price.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return `${parts.join('.')}`;
+    addOrder() {
+      const { addOrderBtn } = this.$refs.confirmCart.$refs;
+      addOrderBtn.classList.add('disabled');
+      addOrderBtn.children[0].classList.remove('d-none');
+      this.customerDetail.user = { ...this.customerDetail.users[0] };
+      const data = {
+        data: this.customerDetail,
       };
+      this.$http
+        .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)
+        .then((res) => {
+          if (res.data.success) {
+            // this.customAlert(`已建立訂單編號${res.data.orderId}`);
+            this.orderDetail.total = res.data.total;
+            this.orderDetail.orderId = res.data.orderId;
+            this.getCartInfo();
+            addOrderBtn.classList.remove('disabled');
+            addOrderBtn.children[0].classList.add('d-none');
+            this.confirmCartPageShow = false;
+            this.finishCartPageShow = true;
+          } else {
+            this.customAlert(res.data.message);
+          }
+        })
+        .catch((err) => {
+          this.customAlert(err.response);
+          console.log(err.response);
+        });
     },
   },
   created() {
