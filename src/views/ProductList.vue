@@ -94,7 +94,7 @@
           <!--pagination-->
           <pagination
             :page="pagination"
-            @emit-pagination="getData"
+            @emit-pagination="getTotalData"
             v-if="pagination.total_pages > 1"
           ></pagination>
         </div>
@@ -114,8 +114,9 @@ export default {
   name: 'Product',
   data() {
     return {
-      // products: [],
+      products: [],
       totalProducts: [],
+      filterArr: [],
       budget: [100, 7000],
       options: {
         dotSize: 12,
@@ -155,40 +156,7 @@ export default {
   },
   components: { alert, pagination, VueSlider },
   methods: {
-    getData() {
-      // currentPage = 1
-      // 若未傳入則預設為第一頁
-      // this.$http
-      //   .get(
-      //     `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/
-      //       products/?page=${currentPage}`,
-      //   )
-      //   .then((res) => {
-      //     if (res.data.success) {
-      //       this.products = res.data.products;
-      //       this.products.forEach((item, index) => {
-      //         // 個別取出每個產品
-      //         let packageOptionsPrice = item.packageOptions.map((i) => i.price);
-      // 取出該產品的所有方案中的價格
-      //         packageOptionsPrice = packageOptionsPrice.sort((x, y) => x - y); // 價格小排到大
-      //         // this.products[index].lowestPrice = packageOptionsPrice[0];
-      //         const [lowestPrice] = packageOptionsPrice; // 該產品最低價格為陣列第一個數
-      //         this.products[index].lowestPrice = lowestPrice;
-      //         // 找到該價格對應的單位
-      //         item.packageOptions.forEach((i) => {
-      //           if (i.price === lowestPrice) {
-      //             this.products[index].lowestPriceUnit = i.unit;
-      //           }
-      //         });
-      //       });
-      //       this.pagination = res.data.pagination;
-      //     } else {
-      //       this.customAlert(res.data.message);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     this.customAlert(err.response);
-      //   });
+    getTotalData(currentPage = 1) {
       this.$http
         .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`)
         .then((res) => {
@@ -208,6 +176,34 @@ export default {
                 }
               });
             });
+            this.pagination.totalResult = this.totalProducts.length;
+            if (currentPage === 1) {
+              this.pagination.has_pre = false;
+            } else if (currentPage === this.pagination.total_pages) {
+              this.pagination.has_next = false;
+            } else {
+              this.pagination.has_pre = true;
+              this.pagination.has_next = true;
+            }
+            this.pagination.per_page = 10; // 每頁秀 10 項
+            this.pagination.total_pages = Math.ceil(
+              this.pagination.totalResult / this.pagination.per_page,
+            );
+            this.pagination.current_page = currentPage;
+            if (this.pagination.current_page > this.pagination.total_pages) {
+              this.pagination.current_page = this.pagination.total_pages;
+            }
+            const current = this.pagination.current_page;
+            const per = this.pagination.per_page;
+            const minPage = current * per - per + 1; // 11
+            const maxPage = current * per; // 20
+            this.products = [];
+            this.totalProducts.forEach((item, index) => {
+              const num = index + 1;
+              if (num >= minPage && num <= maxPage) {
+                this.products.push(item);
+              }
+            });
           } else {
             this.customAlert(res.data.message);
           }
@@ -216,6 +212,7 @@ export default {
           this.customAlert(err.response);
         });
     },
+    setPagination() {},
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
@@ -250,7 +247,7 @@ export default {
           this.totalProducts = arr;
           break;
         default:
-          this.getData();
+          this.getTotalData();
           break;
       }
     },
@@ -435,7 +432,7 @@ export default {
     },
   },
   created() {
-    this.getData();
+    this.getTotalData();
     if (this.$route.query.search) {
       this.searchProductTag.push(this.$route.query.search);
     }
