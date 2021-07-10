@@ -9,10 +9,12 @@
       <div class="text-primary">
         <h2 class="h1 mb-lg-7 mb-3 text-md-start text-center">
           完成付款！
-          <span class="h2 ms-lg-3 d-lg-inline d-none">NT {{ addComma(orderDetail.total) }}</span>
+          <span class="h2 ms-lg-3 d-lg-inline d-none"
+            >NT {{ addComma(Math.floor(orderDetail.total)) }}</span
+          >
         </h2>
         <p class="h2 text-md-end text-center d-lg-none mb-6">
-          NT {{ addComma(orderDetail.total) }}
+          NT {{ addComma(Math.floor(orderDetail.total)) }}
         </p>
         <p class="mb-3 text-md-start text-center"><a class="h3-md text-primary">查看訂單細節</a></p>
         <p class="h2 text-md-start text-center">{{ orderDetail.orderId }}</p>

@@ -170,6 +170,7 @@ export default {
                   .replace(/-/g, ' / ');
                 this.orders[index].create_at = time;
               }
+              this.orders[index].total = Math.floor(this.orders[index].total);
             });
             this.pagination = res.data.pagination;
           } else {

@@ -207,7 +207,7 @@ export default {
             const { data } = res;
             this.customAlert(data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
-            this.cart.final_total = data.data.final_total;
+            data.data.final_total = Math.floor(this.cart.final_total);
             checkCouponBtn.classList.remove('disabled');
             checkCouponBtn.children[0].classList.add('d-none');
           } else {

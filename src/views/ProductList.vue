@@ -42,6 +42,76 @@
                 </button>
               </div>
             </div>
+            <!-- 篩選 Modal -->
+            <div
+              class="modal fade"
+              id="filterProductPadModal"
+              tabindex="-1"
+              aria-labelledby="filterProductPadModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header py-2">
+                    <h5 class="modal-title fw-bold h4" id="filterProductPadModalLabel">
+                      篩出你的心有所屬
+                    </h5>
+                    <button
+                      type="button"
+                      class="bg-transparent border-0 p-2 text-secondary h3"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                  <div class="modal-body p-6">
+                    <div class="d-flex justify-content-between align-items-center mb-6">
+                      <h4 class="fw-bold">想要玩多久？</h4>
+                      <select name="activityDuration" v-model="searchActivityDuration">
+                        <option selected disabled>行程長度</option>
+                        <option value="default">全部顯示</option>
+                        <option value="lessThan4hrs">小於 4 小時</option>
+                        <option value="lessThan8hrs">4 - 8 小時</option>
+                        <option value="2DaysTrip">兩天一夜</option>
+                        <option value="3DaysTrip">三天兩夜</option>
+                      </select>
+                    </div>
+                    <div
+                      class="pb-6 mb-6 border-bottom border-gray
+                      d-flex justify-content-between align-items-center"
+                    >
+                      <h4 class="fw-bold">口袋有多深？</h4>
+                      <vue-slider
+                        v-model="budget"
+                        v-bind="options"
+                        :tooltip-formatter="'NT {value}'"
+                        class="w-50"
+                      ></vue-slider>
+                    </div>
+                    <div
+                      class="d-flex flex-wrap btn-group"
+                      role="group"
+                      aria-label="Basic checkbox toggle button group"
+                    >
+                      <div class="me-2 mb-2" v-for="(item, key) in tagCategory" :key="key">
+                        <input
+                          type="checkbox"
+                          :id="item"
+                          autocomplete="off"
+                          class="btn-check"
+                          :value="item"
+                          v-model="searchProductTag"
+                        />
+                        <label :for="item" class="btn btn-outline-secondary rounded-2 h4"
+                          ># {{ item }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- 排序 Modal -->
             <div
               class="modal fade"

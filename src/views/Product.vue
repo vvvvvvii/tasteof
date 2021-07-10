@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--平板以下搜尋欄-->
-    <div class="bg-secondary pt-3 pb-2 position-fixed w-100 z-index-fixed d-lg-none">
+    <div class="bg-secondary pt-3 pb-2 position-fixed w-100 z-index-sticky d-lg-none">
       <div class="container">
         <ul class="nav nav-tabs">
           <li class="nav-item">
