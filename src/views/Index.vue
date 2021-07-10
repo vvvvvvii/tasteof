@@ -51,7 +51,6 @@
           :slides-per-view="3"
           :space-between="30"
           :breakpoints="swiperOptions.breakpoints"
-          class="mySwiper"
         >
           <SwiperSlide class="list-item rounded-2" v-for="item in mainProducts" :key="item.id">
             <router-link :to="`/product/${item.id}`" title="查看更多">
