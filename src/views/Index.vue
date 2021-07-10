@@ -8,7 +8,7 @@
       <div class="mb-7">
         <h2 class="h2 text-primary mb-3">下個目的地？</h2>
         <ul class="row">
-          <li class="col-4  mb-4" v-for="(item, key) in cities" :key="key">
+          <li class="col-md-4 col-6 mb-4" v-for="(item, key) in cities" :key="key">
             <router-link
               :to="`/product_list?search=${item.name}`"
               class="tab"
@@ -19,7 +19,7 @@
               <div class="tab-title">{{ item.name }}</div>
             </router-link>
           </li>
-          <li class="col-4  mb-4">
+          <li class="col-md-4 col-6 mb-4">
             <!-- 讓 search= 隨機一個 tag -->
             <router-link
               :to="`/product_list?search=${randomCity}`"
@@ -27,8 +27,14 @@
               active-class="active"
               exact-path
             >
-              <img src="" alt="來點驚喜" class="tab-img" />
-              <div class="tab-title">來點驚喜</div>
+              <img
+                src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/random.png?raw=true"
+                alt="來點驚喜"
+                class="tab-img"
+              />
+              <div class="tab-title">
+                <p>來點<br />驚喜</p>
+              </div>
             </router-link>
           </li>
         </ul>
@@ -44,6 +50,7 @@
           :loop="true"
           :slides-per-view="3"
           :space-between="30"
+          :breakpoints="swiperOptions.breakpoints"
           class="mySwiper"
         >
           <SwiperSlide class="list-item rounded-2" v-for="item in mainProducts" :key="item.id">
@@ -61,8 +68,8 @@
       </div>
       <div v-if="articles.length > 0">
         <h2 class="h2 text-primary mb-6">更多玩樂靈感</h2>
-        <div class="row mb-3">
-          <div class="col-lg-8">
+        <div class="row mb-md-3 mb-2">
+          <div class="col-lg-8 col-md-6 mb-md-0 mb-2">
             <div class="list-item">
               <router-link :to="`/article/${articles[0].id}`" title="查看更多">
                 <div class="list-item-img-outer">
@@ -84,7 +91,7 @@
               </router-link>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4 col-md-6">
             <div class="d-flex flex-column">
               <div class="list-item mb-2">
                 <router-link :to="`/article/${articles[1].id}`" title="查看更多">
@@ -130,7 +137,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-md-6 mb-md-0 mb-2">
             <div class="list-item">
               <router-link :to="`/article/${articles[3].id}`" title="查看更多">
                 <div class="list-item-img-outer">
@@ -149,7 +156,7 @@
               </router-link>
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-md-6">
             <div class="list-item">
               <router-link :to="`/article/${articles[4].id}`" title="查看更多">
                 <div class="list-item-img-outer">
@@ -170,6 +177,12 @@
           </div>
         </div>
       </div>
+      <div class="to-top-btn" @click="scrollToTop" ref="toTopBtn" v-if="btnShow">
+        <div class="to-top-btn-text">
+          <p>回到</p>
+          <p>上方</p>
+        </div>
+      </div>
     </div>
   </div>
   <!--alert-->
@@ -181,31 +194,48 @@ import alert from '@/components/Alert.vue';
 export default {
   data() {
     return {
+      swiperOptions: {
+        breakpoints: {
+          1: {
+            slidesPerView: 1,
+            spaceBetweenSlides: 30,
+          },
+          576: {
+            slidesPerView: 2,
+            spaceBetweenSlides: 30,
+          },
+          992: {
+            slidesPerView: 3,
+            spaceBetweenSlides: 30,
+          },
+        },
+      },
       mainProducts: [],
       articles: [],
       cities: [
         {
           name: '雙北',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/TPE.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TPE.png?raw=true',
         },
         {
           name: '中彰投',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/TXG.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TXG.png?raw=true',
         },
         {
           name: '嘉南',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/TNN.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TNN.png?raw=true',
         },
         {
           name: '高屏',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/KAO.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/KAO.png?raw=true',
         },
         {
           name: '花東',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/HUN.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/HUN.png?raw=true',
         },
       ],
       randomCity: '',
+      btnShow: true,
     };
   },
   components: { alert },
@@ -220,10 +250,12 @@ export default {
             this.getRandomCity();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getArticles() {
@@ -235,10 +267,12 @@ export default {
             this.articles = articles;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getRandomCity() {
@@ -254,10 +288,20 @@ export default {
     closeCustomAlert() {
       this.showAlert = false;
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
   },
   mounted() {
     this.getMainProduct();
     this.getArticles();
+    this.listener = () => {
+      this.btnShow = window.scrollY > 0;
+    };
+    window.addEventListener('scroll', this.listener);
+  },
+  unmounted() {
+    window.removeEventListener('scroll', this.listener);
   },
 };
 </script>

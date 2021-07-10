@@ -21,60 +21,72 @@
             </button>
           </div>
 
-          <div class="container-fluid">
-            <div class="mb-4">
-              <h2>訂單內容</h2>
-              <div class="mb-2">
+          <div class="container">
+            <div class="row mb-8">
+              <div class="col-6">
+                <h2 class="h3 pb-3 mb-3 border-bottom border-gray">
+                  訂單內容
+                  <span class="ms-3">{{ tempOrder.id }}</span>
+                </h2>
                 <ul>
-                  <li>
-                    <h3>
-                      訂單編號：
-                      <span>{{ tempOrder.id }}</span>
-                    </h3>
-                  </li>
-                  <li>
-                    <h3>
-                      購買細項：
-                      <ul v-for="(item, key) in tempOrder.products" :key="key">
-                        <li>
-                          <p>
+                  <li class="mb-3">
+                    <h3 class="h4">
+                      <span class="fw-bold">購買細項：</span>
+                      <ul class="pt-2">
+                        <li v-for="(item, key) in tempOrder.products" :key="key">
+                          <p class="mb-2 ms-3">
+                            <i class="bi bi-check2"></i>
                             {{ item.product.category }} / {{ item.product.title }} *
-                            {{ item.qty }}
+                            <span v-if="item.qtyDetail">
+                              {{ item.qtyDetail.adult }} 大
+                              <span v-if="item.qtyDetail.child > 0">
+                                {{ item.qtyDetail.child }} 小
+                              </span>
+                            </span>
                           </p>
-                          <p>NT.{{ item.final_total }}</p>
                         </li>
                       </ul>
                     </h3>
                   </li>
-                  <li>
-                    <h3>
-                      客戶訂單備註：
-                      <span>{{ tempOrder.message }}</span>
+                  <li class="mb-3">
+                    <h3 class="h4">
+                      <span class="fw-bold">訂單金額：</span>
+                      <span>NT {{ tempOrder.total }}</span>
+                    </h3>
+                  </li>
+                  <li class="mb-3">
+                    <h3 class="h4">
+                      <span class="fw-bold">客戶訂單備註：</span>
+                      <p class="pt-2 ms-3">{{ tempOrder.message }}</p>
                     </h3>
                   </li>
                 </ul>
+                <div class="form-check mb-2">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="paymentStatus"
+                    v-model="tempOrder.is_paid"
+                  />
+                  <label class="form-check-label" for="paymentStatus">付款狀態</label>
+                </div>
               </div>
-              <div class="form-check mb-2">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="paymentStatus"
-                  v-model="tempOrder.is_paid"
-                />
-                <label class="form-check-label" for="paymentStatus">付款狀態</label>
+              <div class="col-6">
+                <h2 class="h3 pb-3 mb-3 border-bottom border-gray">客戶資料</h2>
+                <ul>
+                  <li>
+                    {{ tempOrder.user.name }}
+                    {{ tempOrder.user.gender }}
+                  </li>
+                  <li>身分證字號：{{ tempOrder.user.idNum }}</li>
+                  <li>護照號碼：{{ tempOrder.user.passportNum }}</li>
+                  <li>聯繫電話：{{ tempOrder.user.tel }}</li>
+                  <li>聯繫信箱：{{ tempOrder.user.email }}</li>
+                  <li>住址：{{ tempOrder.user.address }}</li>
+                </ul>
               </div>
-              <h2>客戶資料</h2>
-              <ul>
-                <li>
-                  {{ tempOrder.user.name }} {{ tempOrder.user.gender == 'male' ? '先生' : '女士' }}
-                </li>
-                <li>身分證字號：{{ tempOrder.user.idNum }}</li>
-                <li>護照號碼：{{ tempOrder.user.passportNum }}</li>
-                <li>聯繫電話：{{ tempOrder.user.tel }}</li>
-                <li>聯繫信箱：{{ tempOrder.user.email }}</li>
-                <li>住址：{{ tempOrder.user.address }}</li>
-              </ul>
             </div>
+
             <div class="d-flex justify-content-center">
               <button
                 type="button"
@@ -89,7 +101,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-outline-dark w-25 d-block ms-3"
+                class="btn btn-outline-primary w-25 d-block ms-3"
                 data-bs-dismiss="modal"
               >
                 取消
@@ -104,6 +116,7 @@
 <script>
 export default {
   props: ['modalTitle', 'temp'],
+  emits: ['emit-order-modal'],
   data() {
     return {
       tempOrder: {

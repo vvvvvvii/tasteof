@@ -1,13 +1,16 @@
 <template>
   <!--top navbar-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid align-items-center">
+    <div class="container align-items-center">
       <h1>
         <router-link href="#" to="/" class="logo">
           旅味
         </router-link>
       </h1>
-      <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <div
+        class="collapse navbar-collapse justify-content-between ms-3"
+        id="navbarSupportedContent"
+      >
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link
@@ -35,15 +38,15 @@
             </router-link>
           </li>
         </ul>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav h3">
           <li class="nav-item">
-            <a class="nav-link" @click="openModal(this.accountBsModal)">
-              <span class="material-icons"> account_circle </span>
+            <a class="nav-link px-3" @click="openModal(this.accountBsModal)">
+              <i class="bi bi-person-circle"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link">
-              <span class="material-icons"> settings </span>
+            <a class="nav-link px-3">
+              <i class="bi bi-gear-fill"></i>
             </a>
           </li>
         </ul>
@@ -59,47 +62,45 @@
     aria-hidden="true"
   >
     <div class="modal-dialog modal-sm">
-      <div class="modal-content logout-bg">
+      <div class="modal-content bg-secondary">
         <div class="modal-body px-3">
           <div class="container-fluid">
+            <div class="text-end">
+              <button
+                type="button"
+                class="bg-transparent border-0 p-2 text-white h3"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
             <div class="row justify-content-center">
-              <div class="col-11">
+              <div class="text-center text-white">
+                <i class="bi bi-person-circle h1 mb-2"></i>
+                <h2 class="mb-6">{{ accountData.hexLoginName }}</h2>
+                <ul class="text-start d-inline-block">
+                  <li class="mb-2">
+                    登入時間：<br />
+                    {{ accountData.hexTokenStart }}
+                  </li>
+                  <li class="mb-6">
+                    有效期限：<br />
+                    {{ accountData.hexTokenExpired }}
+                  </li>
+                </ul>
                 <button
                   type="button"
-                  class="close-modal-btn close-modal-sm-btn bg-light-primary"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span class="material-icons"> clear </span>
-                </button>
-                <div class="text-center">
-                  <span class="logout-icon material-icons text-danger mb-2">
-                    account_circle
-                  </span>
-                  <h2 class="mb-6 text-danger">{{ accountData.hexLoginName }}</h2>
-                  <ul class="text-start d-inline-block text-dark">
-                    <li class="mb-2">
-                      登入時間：<br />
-                      {{ accountData.hexTokenStart }}
-                    </li>
-                    <li class="mb-6">
-                      有效期限：<br />
-                      {{ accountData.hexTokenExpired }}
-                    </li>
-                  </ul>
-                  <button
-                    type="button"
-                    class="btn btn-primary w-50 mx-auto
+                  class="btn btn-primary w-50 mx-auto
                     d-flex justify-content-center align-items-center"
-                    ref="logoutBtn"
-                    @click="logout"
-                  >
-                    <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="ms-1">登出</p>
-                  </button>
-                </div>
+                  ref="logoutBtn"
+                  @click="logout"
+                >
+                  <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="ms-1">登出</p>
+                </button>
               </div>
             </div>
           </div>

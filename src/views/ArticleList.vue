@@ -1,9 +1,91 @@
 <template>
+  <!--平板以下搜尋欄-->
+  <div class="bg-secondary d-lg-none">
+    <div class="container pt-8 pb-4">
+      <div class="searchBox-body">
+        <button
+          type="button"
+          class="btn btn-outline-light w-100"
+          data-bs-toggle="modal"
+          data-bs-target="#filterArticlePadModal"
+        >
+          篩選
+        </button>
+        <!-- 篩選 Modal -->
+        <div
+          class="modal fade"
+          id="filterArticlePadModal"
+          tabindex="-1"
+          aria-labelledby="filterArticlePadModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header py-2">
+                <h5 class="modal-title fw-bold h4" id="filterArticlePadModalLabel">
+                  篩出你的心有所屬
+                </h5>
+                <button
+                  type="button"
+                  class="bg-transparent border-0 p-2 text-secondary h3"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <div class="modal-body p-6">
+                <div
+                  class="d-flex flex-wrap btn-group"
+                  role="group"
+                  aria-label="Basic checkbox toggle button group"
+                >
+                  <div class="me-2 mb-2" v-for="(item, key) in tagCategory.cities" :key="key">
+                    <input
+                      type="checkbox"
+                      :id="item"
+                      autocomplete="off"
+                      class="btn-check"
+                      :value="item"
+                      v-model="searchArticleTag"
+                    />
+                    <label :for="item" class="btn btn-outline-secondary rounded-2 h4"
+                      ># {{ item }}
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="d-flex flex-wrap btn-group"
+                  role="group"
+                  aria-label="Basic checkbox toggle button group"
+                >
+                  <div class="me-2 mb-2" v-for="(item, key) in tagCategory.type" :key="key">
+                    <input
+                      type="checkbox"
+                      :id="item"
+                      autocomplete="off"
+                      class="btn-check"
+                      :value="item"
+                      v-model="searchArticleTag"
+                    />
+                    <label :for="item" class="btn btn-outline-secondary rounded-2 h4"
+                      ># {{ item }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="bg-light">
-    <div class="container">
-      <div class="row py-8">
-        <div class="col-4">
-          <div class="searchBox">
+    <div class="container pt-lg-7">
+      <div class="row py-lg-8 py-6">
+        <!--電腦版搜尋欄-->
+        <div class="col-lg-4 mb-lg-0">
+          <div class="searchBox d-lg-block d-none">
             <div class="searchBox-header">
               <h3 class="fw-bold">篩選</h3>
             </div>
@@ -51,11 +133,12 @@
             </div>
           </div>
         </div>
-        <div class="col-8">
+        <div class="col-lg-8">
+          <h2 class="mb-6">你想要的玩樂靈感都在這</h2>
           <ul class="mb-8">
             <li class="mb-3" v-for="item in filterArticle" :key="item.id">
               <router-link :to="`/article/${item.id}`" class="card card-row">
-                <img class="card-row-img" :src="item.image" :alt="item.title" />
+                <img class="card-row-img " :src="item.image" :alt="item.title" />
                 <div class="card-body">
                   <div>
                     <div class="d-flex justify-content-between">
@@ -69,7 +152,9 @@
                     <p>{{ item.description }}</p>
                   </div>
                   <p class="text-end">
-                    <button type="button" class="btn btn-primary">閱讀更多</button>
+                    <button type="button" class="btn btn-primary d-md-inline-block d-none">
+                      閱讀更多
+                    </button>
                   </p>
                 </div>
               </router-link>
@@ -81,6 +166,12 @@
             @emit-pagination="getData"
             v-if="pagination.total_pages > 1"
           ></pagination>
+        </div>
+      </div>
+      <div class="to-top-btn" @click="scrollToTop" ref="toTopBtn" v-if="btnShow">
+        <div class="to-top-btn-text">
+          <p>回到</p>
+          <p>上方</p>
         </div>
       </div>
       <!--alert-->
@@ -129,6 +220,7 @@ export default {
         has_pre: true,
         has_next: true,
       },
+      btnShow: true,
     };
   },
   components: { alert, pagination },
@@ -174,10 +266,12 @@ export default {
             });
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
@@ -190,6 +284,9 @@ export default {
     changePage(p) {
       this.pagination = { ...p };
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
   },
   computed: {
     filterArticle() {
@@ -201,8 +298,16 @@ export default {
       return this.articles;
     },
   },
-  created() {
+  mounted() {
     this.getData();
+    this.listener = () => {
+      console.log(window.scrollY);
+      this.btnShow = window.scrollY > 0;
+    };
+    window.addEventListener('scroll', this.listener);
+  },
+  unmounted() {
+    window.removeEventListener('scroll', this.listener);
   },
   watch: {
     // This resets the data for when the filter is changed

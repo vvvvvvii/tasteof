@@ -1,0 +1,8 @@
+.alert {
+  position: absolute;
+  z-index: $zindex-tooltip;
+  top: 100px;
+  left: 50%;
+  transition: -50%;
+  transform: translate(-50%);
+}

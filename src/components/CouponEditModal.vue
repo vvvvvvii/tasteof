@@ -21,40 +21,50 @@
             </button>
           </div>
           <div class="container-fluid">
-            <form class="mb-4">
+            <Form v-slot="{ errors }" @submit="emitData" class="mb-4">
               <div class="row">
                 <div class="col-6 mb-2">
                   <label for="couponTitle" class="form-label">優惠名稱</label>
-                  <input
+                  <Field
                     type="text"
                     id="couponTitle"
+                    name="名稱"
                     class="form-control"
+                    :class="{ 'is-invalid': errors['名稱'] }"
                     :disabled="tempCoupon.over_due"
+                    rules="required"
                     v-model="tempCoupon.title"
-                  />
+                  ></Field>
+                  <ErrorMessage name="名稱" class="invalid-feedback"></ErrorMessage>
                 </div>
                 <div class="col-6 mb-2">
                   <label for="couponCode" class="form-label">優惠碼</label>
-                  <input
+                  <Field
                     type="text"
                     id="couponCode"
+                    name="優惠碼"
                     class="form-control"
+                    :class="{ 'is-invalid': errors['優惠碼'] }"
                     :disabled="tempCoupon.over_due"
+                    rules="required"
                     v-model="tempCoupon.code"
-                  />
+                  ></Field>
+                  <ErrorMessage name="優惠碼" class="invalid-feedback"></ErrorMessage>
                 </div>
                 <div class="col-6 mb-2">
                   <label for="couponPercent" class="form-label">折扣幅度</label>
-                  <input
+                  <Field
                     type="number"
                     id="couponPercent"
+                    name="折扣幅度"
                     class="form-control"
-                    min="1"
-                    max="99"
+                    :class="{ 'is-invalid': errors['折扣幅度'] }"
                     placeholder="原價將乘以此百分比，成為折扣後的新價錢"
                     :disabled="tempCoupon.over_due"
+                    rules="required"
                     v-model.number="tempCoupon.percent"
-                  />
+                  ></Field>
+                  <ErrorMessage name="折扣幅度" class="invalid-feedback"></ErrorMessage>
                 </div>
                 <div class="col-6 mb-2">
                   <label for="couponDueDate" class="form-label">優惠到期日</label>
@@ -86,7 +96,7 @@
                 />
                 <label class="form-check-label" for="couponEnabled">優惠是否啟用</label>
               </div>
-            </form>
+            </Form>
             <div class="d-flex justify-content-center">
               <button
                 type="button"
@@ -102,7 +112,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-outline-dark w-25 d-block ms-3"
+                class="btn btn-outline-primary w-25 d-block ms-3"
                 data-bs-dismiss="modal"
               >
                 取消
@@ -120,6 +130,7 @@ import 'flatpickr/dist/flatpickr.css';
 
 export default {
   props: ['modalTitle', 'temp'],
+  emits: ['coupon-order-modal'],
   data() {
     return {
       tempCoupon: {},

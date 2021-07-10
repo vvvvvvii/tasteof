@@ -16,6 +16,11 @@
     background: $light;
   }
 }
+.comment-modal-img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
 .modal-delete-btn {
   opacity: 0.5;
   position: absolute;

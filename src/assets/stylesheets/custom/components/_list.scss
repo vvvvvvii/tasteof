@@ -7,7 +7,8 @@
   }
   &-img {
     width: 100%;
-    height: 400px;
+    height: 300px;
+    object-fit: cover;
     mix-blend-mode: overlay;
     z-index: 0;
     -webkit-filter: blur(1.2px);
@@ -16,11 +17,23 @@
     transform: scale(1);
     -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
     transition: opacity 0.3s, transform 0.3s;
+    @include media-breakpoint-up(sm) {
+      height: 350px;
+    }
+    @include media-breakpoint-up(xl) {
+      height: 400px;
+    }
     &-sm {
-      height: 228px;
+      height: 300px;
+      @include media-breakpoint-up(md) {
+        height: 228px;
+      }
     }
     &-lg {
-      height: 464px;
+      height: 300px;
+      @include media-breakpoint-up(md) {
+        height: 464px;
+      }
     }
     &-outer {
       // transition 時圖片才不會超出 border-radius
@@ -58,18 +71,28 @@
     padding-bottom: 4rem;
   }
   &-title {
-    font-size: 2rem;
     font-weight: bold;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
     border-bottom: 2px solid $white;
+    font-size: 1.25rem;
+    @include media-breakpoint-up(xl) {
+      font-size: 2rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
     &-sm {
       font-size: 1.25rem;
     }
   }
   &-subtitle {
-    font-size: 1.25rem;
-    font-weight: bold;
+    font-size: 1rem;
+    @include media-breakpoint-up(lg) {
+      font-size: 1.25rem;
+    }
+    @include media-breakpoint-up(xl) {
+      font-weight: bold;
+    }
     &-sm {
       font-size: 1rem;
     }

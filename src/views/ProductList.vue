@@ -1,17 +1,103 @@
 <template>
-  <div class="bg-light">
+  <!--平板以下搜尋欄-->
+  <div class="bg-secondary d-lg-none">
     <div class="container">
-      <div class="row py-8">
-        <div class="col-4">
-          <div class="searchBox">
+      <div class="row justify-content-center pt-8 pb-4">
+        <div class="col-8 d-lg-none d-block">
+          <div class="searchBox-body">
+            <div class="input-group mb-2">
+              <label
+                for="searchProductDestinationPad"
+                class="input-group-text bg-white border-primary border-right-0"
+              >
+                <span><i class="bi bi-search"></i></span>
+              </label>
+              <input
+                type="search"
+                class="form-control border-left-0"
+                placeholder="今天想去哪？"
+                v-model="searchProductDestination"
+                id="searchProductDestinationPad"
+              />
+            </div>
+            <div class="d-flex">
+              <div class="w-50">
+                <button
+                  type="button"
+                  class="btn btn-outline-light w-100"
+                  data-bs-toggle="modal"
+                  data-bs-target="#filterProductPadModal"
+                >
+                  篩選
+                </button>
+              </div>
+              <div class="w-50 ms-2">
+                <button
+                  type="button"
+                  class="btn btn-outline-light w-100"
+                  data-bs-toggle="modal"
+                  data-bs-target="#sortProductPadModal"
+                >
+                  排序
+                </button>
+              </div>
+            </div>
+            <!-- 排序 Modal -->
+            <div
+              class="modal fade"
+              id="sortProductPadModal"
+              tabindex="-1"
+              aria-labelledby="sortProductPadModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header py-2">
+                    <h5 class="modal-title fw-bold h4" id="exampleModalLabel">總是有個高低順序</h5>
+                    <button
+                      type="button"
+                      class="bg-transparent border-0 p-2 text-secondary h3"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                  <div class="modal-body p-6">
+                    <select
+                      name="productArrangement"
+                      class="arrangementSelect mx-auto"
+                      v-model="productArrangement"
+                      @change="productArrange"
+                    >
+                      <option selected disabled>產品排列方式</option>
+                      <option value="default">預設排列</option>
+                      <option value="expensiveToCheap">價格由高至低</option>
+                      <option value="cheapToExpensive">價格由低至高</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-light">
+    <div class="container pt-lg-7">
+      <div class="row py-lg-8 py-6">
+        <!--電腦版搜尋欄-->
+        <div class="col-lg-4 mb-lg-0">
+          <div class="searchBox d-lg-block d-none">
             <div class="searchBox-header">
               <h3 class="fw-bold">搜尋</h3>
             </div>
             <div class="searchBox-body">
-              <label for="searchProductDestination" class="mb-6 h3">篩選</label>
+              <label for="searchProductDestinationPc" class="mb-6 h3">篩選</label>
               <input
                 type="search"
-                id="searchProductDestination"
+                id="searchProductDestinationPc"
                 placeholder="目的地"
                 class="mb-3"
                 v-model="searchProductDestination"
@@ -55,7 +141,7 @@
             </div>
           </div>
         </div>
-        <div class="col-8">
+        <div class="col-lg-8">
           <div class="d-flex justify-content-between mb-6">
             <h2>
               {{ searchProductDestination || searchProductTag.join('/') || '全部' }}
@@ -64,7 +150,7 @@
             </h2>
             <select
               name="productArrangement"
-              class="arrangementSelect"
+              class="arrangementSelect d-lg-block d-none"
               v-model="productArrangement"
               @change="productArrange"
             >
@@ -82,10 +168,12 @@
                   <div class="card-body">
                     <div>
                       <h5 class="card-title">{{ item.title }}</h5>
-                      <p>{{ item.description }}</p>
+                      <p class="ellipsis ellipsis-width d-sm-block d-none">
+                        {{ item.description }}
+                      </p>
                     </div>
-                    <p class="text-end">
-                      <span class="h3">NT {{ item.lowestPrice }} 起</span>
+                    <p class="card-paragraph text-end">
+                      <span class="card-subtitle ">NT {{ addComma(item.lowestPrice) }} 起</span>
                       / {{ item.lowestPriceUnit }}
                     </p>
                   </div>
@@ -100,6 +188,12 @@
             v-if="pagination.total_pages > 1"
             @emit-pagination="changePage"
           ></pagination>
+        </div>
+      </div>
+      <div class="to-top-btn" @click="scrollToTop" ref="toTopBtn" v-if="btnShow">
+        <div class="to-top-btn-text">
+          <p>回到</p>
+          <p>上方</p>
         </div>
       </div>
       <!--alert-->
@@ -159,6 +253,7 @@ export default {
         has_pre: true,
         has_next: true,
       },
+      btnShow: true,
     };
   },
   components: { alert, pagination, VueSlider },
@@ -205,10 +300,12 @@ export default {
             this.pagination.page_end = current * per;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
@@ -252,6 +349,9 @@ export default {
     changePage(p) {
       this.pagination = { ...p };
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
   },
   computed: {
     filterProduct() {
@@ -259,7 +359,7 @@ export default {
         switch (this.searchActivityDuration) {
           case '3DaysTrip':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 3
@@ -268,7 +368,7 @@ export default {
             );
           case '2DaysTrip':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 2
@@ -277,7 +377,7 @@ export default {
             );
           case 'lessThan8hrs':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 0
@@ -288,7 +388,7 @@ export default {
             );
           case 'lessThan4hrs':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 0
@@ -298,7 +398,7 @@ export default {
             );
           default:
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.lowestPrice >= this.budget[0]
@@ -309,7 +409,7 @@ export default {
         switch (this.searchActivityDuration) {
           case '3DaysTrip':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 3
@@ -318,7 +418,7 @@ export default {
             );
           case '2DaysTrip':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 2
@@ -327,7 +427,7 @@ export default {
             );
           case 'lessThan8hrs':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 0
@@ -338,7 +438,7 @@ export default {
             );
           case 'lessThan4hrs':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.duration.day === 0
@@ -348,7 +448,7 @@ export default {
             );
           default:
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.tagCheck.filter((val) => this.searchProductTag.indexOf(val) !== -1).length
                   > 0
                 && item.lowestPrice >= this.budget[0]
@@ -359,21 +459,21 @@ export default {
         switch (this.searchActivityDuration) {
           case '3DaysTrip':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.duration.day === 3
                 && item.lowestPrice >= this.budget[0]
                 && item.lowestPrice < this.budget[1],
             );
           case '2DaysTrip':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.duration.day === 2
                 && item.lowestPrice >= this.budget[0]
                 && item.lowestPrice < this.budget[1],
             );
           case 'lessThan8hrs':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.duration.day === 0
                 && item.duration.hours > 4
                 && item.duration.hours <= 8
@@ -382,7 +482,7 @@ export default {
             );
           case 'lessThan4hrs':
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.duration.day === 0
                 && item.duration.hours <= 4
                 && item.lowestPrice >= this.budget[0]
@@ -390,7 +490,7 @@ export default {
             );
           default:
             return this.totalProducts.filter(
-              (item) => item.title.match(this.searchProductDestination)
+              (item) => item.title.match(new RegExp(this.searchProductDestination, 'gi'))
                 && item.lowestPrice >= this.budget[0]
                 && item.lowestPrice < this.budget[1],
             );
@@ -431,12 +531,26 @@ export default {
         }
       }
     },
+    addComma() {
+      return (price) => {
+        const parts = price.toString().split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return `${parts.join(',')}`;
+      };
+    },
   },
-  created() {
+  mounted() {
     this.getTotalData();
     if (this.$route.query.search) {
       this.searchProductTag.push(this.$route.query.search);
     }
+    this.listener = () => {
+      this.btnShow = window.scrollY > 0;
+    };
+    window.addEventListener('scroll', this.listener);
+  },
+  unmounted() {
+    window.removeEventListener('scroll', this.listener);
   },
   watch: {
     '$route.query': {

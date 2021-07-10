@@ -74,21 +74,13 @@
             </span>
           </td>
           <td width="120">
-            <a>
-              <span class="material-icons" @click="openModal(item, 'editArticle')">
-                mode_edit
-              </span>
-            </a>
-            <a class="ms-2">
-              <span
-                class="material-icons"
-                @click="openModal(item, 'deleteArticle')"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-              >
-                delete
-              </span>
-            </a>
+            <i class="bi bi-pencil-square" @click="openModal(item, 'editArticle')"></i>
+            <i
+              class="bi bi-trash-fill ms-2"
+              @click="openModal(item, 'deleteArticle')"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+            ></i>
           </td>
         </tr>
       </tbody>
@@ -115,7 +107,7 @@
 </template>
 <script>
 import alert from '@/components/Alert.vue';
-import pagination from '@/components/Pagination.vue';
+import pagination from '@/components/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
 import articleEditModal from '@/components/ArticleEditModal.vue';
 import articleDeleteModal from '@/components/DeleteModal.vue';
@@ -205,10 +197,12 @@ export default {
             this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getSingleData(id) {
@@ -220,10 +214,12 @@ export default {
             this.temp = data.article;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
@@ -289,12 +285,16 @@ export default {
               window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
+
               articleAdminBtn.classList.remove('disabled');
               articleAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
+            window.setTimeout(this.closeCustomAlert, 5000);
+
             articleAdminBtn.classList.remove('disabled');
             articleAdminBtn.children[0].classList.add('d-none');
           });
@@ -316,12 +316,16 @@ export default {
               window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
+
               articleAdminBtn.classList.remove('disabled');
               articleAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
+            window.setTimeout(this.closeCustomAlert, 5000);
+
             articleAdminBtn.classList.remove('disabled');
             articleAdminBtn.children[0].classList.add('d-none');
           });
@@ -340,17 +344,19 @@ export default {
             window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
   },
   computed: {
     filterArticle() {
       if (this.searchArticle !== '') {
-        return this.articles.filter((item) => item.title.match(this.searchArticle));
+        return this.articles.filter((i) => i.title.match(new RegExp(this.searchArticle, 'gi')));
       }
       return this.articles;
     },

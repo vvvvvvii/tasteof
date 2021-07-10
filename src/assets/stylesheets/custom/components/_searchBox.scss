@@ -8,15 +8,28 @@
     padding: 1.25rem 1rem;
   }
   &-body {
-    background: $white;
-    padding: 2rem 1.5rem;
-    > input,
-    > select {
+    @include media-breakpoint-up(lg) {
+      background: $white;
+      padding: 2rem 1.5rem;
+    }
+    input,
+    select {
       display: block;
-      width: 100%;
-      padding: 0.5rem 1.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 0.5rem;
-      border: 0.5px solid $gray;
+      border: 0.5px solid $primary;
+      @include media-breakpoint-up(lg) {
+        border: 0.5px solid $gray;
+      }
+    }
+    input {
+      width: 100%;
+    }
+    select {
+      width: 50%;
+      @include media-breakpoint-up(lg) {
+        width: 100%;
+      }
     }
   }
 }

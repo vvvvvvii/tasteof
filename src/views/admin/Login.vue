@@ -1,50 +1,55 @@
 <template>
-  <div class="py-4">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-8">
-          <img
-            src="img/3d-flame-146.png"
-            alt="login-img"
-            class="customer-modal-img primary-customer-modal-img"
-          />
-        </div>
+  <div class="py-8">
+    <div class="container">
+      <div class="row justify-content-center">
         <div class="col-4 position-relative">
           <div class="customer-modal-inner primary-customer-modal-inner">
-            <form>
+            <h2 class="text-center mb-6">登入管理後台</h2>
+            <Form v-slot="{ errors }" @submit="checkLogin">
               <div class="mb-3">
                 <label for="loginInputEmail" class="form-label">帳號</label>
-                <input
+                <Field
                   type="email"
-                  class="form-control"
                   id="loginInputEmail"
-                  v-model.trim="userName"
-                  aria-describedby="emailHelp"
+                  name="帳號"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors['帳號'] }"
+                  rules="required"
                   placeholder="example@gmail.com"
-                />
+                  v-model.trim="userName"
+                ></Field>
+                <ErrorMessage name="帳號" class="invalid-feedback"></ErrorMessage>
               </div>
               <div class="mb-3">
                 <label for="loginInputPassword" class="form-label">密碼</label>
-                <input
+                <Field
                   type="password"
-                  class="form-control"
                   id="loginInputPassword"
+                  name="密碼"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors['密碼'] }"
+                  rules="required"
                   v-model.trim="password"
-                />
+                ></Field>
+                <ErrorMessage name="密碼" class="invalid-feedback"></ErrorMessage>
               </div>
-              <div class="mb-5 form-check">
-                <input type="checkbox" class="form-check-input" id="loginCheck" v-model="check" />
-                <label class="form-check-label small" for="loginCheck">
+              <div class="mb-5 form-check d-flex align-items-center">
+                <input
+                  type="checkbox"
+                  class="form-check-input mt-0"
+                  id="loginCheck"
+                  v-model="check"
+                />
+                <label class="form-check-label small ms-2" for="loginCheck">
                   我遵守
-                  <a href="#">客戶條款</a>
+                  <a class="text-secondary">客戶條款</a>
                 </label>
               </div>
               <div class="d-grid gap-2 mx-auto text-center">
                 <button
-                  type="button"
-                  class="btn btn-dark mb-1 d-flex justify-content-center align-items-center"
+                  type="submit"
+                  class="btn btn-secondary mb-1 d-flex justify-content-center align-items-center"
                   ref="loginBtn"
-                  @click="checkLogin"
                   :disabled="userName === '' || password === '' || check === false"
                 >
                   <div class="spinner-border spinner-border-sm text-light d-none" role="status">
@@ -52,13 +57,13 @@
                   </div>
                   <p class="ms-1">登入</p>
                 </button>
-                <a href="#">忘記密碼？</a>
+                <a class="text-secondary">忘記密碼？</a>
                 <p>
                   還沒有帳號？
-                  <a href="#">註冊</a>
+                  <a class="text-secondary">註冊</a>
                 </p>
               </div>
-            </form>
+            </Form>
           </div>
           <div class="customer-modal-inner-shadow primary-customer-modal-inner-shadow"></div>
         </div>
@@ -132,10 +137,16 @@ export default {
             return;
           }
           this.customAlert('登入失敗，請確認帳密是否正確');
+          loginBtn.classList.remove('disabled');
+          loginBtn.children[0].classList.add('d-none');
+
           window.setTimeout(this.closeCustomAlert, 5000);
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
+          loginBtn.classList.remove('disabled');
+          loginBtn.children[0].classList.add('d-none');
         });
     },
   },

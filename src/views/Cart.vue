@@ -72,10 +72,12 @@ export default {
             this.cart = res.data.data;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
@@ -112,10 +114,12 @@ export default {
             this.getCartInfo();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteProduct(id) {
@@ -128,10 +132,12 @@ export default {
             window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteAllProducts() {
@@ -151,10 +157,16 @@ export default {
             window.setTimeout(this.backToHomePage, 4000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
+            deleteOrderBtn.classList.remove('disabled');
+            deleteOrderBtn.children[0].classList.add('d-none');
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
+          deleteOrderBtn.classList.remove('disabled');
+          deleteOrderBtn.children[0].classList.add('d-none');
         });
       //   }
     },
@@ -179,23 +191,37 @@ export default {
       this.checkCartPageShow = true;
       this.confirmCartPageShow = false;
     },
-    checkCoupon(code) {
-      const codeData = {
-        data: code,
+    checkCoupon(item) {
+      const { checkCouponBtn } = this.$refs.confirmCart.$refs;
+      checkCouponBtn.classList.add('disabled');
+      checkCouponBtn.children[0].classList.remove('d-none');
+      const CouponData = {
+        data: {
+          code: item,
+        },
       };
       this.$http
-        .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/coupon`, codeData)
+        .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/coupon`, CouponData)
         .then((res) => {
           if (res.data.success) {
             const { data } = res;
             this.customAlert(data.message);
-            data.data.final_total = this.cart.final_total;
+            window.setTimeout(this.closeCustomAlert, 5000);
+            this.cart.final_total = data.data.final_total;
+            checkCouponBtn.classList.remove('disabled');
+            checkCouponBtn.children[0].classList.add('d-none');
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
+            checkCouponBtn.classList.remove('disabled');
+            checkCouponBtn.children[0].classList.add('d-none');
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
+          checkCouponBtn.classList.remove('disabled');
+          checkCouponBtn.children[0].classList.add('d-none');
         });
     },
     addOrder() {
@@ -210,7 +236,6 @@ export default {
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)
         .then((res) => {
           if (res.data.success) {
-            // this.customAlert(`已建立訂單編號${res.data.orderId}`);
             this.orderDetail.total = res.data.total;
             this.orderDetail.orderId = res.data.orderId;
             this.getCartInfo();
@@ -220,11 +245,16 @@ export default {
             this.finishCartPageShow = true;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
+            addOrderBtn.classList.remove('disabled');
+            addOrderBtn.children[0].classList.add('d-none');
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          console.log(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
+          addOrderBtn.classList.remove('disabled');
+          addOrderBtn.children[0].classList.add('d-none');
         });
     },
   },

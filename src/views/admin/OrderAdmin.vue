@@ -66,28 +66,21 @@
               {{ item.total }}
             </td>
             <td width="120">
-              <span
-                class="material-icons"
+              <i
+                class="bi bi-credit-card-2-back-fill"
                 :class="{ 'text-success': item.is_paid, 'text-gray': !item.is_paid }"
-              >
-                {{ item.is_paid ? 'credit_score' : 'credit_card_off' }}
-              </span>
+              ></i>
             </td>
             <td width="120">
-              <a>
-                <span class="material-icons" @click="openModal(item, 'editOrder')">
-                  mode_edit
-                </span>
+              <a @click="openModal(item, 'editOrder')">
+                <i class="bi bi-pencil-square"></i>
               </a>
-              <a class="ms-2">
-                <span
-                  class="material-icons"
-                  @click="openModal(item, 'deleteOrder')"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deleteModal"
-                >
-                  delete
-                </span>
+              <a
+                @click="openModal(item, 'deleteOrder')"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+              >
+                <i class="bi bi-trash-fill ms-2"></i>
               </a>
             </td>
           </tr>
@@ -99,7 +92,10 @@
                 <li>
                   <small>
                     {{ i.start_date.replace(/-/g, ' / ') }} {{ i.product.title }} *
-                    {{ i.qty }}
+                    <span v-if="i.qtyDetail">
+                      {{ i.qtyDetail.adult }} 大
+                      <span v-if="i.qtyDetail.child > 0"> {{ i.qtyDetail.child }} 小 </span>
+                    </span>
                   </small>
                 </li>
               </ul>
@@ -129,7 +125,7 @@
 </template>
 <script>
 import alert from '@/components/Alert.vue';
-import pagination from '@/components/Pagination.vue';
+import pagination from '@/components/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
 import orderEditModal from '@/components/OrderEditModal.vue';
 import orderDeleteModal from '@/components/DeleteModal.vue';
@@ -178,10 +174,12 @@ export default {
             this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
@@ -200,6 +198,8 @@ export default {
           break;
         case 'deleteOrder':
           this.temp = { ...item };
+          console.log(this.temp);
+          console.log(item);
           break;
         default:
           break;
@@ -229,12 +229,14 @@ export default {
             orderAdminBtn.classList.remove('disabled');
             orderAdminBtn.children[0].classList.add('d-none');
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           orderAdminBtn.classList.remove('disabled');
           orderAdminBtn.children[0].classList.add('d-none');
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteOrder() {
@@ -250,10 +252,12 @@ export default {
             window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteAll() {
@@ -266,17 +270,19 @@ export default {
             window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
   },
   computed: {
     filterOrder() {
       if (this.searchOrder !== '') {
-        return this.orders.filter((item) => item.id.match(this.searchOrder));
+        return this.orders.filter((i) => i.id.match(new RegExp(this.searchOrder, 'gi')));
       }
       return this.orders;
     },

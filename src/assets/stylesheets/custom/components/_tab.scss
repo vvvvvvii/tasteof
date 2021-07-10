@@ -9,7 +9,10 @@
   }
   &-title {
     margin-left: 1rem;
-    font-size: 2rem;
+    font-size: 1.25rem;
     color: #000;
+    @include media-breakpoint-up(lg) {
+      font-size: 2rem;
+    }
   }
 }

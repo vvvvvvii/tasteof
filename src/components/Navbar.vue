@@ -81,7 +81,7 @@
             <router-link to="/cart" class="nav-link px-3" active-class="active">
               <i class="bi bi-cart4"></i>
             </router-link>
-            <div class="cart-num">{{ cart.carts.length }}</div>
+            <div class="cart-num d-sm-block d-none">{{ cart.carts.length }}</div>
           </li>
           <li class="nav-item">
             <a class="nav-link px-3">
@@ -113,17 +113,19 @@ export default {
             this.cart = res.data.data;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
   },
   mounted() {
     this.getCartInfo();
     emitter.on('update-cart', () => {
-      this.getCart();
+      this.getCartInfo();
     });
   },
 };

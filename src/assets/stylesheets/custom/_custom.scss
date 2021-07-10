@@ -1,11 +1,16 @@
 @import './utils/border';
 @import './utils/ellipsis';
+@import './utils/font-size';
 @import './utils/objectFit';
 @import './utils/opacity';
+@import './utils/z-index';
+
+@import './components/alert';
 @import './components/card';
 @import './components/ckeditor';
 @import './components/list';
 @import './components/modal';
+@import './components/nav';
 @import './components/pagination';
 @import './components/searchBox';
 @import './components/swiper';
@@ -14,7 +19,7 @@
 
 .logo {
   display: block;
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/logo.png?raw=true);
+  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/logo.png?raw=true);
   background-repeat: no-repeat;
   background-size: cover;
   text-indent: 101%;
@@ -25,9 +30,9 @@
 
 .banner {
   height: 360px;
-  background: url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/banner.png?raw=true);
-  background-image: -webkit-cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
-  background-image: cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
+  background: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner.png?raw=true);
+  background-image: -webkit-cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
+  background-image: cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -40,6 +45,41 @@
   }
   @include media-breakpoint-up(lg) {
     height: 548px;
+  }
+}
+
+.to-top-btn {
+  position: fixed;
+  z-index: $zindex-tooltip;
+  bottom: 15%;
+  right: 10%;
+  background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/top.png?raw=true');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 120px;
+  height: 180px;
+  width: 90px;
+  height: 120px;
+  @include media-breakpoint-up(xl) {
+    width: 120px;
+    height: 180px;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+  &-text {
+    position: absolute;
+    left: 29px;
+    top: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    @include media-breakpoint-up(xl) {
+      left: 38px;
+      top: 23px;
+      font-size: 1.25rem;
+    }
   }
 }
 
@@ -91,8 +131,6 @@
 
 .cart-num {
   position: absolute;
-  top: 2px;
-  right: 55px;
   padding: 4px 8px;
   border-radius: 50%;
   background: $danger;
@@ -100,11 +138,64 @@
   text-align: center;
   font-size: 0.75rem;
   font-weight: bold;
+  @include media-breakpoint-up(sm) {
+    top: 2px;
+    left: 130px;
+  }
+  @include media-breakpoint-up(md) {
+    top: 2px;
+    left: 175px;
+  }
+  @include media-breakpoint-up(lg) {
+    top: 2px;
+    left: 25px;
+  }
 }
 
 .pax-num {
   position: absolute;
-  top: 118px;
-  left: 60px;
   transform: rotateZ(-10deg);
+  @include media-breakpoint-up(sm) {
+    top: 120px;
+    left: 30px;
+  }
+  @include media-breakpoint-up(md) {
+    top: 138px;
+    left: 45px;
+  }
+  @include media-breakpoint-up(lg) {
+    top: 165px;
+    left: 45px;
+  }
+
+  @include media-breakpoint-up(xl) {
+    top: 138px;
+    left: 45px;
+  }
+  &-img {
+    width: 100px;
+  }
+}
+
+.user-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  @include media-breakpoint-up(sm) {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.bg-404 {
+  background-image: url('https://images.unsplash.com/photo-1520052205864-92d242b3a76b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80');
+  background-position: center;
+}
+
+.delete-cart-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: $black;
 }

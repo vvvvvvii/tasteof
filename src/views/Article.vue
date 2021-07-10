@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <div class="row justify-content-center py-8">
+      <div class="row justify-content-center pt-8" :class="{ 'pb-8': randomProducts.length !== 0 }">
         <div class="col-lg-8">
-          <div class="d-flex justify-content-between mb-6">
+          <div class="d-flex justify-content-between mb-lg-6 mb-md-4 mb-2">
             <div>
               <h2 class="mb-2">{{ article.title }}</h2>
               <p class="text-gray-dark">文：{{ article.author }}</p>
@@ -14,25 +14,42 @@
             <span
               v-for="(item, key) in article.tagCheck"
               :key="key"
-              class="btn btn-outline-secondary rounded-3"
+              class="text-secondary"
               :class="{ 'ms-2': key !== 0 }"
               >#{{ item }}</span
             >
           </div>
-          <Swiper
-            :autoplay="{
-              delay: 5000,
-              disableOnInteraction: false,
-            }"
-            :loop="true"
-            :slides-per-view="3"
-            :spaceBetween="200"
-            class="mySwiper article-main-img mb-6"
-          >
-            <SwiperSlide v-for="item in article.imagesUrl" :key="item.id">
-              <img :src="item" class="swiper-img object-fit-cover" />
-            </SwiperSlide>
-          </Swiper>
+          <div class="mb-8">
+            <Swiper
+              :autoplay="{
+                delay: 5000,
+                disableOnInteraction: false,
+              }"
+              :loop="true"
+              :centeredSlides="true"
+              :navigation="true"
+              :thumbs="{ swiper: thumbsSwiper }"
+              class="gallery-top"
+            >
+              <SwiperSlide v-for="item in article.imagesUrl" :key="item.id">
+                <img :src="item" class="swiper-img" />
+              </SwiperSlide>
+            </Swiper>
+            <Swiper
+              @swiper="setThumbsSwiper"
+              :loop="true"
+              :slidesPerView="4"
+              :spaceBetween="10"
+              :freeMode="true"
+              :watchSlidesVisibility="true"
+              :watchSlidesProgress="true"
+              class="gallery-thumbs"
+            >
+              <SwiperSlide v-for="item in article.imagesUrl" :key="item.id">
+                <img :src="item" class="swiper-img" />
+              </SwiperSlide>
+            </Swiper>
+          </div>
           <div v-html="article.content" class="ckeditor-content"></div>
         </div>
       </div>
@@ -48,14 +65,17 @@
               </div>
               <div class="card-body">
                 <h4 class="card-title ellipsis">{{ item.title }}</h4>
-                <p class="h3 text-end">
-                  NT {{ item.lowestPrice }} 起
-                  <span class="h4"> / {{ item.lowestPriceUnit }}</span>
-                </p>
+                <p class="h3-md h5 text-end">NT {{ addComma(item.lowestPrice) }} 起</p>
               </div>
             </router-link>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="to-top-btn" @click="scrollToTop" ref="toTopBtn" v-if="btnShow">
+      <div class="to-top-btn-text">
+        <p>回到</p>
+        <p>上方</p>
       </div>
     </div>
     <!--alert-->
@@ -74,6 +94,7 @@ export default {
       randomProducts: [],
       showAlert: false,
       alertMsg: '',
+      btnShow: true,
     };
   },
   props: ['id'],
@@ -99,10 +120,12 @@ export default {
             this.getTotalProducts();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getTotalProducts() {
@@ -128,10 +151,12 @@ export default {
             this.getRandomProducts();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getRandomProducts() {
@@ -190,9 +215,28 @@ export default {
     closeCustomAlert() {
       this.showAlert = false;
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
   },
-  created() {
+  computed: {
+    addComma() {
+      return (price) => {
+        const parts = price.toString().split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return `${parts.join(',')}`;
+      };
+    },
+  },
+  mounted() {
     this.getArticleData();
+    this.listener = () => {
+      this.btnShow = window.scrollY > 0;
+    };
+    window.addEventListener('scroll', this.listener);
+  },
+  unmounted() {
+    window.removeEventListener('scroll', this.listener);
   },
   watch: {
     '$route.params.id': {

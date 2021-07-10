@@ -1,8 +1,31 @@
 <template>
   <div>
+    <!--平板以下搜尋欄-->
+    <div class="bg-secondary pt-3 pb-2 position-fixed w-100 z-index-fixed d-lg-none">
+      <div class="container">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a href="#" class="nav-link" @click.prevent="goAnchor('#packageOptionsSection')"
+              >選擇方案</a
+            >
+          </li>
+          <li class="nav-item" @click.prevent="toRules">
+            <a href="#" class="nav-link" @click.prevent="goAnchor('#ruleSection')">相關規定</a>
+          </li>
+          <li class="nav-item" @click.prevent="toComments" v-if="moreInfo.productInfo.comments">
+            <a href="#" class="nav-link" @click.prevent="goAnchor('#commentsSection')">好評推薦</a>
+          </li>
+          <li class="nav-item" @click.prevent="toMoreActivities" v-if="randomProducts.length !== 0">
+            <a href="#" class="nav-link" @click.prevent="goAnchor('#moreActivitiesSection')"
+              >更多活動</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
     <div class="container">
-      <div class="row py-8">
-        <div class="col-lg-4">
+      <div class="row pt-8" :class="{ 'pb-8': randomProducts.length !== 0 }">
+        <div class="col-lg-4  d-lg-block d-none">
           <div class="d-flex justify-content-between mb-6 px-2">
             <p class="h3">立即預購</p>
             <p class="text-end">
@@ -24,7 +47,20 @@
                 >相關規定</a
               >
             </li>
-            <li class="list-group-item" @click.prevent="toMoreActivities">
+            <li
+              class="list-group-item"
+              @click.prevent="toComments"
+              v-if="moreInfo.productInfo.comments"
+            >
+              <a href="#" class="list-group-link" @click.prevent="goAnchor('#commentsSection')"
+                >好評推薦</a
+              >
+            </li>
+            <li
+              class="list-group-item"
+              @click.prevent="toMoreActivities"
+              v-if="randomProducts.length !== 0"
+            >
               <a
                 href="#"
                 class="list-group-link"
@@ -34,7 +70,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-8 py-lg-0 py-md-6 py-sm-4 py-2">
           <Swiper
             :autoplay="{
               delay: 5000,
@@ -42,7 +78,7 @@
             }"
             :loop="true"
             :slides-per-view="3"
-            :spaceBetween="200"
+            :spaceBetween="0"
             class="mySwiper"
           >
             <button
@@ -57,6 +93,38 @@
               <img :src="item" class="swiper-img opacity-50" />
             </SwiperSlide>
           </Swiper>
+          <!-- 手機看產品圖 -->
+          <div class="d-sm-none d-block">
+            <Swiper
+              :autoplay="{
+                delay: 5000,
+                disableOnInteraction: false,
+              }"
+              :loop="true"
+              :centeredSlides="true"
+              :navigation="true"
+              :thumbs="{ swiper: thumbsSwiper }"
+              class="gallery-top-modal"
+            >
+              <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
+                <img :src="item" class="swiper-img" />
+              </SwiperSlide>
+            </Swiper>
+            <swiper
+              @swiper="setThumbsSwiper"
+              :loop="true"
+              :slidesPerView="4"
+              :spaceBetween="10"
+              :freeMode="true"
+              :watchSlidesVisibility="true"
+              :watchSlidesProgress="true"
+              class="gallery-thumbs"
+            >
+              <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
+                <img :src="item" class="swiper-img" />
+              </SwiperSlide>
+            </swiper>
+          </div>
           <!-- Modal -->
           <div
             class="modal fade p-0"
@@ -77,13 +145,13 @@
                     :centeredSlides="true"
                     :navigation="true"
                     :thumbs="{ swiper: thumbsSwiper }"
-                    class="gallery-top"
+                    class="gallery-top-modal"
                   >
                     <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
                       <img :src="item" class="swiper-img" />
                     </SwiperSlide>
                   </Swiper>
-                  <swiper
+                  <Swiper
                     @swiper="setThumbsSwiper"
                     :loop="true"
                     :slidesPerView="4"
@@ -96,20 +164,7 @@
                     <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
                       <img :src="item" class="swiper-img" />
                     </SwiperSlide>
-                    <!-- </swiper>
-
-                  <Swiper
-                    :autoplay="{
-                      delay: 5000,
-                      disableOnInteraction: false,
-                    }"
-                    :loop="true"
-                    class="mySwiper"
-                  >
-                    <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
-                      <img :src="item" class="swiper-img" />
-                    </SwiperSlide> -->
-                  </swiper>
+                  </Swiper>
                 </div>
               </div>
             </div>
@@ -125,8 +180,8 @@
                   'ms-5': index !== 0,
                 }"
               >
-                <i class="bi bi-record-circle mb-1"></i>
-                <p>{{ item }}</p>
+                <i class="bi bi-circle-fill mb-1"></i>
+                <p class="text-center">{{ item }}</p>
               </div>
             </div>
             <p>{{ moreInfo.productInfo.description }}</p>
@@ -149,12 +204,16 @@
               >
             </p>
           </div>
-          <div class="px-6 pt-6 pb-8">
-            <div class="d-flex justify-content-between mb-3" id="packageOptionsSection">
-              <h3 class="text-primary">選擇方案</h3>
-              <div class="d-flex h5">
+          <div class="px-md-6 pt-6">
+            <div
+              class="d-flex flex-md-row flex-column
+              justify-content-between mb-3"
+              id="packageOptionsSection"
+            >
+              <h3 class="text-primary mb-5">選擇方案</h3>
+              <div class="d-flex h5 justify-content-end">
                 <div class="d-flex flex-column align-items-center">
-                  <label for="tktAdultNum" class="mb-1">成人（ 12+ ）</label>
+                  <label for="tktAdultNum" class="mb-1">成人</label>
                   <div class="d-flex align-items-center">
                     <button
                       class="border-0 bg-transparent p-2"
@@ -174,7 +233,7 @@
                   </div>
                 </div>
                 <div class="d-flex flex-column align-items-center ms-2">
-                  <label for="tktChildNum" class="mb-1">孩童（ 6~12 ）</label>
+                  <label for="tktChildNum" class="mb-1">孩童</label>
                   <div class="d-flex align-items-center">
                     <button
                       class="border-0 bg-transparent p-2"
@@ -194,7 +253,7 @@
                   </div>
                 </div>
                 <div class="d-flex flex-column align-items-center ms-2">
-                  <label for="startDate" class="mb-2 text-center">選擇日期</label>
+                  <label for="startDate" class="mb-2 text-center">使用日</label>
                   <flat-pickr
                     id="startDate"
                     ref="startDate"
@@ -217,14 +276,14 @@
                   :src="moreInfo.productInfo.imageUrl"
                   :alt="item.optionName"
                 />
-                <div class="card-body flex-row">
+                <div class="card-body flex-sm-row">
                   <div>
-                    <h3 class="card-title mb-3">
+                    <h3 class="card-title mb-2">
                       {{ item.optionName }}
-                      <span class="h4 ms-2">集合時間： {{ item.meetingTime }}</span>
                     </h3>
+                    <p class="h5 mb-sm-3 mb-2">集合時間： {{ item.meetingTime }}</p>
                     <template v-for="(content, key) in item.contentArr" :key="key">
-                      <p v-if="key < 4">
+                      <p v-if="key < 3" class="h4-lg h5 mb-2 d-sm-block d-none">
                         <i class="bi bi-check2"></i>
                         {{ content }}
                       </p>
@@ -233,8 +292,18 @@
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
-                      v-if="item.contentArr.length > 4"
-                      class="text-secondary"
+                      v-if="item.contentArr.length > 3"
+                      class="text-secondary d-sm-inline d-none"
+                    >
+                      <i class="bi bi-question-diamond-fill"></i>
+                      查看更多方案包含細項
+                    </a>
+                    <!--手機版顯示-->
+                    <a
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      class="text-secondary d-sm-none mb-2 h5"
                     >
                       <i class="bi bi-question-diamond-fill"></i>
                       查看更多方案包含細項
@@ -262,9 +331,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex flex-column justify-content-end align-items-end">
-                    <p class="mb-2">
-                      <span class="h3">NT {{ item.price }}</span>
+                  <div class="d-flex flex-column justify-content-end w-sm-50 ms-sm-2">
+                    <p class="mb-2 h4-md h5">
+                      <span class="h3-md h4">NT {{ addComma(item.price) }}</span>
                       / {{ item.unit }}
                     </p>
                     <button
@@ -277,22 +346,71 @@
                       <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
                         <span class="visually-hidden">Loading...</span>
                       </div>
-                      <p class="ms-1" v-if="moreInfo.startDate === ''">填寫上方日期</p>
+                      <p class="ms-1" v-if="moreInfo.startDate === ''">填寫日期</p>
                       <p class="ms-1" v-else>現在預訂</p>
                     </button>
                   </div>
                 </div>
               </li>
             </ul>
-            <div id="ruleSection">
-              <h3 class="text-primary mb-5">相關規定</h3>
+            <div id="ruleSection" :class="{ 'mb-5': moreInfo.productInfo.comments }">
+              <h3 class="text-primary mb-5">
+                相關規定
+              </h3>
               <p>{{ moreInfo.productInfo.policy }}</p>
+            </div>
+            <div id="commentsSection" v-if="moreInfo.productInfo.comments">
+              <h3 class="text-primary mb-5">好評推薦</h3>
+              <ul>
+                <li
+                  v-for="(item, key) in moreInfo.productInfo.comments"
+                  :key="key"
+                  class="card card-row p-1 align-items-center"
+                  :class="{ 'mb-3': index !== moreInfo.productInfo.comments.length - 1 }"
+                >
+                  <img class="user-img" :src="item.imageUrl" :alt="`使用者頭像 -${key}`" />
+                  <div class="card-body justify-content-start">
+                    <h4 class="card-title mb-3">
+                      <i class="bi" :class="{ 'bi-star-fill': item.score >= 1 }"></i>
+                      <i
+                        class="bi"
+                        :class="{
+                          'bi-star-fill': item.score >= 2,
+                          'bi-star': item.score <= 1,
+                        }"
+                      ></i>
+                      <i
+                        class="bi"
+                        :class="{
+                          'bi-star-fill': item.score >= 3,
+                          'bi-star': item.score <= 2,
+                        }"
+                      ></i>
+                      <i
+                        class="bi"
+                        :class="{
+                          'bi-star-fill': item.score >= 4,
+                          'bi-star': item.score <= 3,
+                        }"
+                      ></i>
+                      <i
+                        class="bi"
+                        :class="{
+                          'bi-star-fill': item.score == 5,
+                          'bi-star': item.score <= 4,
+                        }"
+                      ></i>
+                    </h4>
+                    <p>{{ item.content }}</p>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="bg-light pt-6 pb-8" id="moreActivitiesSection">
+    <div class="bg-light pt-6 pb-8" id="moreActivitiesSection" v-if="randomProducts.length !== 0">
       <div class="container">
         <h3 class="text-primary mb-5">更多相似活動</h3>
         <div class="row">
@@ -303,14 +421,17 @@
               </div>
               <div class="card-body">
                 <h4 class="card-title ellipsis">{{ item.title }}</h4>
-                <p class="h3 text-end">
-                  NT {{ item.lowestPrice }} 起
-                  <span class="h4"> / {{ item.lowestPriceUnit }}</span>
-                </p>
+                <p class="h3-md h5 text-end">NT {{ addComma(item.lowestPrice) }} 起</p>
               </div>
             </router-link>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="to-top-btn" @click="scrollToTop" ref="toTopBtn" v-if="btnShow">
+      <div class="to-top-btn-text">
+        <p>回到</p>
+        <p>上方</p>
       </div>
     </div>
     <!--alert-->
@@ -332,7 +453,9 @@ export default {
         minDate: 'today',
       },
       moreInfo: {
-        productInfo: {},
+        productInfo: {
+          comments: [],
+        },
         startDate: '',
         tktNum: {
           adult: 1,
@@ -343,6 +466,7 @@ export default {
       randomProducts: [],
       showAlert: false,
       alertMsg: '',
+      btnShow: true,
     };
   },
   props: ['id'],
@@ -368,10 +492,12 @@ export default {
             this.getTotalProducts();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getTotalProducts() {
@@ -397,10 +523,12 @@ export default {
             this.getRandomProducts();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getRandomProducts() {
@@ -463,13 +591,21 @@ export default {
             addCartBtn.children[0].classList.add('d-none');
             emitter.emit('update-cart');
           } else {
-            console.log(res.data);
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
+
+            addCartBtn.classList.remove('disabled');
+            addCartBtn.children[0].classList.add('d-none');
+            emitter.emit('update-cart');
           }
         })
         .catch((err) => {
-          console.log(err.data);
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
+
+          addCartBtn.classList.remove('disabled');
+          addCartBtn.children[0].classList.add('d-none');
+          emitter.emit('update-cart');
         });
     },
     changeTktNum(tktType, calcType) {
@@ -494,9 +630,28 @@ export default {
     closeCustomAlert() {
       this.showAlert = false;
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
+  },
+  computed: {
+    addComma() {
+      return (price) => {
+        const parts = price.toString().split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return `${parts.join(',')}`;
+      };
+    },
   },
   mounted() {
     this.getData();
+    this.listener = () => {
+      this.btnShow = window.scrollY > 0;
+    };
+    window.addEventListener('scroll', this.listener);
+  },
+  unmounted() {
+    window.removeEventListener('scroll', this.listener);
   },
   watch: {
     '$route.params.id': {

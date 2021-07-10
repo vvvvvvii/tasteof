@@ -50,6 +50,10 @@ body {
     }
   }
   p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+
+    @include media-breakpoint-up(md) {
+      margin-bottom: 1.5rem;
+    }
   }
 }

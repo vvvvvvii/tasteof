@@ -1,18 +1,21 @@
 <template>
   <div class="container py-8">
-    <div class="d-flex align-items-center">
+    <div class="d-flex flex-md-row flex-column align-items-center">
       <img
-        src="https://github.com/vvvvvvii/tasteof/blob/main/src/assets/img/cart.png?raw=true"
+        src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/cart.png?raw=true"
         alt="恭喜您完成付款"
         class="w-50"
       />
       <div class="text-primary">
-        <h2 class="h1 mb-7">
+        <h2 class="h1 mb-lg-7 mb-3 text-md-start text-center">
           完成付款！
-          <span class="h2 ms-3">NT {{ addComma(orderDetail.total) }}</span>
+          <span class="h2 ms-lg-3 d-lg-inline d-none">NT {{ addComma(orderDetail.total) }}</span>
         </h2>
-        <p class="h2 mb-3">{{ orderDetail.orderId }}</p>
-        <a class="h3 text-primary">查看訂單細節</a>
+        <p class="h2 text-md-end text-center d-lg-none mb-6">
+          NT {{ addComma(orderDetail.total) }}
+        </p>
+        <p class="mb-3 text-md-start text-center"><a class="h3-md text-primary">查看訂單細節</a></p>
+        <p class="h2 text-md-start text-center">{{ orderDetail.orderId }}</p>
       </div>
     </div>
   </div>
@@ -27,10 +30,7 @@
             </div>
             <div class="card-body">
               <h4 class="card-title ellipsis">{{ item.title }}</h4>
-              <p class="h3 text-end">
-                NT {{ item.lowestPrice }} 起
-                <span class="h4"> / {{ item.lowestPriceUnit }}</span>
-              </p>
+              <p class="h3-md h5 text-end">NT {{ item.lowestPrice }} 起</p>
             </div>
           </router-link>
         </div>
@@ -71,10 +71,12 @@ export default {
             this.getRandomProducts();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getRandomProducts() {

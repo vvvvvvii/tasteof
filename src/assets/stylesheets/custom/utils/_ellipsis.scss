@@ -2,4 +2,19 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  &-width {
+    width: 150px;
+    @include media-breakpoint-up(sm) {
+      width: 300px;
+    }
+    @include media-breakpoint-up(md) {
+      width: 400px;
+    }
+    @include media-breakpoint-up(lg) {
+      width: 350px;
+    }
+    @include media-breakpoint-up(xl) {
+      width: 450px;
+    }
+  }
 }

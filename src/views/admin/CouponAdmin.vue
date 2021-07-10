@@ -28,31 +28,22 @@
         <tr v-for="item in coupons" :key="item.id">
           <td width="150">
             {{ item.title }}
-            <span
-              class="material-icons me-1 align-bottom d-inline"
+            <i
+              class="bi bi-check-circle-fill me-1 align-bottom d-inline"
               :class="{ 'text-success': item.is_enabled, 'text-gray': !item.is_enabled }"
-              >{{ item.is_enabled === 1 ? 'check_circle' : 'do_disturb' }}</span
-            >
+            ></i>
           </td>
           <td width="150">{{ item.code }}</td>
           <td width="120">{{ item.percent }}%</td>
           <td width="120">{{ item.due_date }}</td>
           <td width="80">
-            <a>
-              <span class="material-icons" @click="openModal(item, 'editCoupon')">
-                mode_edit
-              </span>
-            </a>
-            <a class="ms-2">
-              <span
-                class="material-icons"
-                @click="openModal(item, 'deleteCoupon')"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-              >
-                delete
-              </span>
-            </a>
+            <i class="bi bi-pencil-square" @click="openModal(item, 'editCoupon')"></i>
+            <i
+              class="bi bi-trash-fill ms-2"
+              @click="openModal(item, 'deleteCoupon')"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+            ></i>
           </td>
         </tr>
       </tbody>
@@ -78,7 +69,7 @@
 </template>
 <script>
 import alert from '@/components/Alert.vue';
-import pagination from '@/components/Pagination.vue';
+import pagination from '@/components/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
 import couponEditModal from '@/components/CouponEditModal.vue';
 import couponDeleteModal from '@/components/DeleteModal.vue';
@@ -134,10 +125,12 @@ export default {
             this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
@@ -193,12 +186,14 @@ export default {
               couponAdminBtn.classList.remove('disabled');
               couponAdminBtn.children[0].classList.add('d-none');
               this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
             }
           })
           .catch((err) => {
             couponAdminBtn.classList.remove('disabled');
             couponAdminBtn.children[0].classList.add('d-none');
             this.customAlert(err.response);
+            window.setTimeout(this.closeCustomAlert, 5000);
           });
       } else if (target === '完成編輯') {
         // 若是開編輯產品的 modal
@@ -220,12 +215,14 @@ export default {
               couponAdminBtn.classList.remove('disabled');
               couponAdminBtn.children[0].classList.add('d-none');
               this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
             }
           })
           .catch((err) => {
             couponAdminBtn.classList.remove('disabled');
             couponAdminBtn.children[0].classList.add('d-none');
             this.customAlert(err.response);
+            window.setTimeout(this.closeCustomAlert, 5000);
           });
       }
     },
@@ -242,10 +239,12 @@ export default {
             window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
   },

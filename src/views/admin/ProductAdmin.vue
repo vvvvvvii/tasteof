@@ -64,8 +64,8 @@
         <tr>
           <th width="100"></th>
           <th>產品名稱</th>
-          <th width="150">原價</th>
-          <th width="150">售價</th>
+          <th width="200">原價</th>
+          <th width="200">售價</th>
           <th width="120"></th>
         </tr>
       </thead>
@@ -114,28 +114,26 @@
             </p>
             <small class="collapse" :id="'collapseProduct-' + key">{{ item.description }}</small>
           </td>
-          <td width="150">
-            {{ item.origin_price }} / <small>{{ item.unit }}</small>
+          <td width="200">
+            {{ item.lowestOriginPrice }} 起 / <small>{{ item.lowestOriginPriceUnit }}</small>
           </td>
-          <td width="150">
-            {{ item.price }} / <small>{{ item.unit }}</small>
+          <td width="200">
+            {{ item.lowestPrice }} 起 / <small>{{ item.lowestPriceUnit }}</small>
           </td>
           <td width="120">
-            <a>
-              <span class="material-icons" @click="openModal(item, 'editProduct')">
-                mode_edit
-              </span>
-            </a>
-            <a class="ms-2">
-              <span
-                class="material-icons"
-                @click="openModal(item, 'deleteProduct')"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-              >
-                delete
-              </span>
-            </a>
+            <i
+              class="bi bi-chat-text"
+              @click="openModal(item, 'editComment')"
+              data-bs-toggle="modal"
+              data-bs-target="#commentModal"
+            ></i>
+            <i class="bi bi-pencil-square ms-2" @click="openModal(item, 'editProduct')"></i>
+            <i
+              class="bi bi-trash-fill ms-2"
+              @click="openModal(item, 'deleteProduct')"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+            ></i>
           </td>
         </tr>
       </tbody>
@@ -148,7 +146,7 @@
       @emit-pagination="getData"
       v-if="pagination.total_pages > 1"
     ></pagination>
-    <!--add / edit modal-->
+    <!--add / edit product modal-->
     <product-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
@@ -156,15 +154,23 @@
       @emit-product-modal="addNewProduct"
       ref="productModal"
     ></product-edit-modal>
+    <!--edit comment modal-->
+    <comment-edit-modal
+      :modal-title="modalTitle"
+      :temp="temp"
+      @emit-comment-modal="addNewComment"
+      ref="commentModal"
+    ></comment-edit-modal>
     <!--delete modal-->
     <product-delete-modal :temp="temp" @emit-delete-modal="deleteProduct"></product-delete-modal>
   </div>
 </template>
 <script>
 import alert from '@/components/Alert.vue';
-import pagination from '@/components/Pagination.vue';
+import pagination from '@/components/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
 import productEditModal from '@/components/ProductEditModal.vue';
+import commentEditModal from '@/components/CommentEditModal.vue';
 import productDeleteModal from '@/components/DeleteModal.vue';
 
 export default {
@@ -186,6 +192,7 @@ export default {
         imagesUrl: [],
         packageOptions: [],
         tagCheck: [],
+        comments: [],
       },
       tagCategory: [
         '雙北',
@@ -210,6 +217,7 @@ export default {
       modalTitle: '',
       productModal: {},
       deleteModal: {},
+      commentEditModal: {},
       searchProduct: '',
       showAlert: false,
       alertMsg: '',
@@ -219,6 +227,7 @@ export default {
     alert,
     pagination,
     productEditModal,
+    commentEditModal,
     productDeleteModal,
   },
   methods: {
@@ -232,14 +241,41 @@ export default {
           if (res.data.success) {
             const { data } = res;
             this.products = data.products;
+            this.products.forEach((item, index) => {
+              // 取出該產品的所有方案中的價格和原價
+              let packageOptionsPrice = item.packageOptions.map((i) => i.price);
+              let packageOptionsOriginPrice = item.packageOptions.map((i) => i.origin_price);
+              // 小排到大
+              packageOptionsPrice = packageOptionsPrice.sort((x, y) => x - y);
+              packageOptionsOriginPrice = packageOptionsOriginPrice.sort((x, y) => x - y);
+              // 該產品最低價格為陣列第一個數
+              const [lowestPrice] = packageOptionsPrice;
+              const [lowestOriginPrice] = packageOptionsOriginPrice;
+              this.products[index].lowestPrice = lowestPrice;
+              this.products[index].lowestOriginPrice = lowestOriginPrice;
+              // 找到該價格對應的單位
+              item.packageOptions.forEach((i) => {
+                if (i.price === lowestPrice) {
+                  this.products[index].lowestPriceUnit = i.unit;
+                }
+                if (i.origin_price === lowestOriginPrice) {
+                  this.products[index].lowestOriginPriceUnit = i.unit;
+                }
+              });
+            });
             this.pagination = res.data.pagination;
+            this.getTotalData();
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
+    },
+    getTotalData() {
       this.$http
         .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/all`)
         .then((res) => {
@@ -251,12 +287,37 @@ export default {
                 this.mainProduct.push(item);
               }
             });
+            this.totalProducts.forEach((item, index) => {
+              // 取出該產品的所有方案中的價格和原價
+              let packageOptionsPrice = item.packageOptions.map((i) => i.price);
+              let packageOptionsOriginPrice = item.packageOptions.map((i) => i.origin_price);
+              // 小排到大
+              packageOptionsPrice = packageOptionsPrice.sort((x, y) => x - y);
+              packageOptionsOriginPrice = packageOptionsOriginPrice.sort((x, y) => x - y);
+              // 該產品最低價格為陣列第一個數
+              const [lowestPrice] = packageOptionsPrice;
+              const [lowestOriginPrice] = packageOptionsOriginPrice;
+              this.totalProducts[index].lowestPrice = lowestPrice;
+              this.totalProducts[index].lowestOriginPrice = lowestOriginPrice;
+              // 找到該價格對應的單位
+              item.packageOptions.forEach((i) => {
+                if (i.price === lowestPrice) {
+                  this.totalProducts[index].lowestPriceUnit = i.unit;
+                }
+                if (i.origin_price === lowestOriginPrice) {
+                  this.totalProducts[index].lowestOriginPriceUnit = i.unit;
+                }
+              });
+            });
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
+          console.log(err);
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
@@ -285,6 +346,10 @@ export default {
             this.temp.imagesUrl = this.temp.imagesUrl.filter((e) => e !== '');
           }
           this.productModal.show();
+          break;
+        case 'editComment':
+          this.modalTitle = '完成編輯';
+          this.temp = { ...item };
           break;
         case 'deleteProduct':
           this.temp = { ...item };
@@ -338,12 +403,16 @@ export default {
               window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
+
               productAdminBtn.classList.remove('disabled');
               productAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
+            window.setTimeout(this.closeCustomAlert, 5000);
+
             productAdminBtn.classList.remove('disabled');
             productAdminBtn.children[0].classList.add('d-none');
           });
@@ -389,10 +458,12 @@ export default {
             window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteMainProduct(product) {
@@ -405,19 +476,51 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.customAlert('刪除成功');
+            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
+        });
+    },
+    addNewComment(tempProduct) {
+      const { commentAdminBtn } = this.$refs.commentModal.$refs;
+      commentAdminBtn.classList.add('disabled');
+      commentAdminBtn.children[0].classList.remove('d-none');
+      const item = {};
+      item.data = { ...tempProduct };
+      const { id } = tempProduct;
+      this.$http
+        .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${id}`, item)
+        .then((res) => {
+          if (res.data.success) {
+            this.customAlert('編輯成功');
+            this.getData();
+            commentAdminBtn.classList.remove('disabled');
+            commentAdminBtn.children[0].classList.add('d-none');
+            this.commentModal.hide();
+            window.setTimeout(this.closeCustomAlert, 5000);
+          } else {
+            this.customAlert(res.data.message);
+            commentAdminBtn.classList.remove('disabled');
+            commentAdminBtn.children[0].classList.add('d-none');
+          }
+        })
+        .catch((err) => {
+          this.customAlert(err.response);
+          commentAdminBtn.classList.remove('disabled');
+          commentAdminBtn.children[0].classList.add('d-none');
         });
     },
   },
   computed: {
     filterProduct() {
       if (this.searchProduct !== '') {
-        return this.totalProducts.filter((item) => item.title.match(this.searchProduct));
+        return this.totalProducts.filter((i) => i.title.match(new RegExp(this.searchProduct, 'gi')));
       }
       return this.products;
     },
@@ -427,6 +530,9 @@ export default {
   },
   mounted() {
     this.productModal = new Modal(document.getElementById('productModal'), {
+      keyboard: false,
+    });
+    this.commentModal = new Modal(document.getElementById('commentModal'), {
       keyboard: false,
     });
     this.deleteModal = new Modal(document.getElementById('deleteModal'), {
