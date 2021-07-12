@@ -32,6 +32,7 @@ import alert from '@/components/Alert.vue';
 import checkCart from '@/components/CheckCart.vue';
 import confirmCart from '@/components/ConfirmCart.vue';
 import finishCart from '@/components/FinishCart.vue';
+import emitter from '../assets/js/emitter';
 
 export default {
   data() {
@@ -130,9 +131,11 @@ export default {
             this.customAlert('已清除商品');
             this.getCartInfo();
             window.setTimeout(this.closeCustomAlert, 5000);
+            emitter.emit('update-cart');
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
+            emitter.emit('update-cart');
           }
         })
         .catch((err) => {
@@ -155,11 +158,13 @@ export default {
             deleteOrderBtn.children[0].classList.add('d-none');
             window.setTimeout(this.closeCustomAlert, 3500);
             window.setTimeout(this.backToHomePage, 4000);
+            emitter.emit('update-cart');
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
             deleteOrderBtn.classList.remove('disabled');
             deleteOrderBtn.children[0].classList.add('d-none');
+            emitter.emit('update-cart');
           }
         })
         .catch((err) => {
