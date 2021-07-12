@@ -18,62 +18,60 @@
           </button>
         </div>
         <div class="row mb-7">
-          <div
-            v-for="item in cart.carts"
-            :key="item.id"
-            class="col-xl-4 col-md-6 px-3 py-4 border border-primary rounded-1 position-relative"
-          >
-            <div
-              class="d-flex justify-content-between pb-2 mb-2
+          <div v-for="item in cart.carts" :key="item.id" class="col-xl-4 col-md-6">
+            <div class="px-3 py-4 border border-primary rounded-1 position-relative">
+              <div
+                class="d-flex justify-content-between pb-2 mb-2
            border-bottom border-gray"
-            >
-              <p>{{ item.start_date }}</p>
-              <div class="w-50">
-                <p class="h3">{{ item.product.title }}</p>
-                <p class="h4 mb-3">{{ item.optionName }}</p>
-                <p class="text-end">NT {{ addComma(item.total) }}</p>
+              >
+                <p>{{ item.start_date }}</p>
+                <div class="w-50">
+                  <p class="h3">{{ item.product.title }}</p>
+                  <p class="h4 mb-3">{{ item.optionName }}</p>
+                  <p class="text-end">NT {{ addComma(item.total) }}</p>
+                </div>
               </div>
-            </div>
-            <div class="d-flex justify-content-evenly">
-              <div class="d-flex align-items-center">
-                <button
-                  class="border-0 bg-transparent p-2"
-                  @click="$emit('emit-change-tkt-num', 'adult', 'minus', item.qtyDetail, item.id)"
-                >
-                  <i class="bi bi-dash-lg"></i>
-                </button>
-                <p class="p-1">
-                  {{ item.qtyDetail.adult }}
-                </p>
-                <button
-                  class="border-0 bg-transparent p-2"
-                  @click="$emit('emit-change-tkt-num', 'adult', 'plus', item.qtyDetail, item.id)"
-                >
-                  <i class="bi bi-plus-lg"></i>
-                </button>
-                大
+              <div class="d-flex justify-content-evenly">
+                <div class="d-flex align-items-center" v-if="item.qtyDetail">
+                  <button
+                    class="border-0 bg-transparent p-2"
+                    @click="$emit('emit-change-tkt-num', 'adult', 'minus', item.qtyDetail, item.id)"
+                  >
+                    <i class="bi bi-dash-lg"></i>
+                  </button>
+                  <p class="p-1">
+                    {{ item.qtyDetail.adult }}
+                  </p>
+                  <button
+                    class="border-0 bg-transparent p-2"
+                    @click="$emit('emit-change-tkt-num', 'adult', 'plus', item.qtyDetail, item.id)"
+                  >
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                  大
+                </div>
+                <div class="d-flex align-items-center" v-if="item.qtyDetail">
+                  <button
+                    class="border-0 bg-transparent p-2"
+                    @click="$emit('emit-change-tkt-num', 'child', 'minus', item.qtyDetail, item.id)"
+                  >
+                    <i class="bi bi-dash-lg"></i>
+                  </button>
+                  <p class="p-1">
+                    {{ item.qtyDetail.child }}
+                  </p>
+                  <button
+                    class="border-0 bg-transparent p-2"
+                    @click="$emit('emit-change-tkt-num', 'child', 'plus', item.qtyDetail, item.id)"
+                  >
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                  小
+                </div>
+                <a type="button" class="delete-cart-icon">
+                  <i class="bi bi-trash-fill" @click="$emit('emit-delete-product', item.id)"></i>
+                </a>
               </div>
-              <div class="d-flex align-items-center">
-                <button
-                  class="border-0 bg-transparent p-2"
-                  @click="$emit('emit-change-tkt-num', 'child', 'minus', item.qtyDetail, item.id)"
-                >
-                  <i class="bi bi-dash-lg"></i>
-                </button>
-                <p class="p-1">
-                  {{ item.qtyDetail.child }}
-                </p>
-                <button
-                  class="border-0 bg-transparent p-2"
-                  @click="$emit('emit-change-tkt-num', 'child', 'plus', item.qtyDetail, item.id)"
-                >
-                  <i class="bi bi-plus-lg"></i>
-                </button>
-                小
-              </div>
-              <a type="button" class="delete-cart-icon">
-                <i class="bi bi-trash-fill" @click="$emit('emit-delete-product', item.id)"></i>
-              </a>
             </div>
           </div>
         </div>
