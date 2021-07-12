@@ -252,15 +252,16 @@
                     </button>
                   </div>
                 </div>
-                <div class="d-flex flex-column align-items-center ms-2">
+                <div class="d-flex flex-column  ms-2">
                   <label for="startDate" class="mb-2 text-center">使用日</label>
                   <flat-pickr
                     id="startDate"
                     ref="startDate"
                     :config="config"
                     v-model="moreInfo.startDate"
-                    class="py-1 text-center"
+                    class="py-1 mb-1 text-center"
                   ></flat-pickr>
+                  <p>不同使用日煩請以不同訂單預購</p>
                 </div>
               </div>
             </div>
