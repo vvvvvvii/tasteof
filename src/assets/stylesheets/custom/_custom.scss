@@ -138,15 +138,13 @@
   text-align: center;
   font-size: 0.75rem;
   font-weight: bold;
+  top: -6px;
+  left: 20px;
   @include media-breakpoint-up(sm) {
-    top: 2px;
-    left: 130px;
+    top: -4px;
+    left: 25px;
   }
   @include media-breakpoint-up(md) {
-    top: 2px;
-    left: 175px;
-  }
-  @include media-breakpoint-up(lg) {
     top: 2px;
     left: 25px;
   }

@@ -76,12 +76,12 @@
             </router-link>
           </li>
         </ul>
-        <ul class="navbar-nav h3 flex-row justify-content-around position-relative">
+        <ul class="navbar-nav h3 flex-row justify-content-around">
           <li class="nav-item">
-            <router-link to="/cart" class="nav-link px-3" active-class="active">
+            <router-link to="/cart" class="nav-link px-3 position-relative" active-class="active">
               <i class="bi bi-cart4"></i>
+              <div class="cart-num">{{ cart.carts.length }}</div>
             </router-link>
-            <div class="cart-num d-sm-block d-none">{{ cart.carts.length }}</div>
           </li>
           <li class="nav-item">
             <a class="nav-link px-3">
