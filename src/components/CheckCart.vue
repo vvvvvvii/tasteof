@@ -19,29 +19,37 @@
         </div>
         <div class="row mb-7">
           <div v-for="item in cart.carts" :key="item.id" class="col-xl-4 col-md-6">
-            <div class="px-3 py-4 border border-primary rounded-1 position-relative">
+            <div class="px-3 py-4 mb-2 border border-primary rounded-1 position-relative">
               <div
-                class="d-flex justify-content-between pb-2 mb-2
-           border-bottom border-gray"
+                class="d-flex justify-content-between pb-3 mb-2
+                border-bottom border-gray"
               >
-                <p>{{ item.start_date }}</p>
-                <div class="w-50">
-                  <p class="h3">{{ item.product.title }}</p>
-                  <p class="h4 mb-3">{{ item.optionName }}</p>
+                <div>
+                  <p class="mb-2">{{ item.start_date }}</p>
+                  <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
+                </div>
+                <div class="w-50 d-flex flex-column justify-content-between">
+                  <div>
+                    <p class="h3-sm">{{ item.product.title }}</p>
+                    <p class="h4-sm h5 mb-3">{{ item.optionName }}</p>
+                  </div>
                   <p class="text-end">NT {{ addComma(item.total) }}</p>
                 </div>
               </div>
               <div class="d-flex justify-content-evenly">
-                <div class="d-flex align-items-center" v-if="item.qtyDetail">
+                <div class="d-flex align-items-center h4-sm h5" v-if="item.qtyDetail">
                   <button
                     class="border-0 bg-transparent p-2"
                     @click="$emit('emit-change-tkt-num', 'adult', 'minus', item.qtyDetail, item.id)"
                   >
                     <i class="bi bi-dash-lg"></i>
                   </button>
-                  <p class="p-1">
-                    {{ item.qtyDetail.adult }}
-                  </p>
+                  <div class="p-1" :ref="`adultStatus${item.id}`">
+                    <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>{{ item.qtyDetail.adult }}</p>
+                  </div>
                   <button
                     class="border-0 bg-transparent p-2"
                     @click="$emit('emit-change-tkt-num', 'adult', 'plus', item.qtyDetail, item.id)"
@@ -50,16 +58,19 @@
                   </button>
                   大
                 </div>
-                <div class="d-flex align-items-center" v-if="item.qtyDetail">
+                <div class="d-flex align-items-center h4-sm h5" v-if="item.qtyDetail">
                   <button
                     class="border-0 bg-transparent p-2"
                     @click="$emit('emit-change-tkt-num', 'child', 'minus', item.qtyDetail, item.id)"
                   >
                     <i class="bi bi-dash-lg"></i>
                   </button>
-                  <p class="p-1">
-                    {{ item.qtyDetail.child }}
-                  </p>
+                  <div class="p-1" :ref="`childStatus${item.id}`">
+                    <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>{{ item.qtyDetail.child }}</p>
+                  </div>
                   <button
                     class="border-0 bg-transparent p-2"
                     @click="$emit('emit-change-tkt-num', 'child', 'plus', item.qtyDetail, item.id)"
@@ -68,7 +79,10 @@
                   </button>
                   小
                 </div>
-                <a type="button" class="delete-cart-icon">
+                <a type="button" class="delete-cart-icon" :ref="`deleteCartProduct${item.id}`">
+                  <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                   <i class="bi bi-trash-fill" @click="$emit('emit-delete-product', item.id)"></i>
                 </a>
               </div>

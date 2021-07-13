@@ -1,9 +1,19 @@
+.h3-sm {
+  @include media-breakpoint-up(sm) {
+    font-size: $h3-font-size;
+  }
+}
 .h3-md {
   @include media-breakpoint-up(md) {
     font-size: $h3-font-size;
   }
 }
 
+.h4-sm {
+  @include media-breakpoint-up(sm) {
+    font-size: $h4-font-size;
+  }
+}
 .h4-md {
   @include media-breakpoint-up(md) {
     font-size: $h4-font-size;

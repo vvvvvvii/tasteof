@@ -65,20 +65,29 @@ export default {
     finishCart,
   },
   methods: {
-    getCartInfo() {
+    getCartInfo(status) {
       this.$http
         .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`)
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
+            status.children[0].classList.add('d-none');
+            status.children[1].classList.remove('d-none');
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
+            status.children[0].classList.add('d-none');
+            status.children[1].classList.remove('d-none');
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
           window.setTimeout(this.closeCustomAlert, 5000);
+          if (status) {
+            // 若有傳入參數才進行這塊
+            status.children[0].classList.add('d-none');
+            status.children[1].classList.remove('d-none');
+          }
         });
     },
     customAlert(msg) {
@@ -89,17 +98,25 @@ export default {
       this.showAlert = false;
     },
     changeTktNum(tktType, calcType, detail, id) {
+      const adultStatus = this.$refs.checkCart.$refs[`adultStatus${id}`];
+      const childStatus = this.$refs.checkCart.$refs[`childStatus${id}`];
       const qtyDetail = { ...detail };
       if (tktType === 'adult') {
+        adultStatus.children[0].classList.remove('d-none');
+        adultStatus.children[1].classList.add('d-none');
         if (calcType === 'plus') {
           qtyDetail.adult += 1;
         } else if (calcType === 'minus' && qtyDetail.adult >= 2) {
           qtyDetail.adult -= 1;
         }
-      } else if (calcType === 'plus') {
-        qtyDetail.child += 1;
-      } else if (calcType === 'minus' && qtyDetail.child >= 1) {
-        qtyDetail.child -= 1;
+      } else {
+        childStatus.children[0].classList.remove('d-none');
+        childStatus.children[1].classList.add('d-none');
+        if (calcType === 'plus') {
+          qtyDetail.child += 1;
+        } else if (calcType === 'minus' && qtyDetail.child >= 1) {
+          qtyDetail.child -= 1;
+        }
       }
       const data = {
         data: {
@@ -112,15 +129,33 @@ export default {
         .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`, data)
         .then((res) => {
           if (res.data.success) {
-            this.getCartInfo();
+            if (tktType === 'adult') {
+              this.getCartInfo(adultStatus);
+            } else {
+              this.getCartInfo(childStatus);
+            }
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
+            if (tktType === 'adult') {
+              adultStatus.children[0].classList.add('d-none');
+              adultStatus.children[1].classList.remove('d-none');
+            } else {
+              childStatus.children[0].classList.add('d-none');
+              childStatus.children[1].classList.remove('d-none');
+            }
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
           window.setTimeout(this.closeCustomAlert, 5000);
+          if (tktType === 'adult') {
+            adultStatus.children[0].classList.add('d-none');
+            adultStatus.children[1].classList.remove('d-none');
+          } else {
+            childStatus.children[0].classList.add('d-none');
+            childStatus.children[1].classList.remove('d-none');
+          }
         });
     },
     deleteProduct(id) {
@@ -128,14 +163,17 @@ export default {
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`)
         .then((res) => {
           if (res.data.success) {
+            const deleteCartProduct = this.$refs.checkCart.$refs[`deleteCartProduct${id}`];
+            deleteCartProduct.children[0].classList.remove('d-none');
+            deleteCartProduct.children[1].classList.add('d-none');
             this.customAlert('已清除商品');
             this.getCartInfo();
             window.setTimeout(this.closeCustomAlert, 5000);
-            emitter.emit('update-cart');
+            emitter.emit('update-cart'); // navbar 即時更新
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
-            emitter.emit('update-cart');
+            emitter.emit('update-cart'); // navbar 即時更新
           }
         })
         .catch((err) => {

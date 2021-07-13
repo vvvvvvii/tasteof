@@ -192,6 +192,17 @@
   background-position: center;
 }
 
+.cart-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  @include media-breakpoint-up(sm) {
+    width: 100px;
+    height: 100px;
+  }
+}
+
 .delete-cart-icon {
   position: absolute;
   bottom: 10px;
