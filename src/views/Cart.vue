@@ -71,13 +71,19 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
-            status.children[0].classList.add('d-none');
-            status.children[1].classList.remove('d-none');
+            if (status) {
+              // 若有傳入參數才進行這塊
+              status.children[0].classList.add('d-none');
+              status.children[1].classList.remove('d-none');
+            }
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
-            status.children[0].classList.add('d-none');
-            status.children[1].classList.remove('d-none');
+            if (status) {
+              // 若有傳入參數才進行這塊
+              status.children[0].classList.add('d-none');
+              status.children[1].classList.remove('d-none');
+            }
           }
         })
         .catch((err) => {
@@ -286,11 +292,13 @@ export default {
             addOrderBtn.children[0].classList.add('d-none');
             this.confirmCartPageShow = false;
             this.finishCartPageShow = true;
+            emitter.emit('update-cart');
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
             addOrderBtn.classList.remove('disabled');
             addOrderBtn.children[0].classList.add('d-none');
+            emitter.emit('update-cart');
           }
         })
         .catch((err) => {
