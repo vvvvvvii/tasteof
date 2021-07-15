@@ -70,9 +70,9 @@
                   <ul class="row g-1 mb-4">
                     <li class="col-4 mb-2">
                       <button
+                        type="button"
                         v-if="tempArticle.image"
                         class="modal-img-outer"
-                        type="button"
                         @click="deleteImgs($event, 'mainImg')"
                       >
                         <img :src="tempArticle.image" alt="主圖片" class="modal-img" />
@@ -82,9 +82,9 @@
                     </li>
                     <li class="col-4 mb-2" v-for="(item, key) in tempArticle.imagesUrl" :key="item">
                       <button
+                        type="button"
                         v-if="item"
                         class="modal-img-outer"
-                        type="button"
                         @click="deleteImgs($event, 'subImg')"
                         :data-img="key"
                       >

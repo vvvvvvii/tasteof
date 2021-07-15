@@ -315,7 +315,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.customAlert(err.response);
           window.setTimeout(this.closeCustomAlert, 5000);
         });

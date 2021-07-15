@@ -199,8 +199,6 @@ export default {
           break;
         case 'deleteOrder':
           this.temp = { ...item };
-          console.log(this.temp);
-          console.log(item);
           break;
         default:
           break;

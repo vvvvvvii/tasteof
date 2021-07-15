@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     changePage(page) {
-      console.log(page);
       this.$emit('emit-pagination', page);
     },
   },

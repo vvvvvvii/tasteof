@@ -168,7 +168,7 @@
           ></pagination>
         </div>
       </div>
-      <div class="to-top-btn" @click="scrollToTop" ref="toTopBtn" v-if="btnShow">
+      <div class="to-top-btn" @click="scrollToTop" v-if="btnShow">
         <div class="to-top-btn-text">
           <p>回到</p>
           <p>上方</p>
@@ -301,7 +301,6 @@ export default {
   mounted() {
     this.getData();
     this.listener = () => {
-      console.log(window.scrollY);
       this.btnShow = window.scrollY > 0;
     };
     window.addEventListener('scroll', this.listener);

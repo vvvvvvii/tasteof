@@ -216,6 +216,7 @@
                   <label for="tktAdultNum" class="mb-1">成人</label>
                   <div class="d-flex align-items-center">
                     <button
+                      type="button"
                       class="border-0 bg-transparent p-2"
                       @click="changeTktNum('adult', 'minus')"
                     >
@@ -225,6 +226,7 @@
                       {{ moreInfo.tktNum.adult }}
                     </p>
                     <button
+                      type="button"
                       class="border-0 bg-transparent p-2"
                       @click="changeTktNum('adult', 'plus')"
                     >
@@ -236,6 +238,7 @@
                   <label for="tktChildNum" class="mb-1">孩童</label>
                   <div class="d-flex align-items-center">
                     <button
+                      type="button"
                       class="border-0 bg-transparent p-2"
                       @click="changeTktNum('child', 'minus')"
                     >
@@ -245,6 +248,7 @@
                       {{ moreInfo.tktNum.child }}
                     </p>
                     <button
+                      type="button"
                       class="border-0 bg-transparent p-2"
                       @click="changeTktNum('child', 'plus')"
                     >
@@ -429,7 +433,7 @@
         </div>
       </div>
     </div>
-    <div class="to-top-btn" @click="scrollToTop" ref="toTopBtn" v-if="btnShow">
+    <div class="to-top-btn" @click="scrollToTop" v-if="btnShow">
       <div class="to-top-btn-text">
         <p>回到</p>
         <p>上方</p>
@@ -511,7 +515,6 @@ export default {
               // 個別取出每個產品
               let packageOptionsPrice = item.packageOptions.map((i) => i.price); // 取出該產品的所有方案中的價格
               packageOptionsPrice = packageOptionsPrice.sort((x, y) => x - y); // 價格小排到大
-              // this.products[index].lowestPrice = packageOptionsPrice[0];
               const [lowestPrice] = packageOptionsPrice; // 該產品最低價格為陣列第一個數
               this.totalProducts[index].lowestPrice = lowestPrice;
               // 找到該價格對應的單位
@@ -534,7 +537,6 @@ export default {
     },
     getRandomProducts() {
       const { tagCheck } = this.moreInfo.productInfo;
-      console.log(tagCheck);
       const area = tagCheck.find(
         (e) => e === '雙北' || e === '中彰投' || e === '嘉南' || e === '高屏' || e === '花東',
       );
