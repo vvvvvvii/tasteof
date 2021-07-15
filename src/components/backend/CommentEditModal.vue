@@ -126,12 +126,8 @@
       </div>
     </div>
   </div>
-  <!--alert-->
-  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-
 export default {
   props: ['modalTitle', 'temp', 'comments'],
   emits: ['emit-comment-modal'],
@@ -146,17 +142,7 @@ export default {
       alertMsg: '',
     };
   },
-  components: {
-    alert,
-  },
   methods: {
-    customAlert(msg) {
-      this.alertMsg = msg;
-      this.showAlert = true; // 秀出 alert
-    },
-    closeCustomAlert() {
-      this.showAlert = false;
-    },
     addComment() {
       if (Object.keys(this.tempProduct).includes('comments') === false) {
         this.tempProduct.packageOptions = [];

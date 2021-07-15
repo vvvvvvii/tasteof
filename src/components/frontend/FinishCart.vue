@@ -39,15 +39,24 @@
       </div>
     </div>
   </div>
+  <!--alert-->
+  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
+import alert from '@/components/backend/Alert.vue';
+
 export default {
   props: ['orderDetail'],
   data() {
     return {
       totalProducts: [],
       randomProducts: [],
+      showAlert: false,
+      alertMsg: '',
     };
+  },
+  components: {
+    alert,
   },
   methods: {
     getTotalProducts() {
@@ -92,6 +101,13 @@ export default {
       arrSet.forEach((i) => {
         this.randomProducts.push(this.totalProducts[i]); // 取得未重複的商品放進 randomProducts 陣列中
       });
+    },
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
     },
   },
   computed: {

@@ -128,5 +128,10 @@ export default {
       this.getCartInfo();
     });
   },
+  unmounted() {
+    emitter.off('update-cart', () => {
+      this.getCartInfo();
+    });
+  },
 };
 </script>

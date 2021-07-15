@@ -310,7 +310,7 @@ export default {
   },
   watch: {
     // This resets the data for when the filter is changed
-    filterProduct() {
+    filterArticle() {
       this.pagination.current_page = 1;
       this.pagination.page_start = 0;
       this.pagination.page_end = 10;
