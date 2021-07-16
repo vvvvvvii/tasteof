@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-7">
     <div class="banner">
       <h2 class="h1 fw-bold mb-4">品嚐<span class="text-secondary">旅程</span>的滋味</h2>
       <i class="bi bi-arrow-down-circle-fill h2 text-secondary"></i>
@@ -235,6 +235,8 @@ export default {
       ],
       randomCity: '',
       btnShow: true,
+      showAlert: false,
+      alertMsg: '',
     };
   },
   components: { alert },

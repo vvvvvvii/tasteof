@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-7">
     <div class="container">
       <div class="row justify-content-center pt-8" :class="{ 'pb-8': randomProducts.length !== 0 }">
         <div class="col-lg-8">
@@ -95,6 +95,7 @@ export default {
       showAlert: false,
       alertMsg: '',
       btnShow: true,
+      thumbsSwiper: null,
     };
   },
   props: ['id'],

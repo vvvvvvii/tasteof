@@ -1,7 +1,7 @@
 <template>
   <!--top navbar-->
   <Navbar></Navbar>
-  <router-view class="pt-7"></router-view>
+  <router-view></router-view>
   <!--footer-->
   <Footer :check-success="checkSuccess"></Footer>
 </template>

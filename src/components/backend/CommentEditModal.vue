@@ -65,7 +65,6 @@
                   <div class="mb-2">
                     <label :for="`userCommentScore-${key}`" class="form-label">對產品的評分</label>
                     <Field
-                      type="number"
                       :id="`userCommentScore-${key}`"
                       :name="`使用者 ${key + 1} 評分`"
                       class="form-control"
@@ -138,8 +137,6 @@ export default {
         tagCheck: [],
         comments: [],
       },
-      showAlert: false,
-      alertMsg: '',
     };
   },
   methods: {

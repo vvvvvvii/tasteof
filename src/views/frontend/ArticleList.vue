@@ -221,6 +221,8 @@ export default {
         has_next: true,
       },
       btnShow: true,
+      showAlert: false,
+      alertMsg: '',
     };
   },
   components: { alert, pagination },

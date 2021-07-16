@@ -16,6 +16,7 @@
                   :class="{ 'is-invalid': errors['帳號'] }"
                   rules="required"
                   placeholder="example@gmail.com"
+                  autocomplete="username"
                   v-model.trim="userName"
                 ></Field>
                 <ErrorMessage name="帳號" class="invalid-feedback"></ErrorMessage>
@@ -29,6 +30,7 @@
                   class="form-control"
                   :class="{ 'is-invalid': errors['密碼'] }"
                   rules="required"
+                  autocomplete="current-password"
                   v-model.trim="password"
                 ></Field>
                 <ErrorMessage name="密碼" class="invalid-feedback"></ErrorMessage>

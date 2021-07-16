@@ -136,6 +136,7 @@ export default {
       orders: [],
       temp: {},
       pagination: {},
+      modalTitle: '',
       orderModal: {},
       deleteModal: {},
       searchOrder: '',

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-7">
     <!--平板以下搜尋欄-->
     <div class="bg-secondary pt-3 pb-2 position-fixed w-100 z-index-sticky d-lg-none">
       <div class="container">
@@ -472,6 +472,7 @@ export default {
       showAlert: false,
       alertMsg: '',
       btnShow: true,
+      thumbsSwiper: null,
     };
   },
   props: ['id'],

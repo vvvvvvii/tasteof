@@ -123,7 +123,9 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header py-2">
-                    <h5 class="modal-title fw-bold h4" id="exampleModalLabel">總是有個高低順序</h5>
+                    <h5 class="modal-title fw-bold h4" id="exampleModalLabel">
+                      總是有個高低順序
+                    </h5>
                     <button
                       type="button"
                       class="bg-transparent border-0 p-2 text-secondary h3"
@@ -324,6 +326,8 @@ export default {
         has_next: true,
       },
       btnShow: true,
+      showAlert: false,
+      alertMsg: '',
     };
   },
   components: { alert, pagination, VueSlider },
