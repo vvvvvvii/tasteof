@@ -1,8 +1,24 @@
 <template>
   <div class="pt-7">
     <div class="banner">
-      <h2 class="h1 fw-bold mb-4">品嚐<span class="text-secondary">旅程</span>的滋味</h2>
-      <i class="bi bi-arrow-down-circle-fill h2 text-secondary"></i>
+      <a>
+        <div class="city-tour-banner-btn">
+          <h3 class="city-tour-banner-btn-title"># 城市導覽</h3>
+        </div>
+      </a>
+      <a>
+        <div class="tkt-banner-btn">
+          <h3 class="tkt-banner-btn-title"># 票券體驗</h3>
+        </div>
+      </a>
+      <a>
+        <div class="rent-cart-banner-btn">
+          <h3 class="rent-cart-banner-btn-title"># 包車服務</h3>
+        </div>
+      </a>
+
+      <!-- <h2 class="h1 fw-bold mb-4">品嚐<span class="text-secondary">旅程</span>的滋味</h2>
+      <i class="bi bi-arrow-down-circle-fill h2 text-secondary"></i> -->
     </div>
     <div class="container py-8">
       <div class="mb-7">
