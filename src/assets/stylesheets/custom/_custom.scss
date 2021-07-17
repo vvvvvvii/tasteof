@@ -17,104 +17,8 @@
 @import './components/tab';
 @import './components/tag';
 
-.logo {
-  display: block;
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/logo.png?raw=true);
-  background-repeat: no-repeat;
-  background-size: cover;
-  text-indent: 101%;
-  overflow: hidden;
-  white-space: nowrap;
-  font-size: 2.5rem;
-}
-
-// .banner {
-//   height: 360px;
-//   background: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner.png?raw=true);
-//   background-image: -webkit-cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
-//   background-image: cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner.png?raw=true), 20%); // 讓背景透明但上面的字不影響
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   background-position: center;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   @include media-breakpoint-up(md) {
-//     height: 420px;
-//   }
-//   @include media-breakpoint-up(lg) {
-//     height: 548px;
-//   }
-// }
-
-.banner {
-  position: relative;
-  height: 360px;
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%83%8C%E6%99%AF1.png?raw=true);
-  @include media-breakpoint-up(md) {
-    height: 420px;
-  }
-  @include media-breakpoint-up(lg) {
-    height: 700px;
-  }
-}
-.city-tour-banner-btn,
-.tkt-banner-btn,
-.rent-cart-banner-btn {
-  position: absolute;
-  height: 300px;
-  background-size: cover;
-  &-title {
-    position: absolute;
-    font-size: 2rem;
-    font-weight: bold;
-    color: $light;
-    background: $primary;
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.5rem;
-  }
-}
-.city-tour-banner-btn,
-.rent-cart-banner-btn {
-  width: 350px;
-}
-.city-tour-banner-btn {
-  top: 180px;
-  left: 30px;
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E5%9F%8E%E5%B8%82%E5%B0%8E%E8%A6%BDicon.png?raw=true);
-  &-title {
-    bottom: -40px;
-    left: 30%;
-    transform: rotate(-5deg);
-    -webkit-transform: rotate(-5deg);
-    -moz-transform: rotate(-5deg);
-  }
-}
-.tkt-banner-btn {
-  width: 300px;
-  top: 30px;
-  left: 580px;
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E7%A5%A8%E5%88%B8%E9%AB%94%E9%A9%97%20icon.png?raw=true);
-  &-title {
-    top: 300px;
-    transform: rotate(5deg);
-    -webkit-transform: rotate(5deg);
-    -moz-transform: rotate(5deg);
-  }
-}
-.rent-cart-banner-btn {
-  top: 170px;
-  right: 30px;
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E5%8C%85%E8%BB%8A%E6%9C%8D%E5%8B%99%20icon.png?raw=true);
-  &-title {
-    bottom: -20px;
-    right: -15px;
-    transform: rotate(-5deg);
-    -webkit-transform: rotate(-5deg);
-    -moz-transform: rotate(-5deg);
-  }
-}
+@import './page/index';
+@import './page/cart';
 
 .to-top-btn {
   position: fixed;
@@ -197,51 +101,6 @@
   height: 350px;
 }
 
-.cart-num {
-  position: absolute;
-  padding: 4px 8px;
-  border-radius: 50%;
-  background: $danger;
-  color: $black;
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: bold;
-  top: -6px;
-  left: 20px;
-  @include media-breakpoint-up(sm) {
-    top: -4px;
-    left: 25px;
-  }
-  @include media-breakpoint-up(md) {
-    top: 2px;
-    left: 25px;
-  }
-}
-
-.pax-num {
-  position: absolute;
-  transform: rotateZ(-10deg);
-  @include media-breakpoint-up(sm) {
-    top: 100px;
-    left: 30px;
-  }
-  @include media-breakpoint-up(md) {
-    top: 118px;
-    left: 45px;
-  }
-  @include media-breakpoint-up(lg) {
-    top: 165px;
-    left: 45px;
-  }
-  @include media-breakpoint-up(xl) {
-    top: 118px;
-    left: 45px;
-  }
-  &-img {
-    width: 100px;
-  }
-}
-
 .user-img {
   width: 50px;
   height: 50px;
@@ -256,22 +115,4 @@
 .bg-404 {
   background-image: url('https://images.unsplash.com/photo-1520052205864-92d242b3a76b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80');
   background-position: center;
-}
-
-.cart-img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  @include media-breakpoint-up(sm) {
-    width: 100px;
-    height: 100px;
-  }
-}
-
-.delete-cart-icon {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  color: $black;
 }

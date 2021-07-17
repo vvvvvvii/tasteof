@@ -1,0 +1,61 @@
+.pax-num {
+  position: absolute;
+  transform: rotateZ(-10deg);
+  @include media-breakpoint-up(sm) {
+    top: 100px;
+    left: 30px;
+  }
+  @include media-breakpoint-up(md) {
+    top: 118px;
+    left: 45px;
+  }
+  @include media-breakpoint-up(lg) {
+    top: 165px;
+    left: 45px;
+  }
+  @include media-breakpoint-up(xl) {
+    top: 118px;
+    left: 45px;
+  }
+  &-img {
+    width: 100px;
+  }
+}
+.cart-num {
+  position: absolute;
+  padding: 4px 8px;
+  border-radius: 50%;
+  background: $danger;
+  color: $black;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  top: -6px;
+  left: 20px;
+  @include media-breakpoint-up(sm) {
+    top: -4px;
+    left: 25px;
+  }
+  @include media-breakpoint-up(md) {
+    top: 2px;
+    left: 25px;
+  }
+}
+
+.cart-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  @include media-breakpoint-up(sm) {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.delete-cart-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: $black;
+}

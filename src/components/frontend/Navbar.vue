@@ -30,8 +30,6 @@
           border-lg-bottom-0 border-bottom pb-lg-0 pb-3"
         >
           <li class="nav-item px-3">
-            <!-- exact-path: Allows matching only using the path section of the url,
-            effectively ignoring the query and the hash sections. -->
             <router-link
               to="/product_list?search=城市導覽"
               class="nav-link"

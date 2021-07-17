@@ -1,24 +1,74 @@
 <template>
   <div class="pt-7">
     <div class="banner">
-      <a>
-        <div class="city-tour-banner-btn">
-          <h3 class="city-tour-banner-btn-title"># 城市導覽</h3>
-        </div>
-      </a>
-      <a>
-        <div class="tkt-banner-btn">
-          <h3 class="tkt-banner-btn-title"># 票券體驗</h3>
-        </div>
-      </a>
-      <a>
-        <div class="rent-cart-banner-btn">
-          <h3 class="rent-cart-banner-btn-title"># 包車服務</h3>
-        </div>
-      </a>
-
-      <!-- <h2 class="h1 fw-bold mb-4">品嚐<span class="text-secondary">旅程</span>的滋味</h2>
-      <i class="bi bi-arrow-down-circle-fill h2 text-secondary"></i> -->
+      <ul>
+        <li>
+          <router-link to="/product_list?search=城市導覽" exact-path>
+            <div class="banner-btn banner-btn-city-tour">
+              <h3 class="banner-title h2-lg banner-btn-city-tour-title"># 城市導覽</h3>
+            </div>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/product_list?search=體驗票券" exact-path>
+            <div class="banner-btn banner-btn-tkt">
+              <h3 class="banner-title h2-lg banner-btn-tkt-title"># 體驗票券</h3>
+            </div>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/product_list?search=包車服務" exact-path>
+            <div class="banner-btn banner-btn-rent-cart">
+              <h3 class="banner-title h2-lg banner-btn-rent-cart-title"># 包車服務</h3>
+            </div>
+          </router-link>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <router-link :to="`/product_list?search=雙北`" exact-path>
+            <div class="banner-btn banner-btn-tpe">
+              <h3 class="banner-title h4 banner-btn-tpe-title"># 大台北</h3>
+            </div>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="`/product_list?search=中彰投`" exact-path>
+            <div class="banner-btn banner-btn-txg">
+              <h3 class="banner-title h4 banner-btn-txg-title"># 中彰投</h3>
+            </div>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="`/product_list?search=嘉南`" exact-path>
+            <div class="banner-btn banner-btn-tnn">
+              <h3 class="banner-title h4 banner-btn-tnn-title"># 嘉南</h3>
+            </div>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="`/product_list?search=高屏`" exact-path>
+            <div class="banner-btn banner-btn-kao">
+              <h3 class="banner-title h4 banner-btn-kao-title"># 高屏</h3>
+            </div>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="`/product_list?search=花東`" exact-path>
+            <div class="banner-btn banner-btn-hun">
+              <h3 class="banner-title h4 banner-btn-hun-title"># 花東</h3>
+            </div>
+          </router-link>
+        </li>
+      </ul>
+      <div class="car"></div>
+      <div class="banner-text">
+        <h2 class="h1-lg fw-bold mb-2">品嚐</h2>
+        <h2 class="h1-lg fw-bold mb-4 d-flex align-items-center">
+          旅程滋味
+          <i class="bi bi-arrow-down-circle-fill h2 ms-2"></i>
+        </h2>
+      </div>
     </div>
     <div class="container py-8">
       <div class="mb-7">
@@ -250,7 +300,7 @@ export default {
         },
       ],
       randomCity: '',
-      btnShow: true,
+      btnShow: false,
       showAlert: false,
       alertMsg: '',
     };
@@ -313,7 +363,7 @@ export default {
     this.getMainProduct();
     this.getArticles();
     this.listener = () => {
-      this.btnShow = window.scrollY > 0;
+      this.btnShow = window.scrollY > 400;
     };
     window.addEventListener('scroll', this.listener);
   },
