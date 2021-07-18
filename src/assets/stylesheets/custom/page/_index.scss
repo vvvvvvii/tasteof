@@ -9,21 +9,26 @@
   font-size: 2.5rem;
 }
 .banner {
-  position: relative;
-  height: 360px;
+  padding: 2rem 0;
   background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%83%8C%E6%99%AF1.png?raw=true);
-  background-image: -webkit-cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%83%8C%E6%99%AF1.png?raw=true), 70%); // 讓背景透明但上面的字不影響
-  background-image: cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%83%8C%E6%99%AF1.png?raw=true), 70%); // 讓背景透明但上面的字不影響
-  @include media-breakpoint-up(md) {
+  background-image: -webkit-cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%83%8C%E6%99%AF1.png?raw=true), 90%); // 讓背景透明但上面的字不影響
+  background-image: cross-fade(url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==), url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%83%8C%E6%99%AF1.png?raw=true), 90%); // 讓背景透明但上面的字不影響
+  @include media-breakpoint-up(lg) {
     height: 600px;
+    position: relative;
   }
   @include media-breakpoint-up(xl) {
     height: 760px;
   }
   &-btn {
-    position: absolute;
     background-size: contain;
     background-repeat: no-repeat;
+    @include media-breakpoint-up(sm) {
+      height: 150px;
+    }
+    @include media-breakpoint-up(lg) {
+      position: absolute;
+    }
     &:hover {
       cursor: pointer;
       transform: scale(1.1);
@@ -32,52 +37,43 @@
     }
   }
   &-title {
-    position: absolute;
     font-weight: bold;
     color: $light;
     background: $primary;
     border-radius: 0.5rem;
     padding: 0.25rem 0.5rem;
+    text-align: center;
+    @include media-breakpoint-up(lg) {
+      position: absolute;
+    }
   }
   &-text {
-    position: absolute;
-    bottom: 10%;
-    left: 31%;
     color: $white;
-    @include media-breakpoint-up(sm) {
-      bottom: 10%;
-      left: 31%;
-    }
-    @include media-breakpoint-up(md) {
-      bottom: 33%;
-      left: 40%;
-    }
     @include media-breakpoint-up(lg) {
-      bottom: 6%;
+      position: absolute;
+      top: 63%;
       left: 31%;
     }
     @include media-breakpoint-up(xl) {
-      bottom: 10%;
+      top: 65%;
       left: 31%;
     }
   }
 }
 .banner-btn-city-tour,
 .banner-btn-tkt,
-.banner-btn-rent-cart {
-  width: 350px;
-  height: 350px;
-  @include media-breakpoint-up(sm) {
-    width: 350px;
-    height: 350px;
-  }
+.banner-btn-rent-car {
+  background-size: cover;
+  width: 150px;
+  height: 150px;
   @include media-breakpoint-up(md) {
-    width: 230px;
-    height: 230px;
+    width: 200px;
+    height: 200px;
   }
   @include media-breakpoint-up(lg) {
-    width: 300px;
-    height: 300px;
+    background-size: contain;
+    width: 280px;
+    height: 280px;
   }
   @include media-breakpoint-up(xl) {
     width: 350px;
@@ -89,13 +85,11 @@
 .banner-btn-tnn,
 .banner-btn-kao,
 .banner-btn-hun {
-  width: 200px;
-  height: 200px;
-  @include media-breakpoint-up(sm) {
-    width: 150px;
-    height: 150px;
-  }
-  @include media-breakpoint-up(md) {
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  @include media-breakpoint-up(lg) {
+    background-size: contain;
     width: 150px;
     height: 150px;
   }
@@ -106,171 +100,118 @@
 }
 .banner-btn {
   &-city-tour {
-    top: 32%;
-    left: 2%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E5%9F%8E%E5%B8%82%E5%B0%8E%E8%A6%BDicon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      top: 2%;
-      left: 2%;
-    }
     @include media-breakpoint-up(lg) {
       top: 32%;
       left: 2%;
     }
     &-title {
-      bottom: -5%;
-      left: 30%;
-      transform: rotate(-5deg);
-      -webkit-transform: rotate(-5deg);
-      -moz-transform: rotate(-5deg);
+      @include media-breakpoint-up(lg) {
+        transform: rotate(-5deg);
+        -webkit-transform: rotate(-5deg);
+        -moz-transform: rotate(-5deg);
+        bottom: -5%;
+        left: 30%;
+      }
     }
   }
   &-tkt {
-    top: 4%;
-    left: 41%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E7%A5%A8%E5%88%B8%E9%AB%94%E9%A9%97%20icon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      top: 2%;
-      left: 68%;
-    }
     @include media-breakpoint-up(lg) {
       top: 4%;
       left: 41%;
     }
     &-title {
-      bottom: -13%;
-      transform: rotate(5deg);
-      -webkit-transform: rotate(5deg);
-      -moz-transform: rotate(5deg);
+      @include media-breakpoint-up(lg) {
+        bottom: -13%;
+        transform: rotate(5deg);
+        -webkit-transform: rotate(5deg);
+        -moz-transform: rotate(5deg);
+      }
     }
   }
-  &-rent-cart {
-    top: 27%;
-    right: 2%;
+  &-rent-car {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E5%8C%85%E8%BB%8A%E6%9C%8D%E5%8B%99%20icon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      top: 4%;
-      right: 36%;
-    }
     @include media-breakpoint-up(lg) {
       top: 27%;
-      right: 2%;
+      left: 69%;
     }
     &-title {
-      bottom: 2%;
-      right: -1%;
-      transform: rotate(-5deg);
-      -webkit-transform: rotate(-5deg);
-      -moz-transform: rotate(-5deg);
+      @include media-breakpoint-up(lg) {
+        bottom: 2%;
+        right: -1%;
+        transform: rotate(-5deg);
+        -webkit-transform: rotate(-5deg);
+        -moz-transform: rotate(-5deg);
+      }
     }
   }
   &-tpe {
-    top: 7%;
-    left: 12%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E9%9B%99%E5%8C%97%20icon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      top: 75%;
-      left: 5%;
-    }
     @include media-breakpoint-up(lg) {
       top: 7%;
       left: 12%;
     }
     &-title {
-      top: -10%;
-      transform: rotate(-5deg);
-      -webkit-transform: rotate(-5deg);
-      -moz-transform: rotate(-5deg);
+      @include media-breakpoint-up(lg) {
+        top: -10%;
+        transform: rotate(-5deg);
+        -webkit-transform: rotate(-5deg);
+        -moz-transform: rotate(-5deg);
+      }
     }
   }
   &-txg {
-    top: 6%;
-    right: 18%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E4%B8%AD%E9%83%A8%20icon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      top: 75%;
-      right: 5%;
-    }
     @include media-breakpoint-up(lg) {
       top: 6%;
-      right: 14%;
-    }
-    @include media-breakpoint-up(xl) {
-      top: 6%;
-      right: 18%;
+      left: 70%;
     }
     &-title {
-      top: 10%;
-      right: -20%;
-      transform: rotate(-5deg);
-      -webkit-transform: rotate(-5deg);
-      -moz-transform: rotate(-5deg);
+      @include media-breakpoint-up(lg) {
+        top: 10%;
+        right: -20%;
+        transform: rotate(-5deg);
+        -webkit-transform: rotate(-5deg);
+        -moz-transform: rotate(-5deg);
+      }
     }
   }
   &-tnn {
-    bottom: 4%;
-    right: 14%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E5%8D%97%E9%83%A8%20icon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      bottom: 30%;
-      right: 72%;
-    }
     @include media-breakpoint-up(lg) {
-      bottom: 2%;
-      right: 11%;
-    }
-    @include media-breakpoint-up(xl) {
-      bottom: 4%;
-      right: 14%;
+      top: 70%;
+      left: 72%;
     }
     &-title {
-      bottom: 10%;
-      left: -30%;
-      transform: rotate(5deg);
-      -webkit-transform: rotate(5deg);
-      -moz-transform: rotate(5deg);
+      @include media-breakpoint-up(lg) {
+        display: block;
+        bottom: 10%;
+        left: -30%;
+        transform: rotate(5deg);
+        -webkit-transform: rotate(5deg);
+        -moz-transform: rotate(5deg);
+      }
     }
   }
   &-kao {
-    top: 26%;
-    left: 28%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E9%AB%98%E5%B1%8F%20icon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      top: 47%;
-      left: 80%;
-    }
     @include media-breakpoint-up(lg) {
-      top: 30%;
-      left: 33%;
-    }
-    @include media-breakpoint-up(xl) {
       top: 26%;
       left: 28%;
     }
     &-title {
-      top: 50%;
-      right: 28%;
-      transform: rotate(5deg);
-      -webkit-transform: rotate(5deg);
-      -moz-transform: rotate(5deg);
-      @include media-breakpoint-up(md) {
-        top: 40%;
-        right: 92%;
-      }
       @include media-breakpoint-up(lg) {
         top: 50%;
         right: 28%;
+        transform: rotate(5deg);
+        -webkit-transform: rotate(5deg);
+        -moz-transform: rotate(5deg);
       }
     }
   }
   &-hun {
-    top: 55%;
-    left: 55%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%8A%B1%E6%9D%B1%20icon.png?raw=true);
-    @include media-breakpoint-up(md) {
-      top: 75%;
-      left: 40%;
-    }
     @include media-breakpoint-up(lg) {
       top: 60%;
       left: 56%;
@@ -280,11 +221,13 @@
       left: 55%;
     }
     &-title {
-      top: 30%;
-      right: -10%;
-      transform: rotate(5deg);
-      -webkit-transform: rotate(5deg);
-      -moz-transform: rotate(5deg);
+      @include media-breakpoint-up(lg) {
+        top: 30%;
+        right: -10%;
+        transform: rotate(5deg);
+        -webkit-transform: rotate(5deg);
+        -moz-transform: rotate(5deg);
+      }
     }
   }
 }

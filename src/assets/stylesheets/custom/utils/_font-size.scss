@@ -8,6 +8,12 @@
     font-size: $h2-font-size;
   }
 }
+.h2-md {
+  @include media-breakpoint-up(md) {
+    font-size: $h2-font-size;
+  }
+}
+
 .h3-sm {
   @include media-breakpoint-up(sm) {
     font-size: $h3-font-size;

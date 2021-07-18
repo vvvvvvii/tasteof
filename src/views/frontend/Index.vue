@@ -1,73 +1,154 @@
 <template>
   <div class="pt-7">
     <div class="banner">
-      <ul>
-        <li>
-          <router-link to="/product_list?search=城市導覽" exact-path>
-            <div class="banner-btn banner-btn-city-tour">
-              <h3 class="banner-title h2-lg banner-btn-city-tour-title"># 城市導覽</h3>
+      <div class="container">
+        <!--電腦以上-->
+        <ul class="d-lg-block d-none">
+          <li>
+            <router-link to="/product_list?search=城市導覽" exact-path>
+              <div class="banner-btn banner-btn-city-tour">
+                <h3 class="banner-title h2-lg banner-btn-city-tour-title"># 城市導覽</h3>
+              </div>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/product_list?search=體驗票券" exact-path>
+              <div class="banner-btn banner-btn-tkt">
+                <h3 class="banner-title h2-lg banner-btn-tkt-title"># 體驗票券</h3>
+              </div>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/product_list?search=包車服務" exact-path>
+              <div class="banner-btn banner-btn-rent-car">
+                <h3 class="banner-title h2-lg banner-btn-rent-car-title"># 包車服務</h3>
+              </div>
+            </router-link>
+          </li>
+        </ul>
+        <ul class="d-lg-block d-none">
+          <li>
+            <router-link :to="`/product_list?search=雙北`" exact-path>
+              <div class="banner-btn banner-btn-tpe">
+                <h3 class="banner-title h4 banner-btn-tpe-title"># 大台北</h3>
+              </div>
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="`/product_list?search=中彰投`" exact-path>
+              <div class="banner-btn banner-btn-txg">
+                <h3 class="banner-title h4 banner-btn-txg-title"># 中彰投</h3>
+              </div>
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="`/product_list?search=嘉南`" exact-path>
+              <div class="banner-btn banner-btn-tnn">
+                <h3 class="banner-title h4 banner-btn-tnn-title"># 嘉南</h3>
+              </div>
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="`/product_list?search=高屏`" exact-path>
+              <div class="banner-btn banner-btn-kao">
+                <h3 class="banner-title h4 banner-btn-kao-title"># 高屏</h3>
+              </div>
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="`/product_list?search=花東`" exact-path>
+              <div class="banner-btn banner-btn-hun">
+                <h3 class="banner-title h4 banner-btn-hun-title"># 花東</h3>
+              </div>
+            </router-link>
+          </li>
+        </ul>
+        <div class="car"></div>
+        <div class="d-lg-block d-none banner-text">
+          <h2 class="h1-lg fw-bold mb-2">品嚐</h2>
+          <h2 class="h1-lg fw-bold mb-4 d-flex align-items-center">
+            旅程滋味
+            <i class="bi bi-arrow-down-circle-fill h2 ms-2"></i>
+          </h2>
+        </div>
+        <!--平板以下-->
+        <ul class="row d-lg-none align-items-center">
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=城市導覽" exact-path>
+              <div class="banner-btn banner-btn-city-tour mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-city-tour-title d-inline">
+                  # 城市導覽
+                </h3>
+              </div>
+            </router-link>
+          </li>
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=體驗票券" exact-path>
+              <div class="banner-btn banner-btn-tkt mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-tkt-title d-inline"># 體驗票券</h3>
+              </div>
+            </router-link>
+          </li>
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=包車服務" exact-path>
+              <div class="banner-btn banner-btn-rent-car mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-rent-car-title d-inline"># 包車服務</h3>
+              </div>
+            </router-link>
+          </li>
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=嘉南" exact-path>
+              <div class="banner-btn banner-btn-tnn mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-tnn-title d-inline"># 嘉南</h3>
+              </div>
+            </router-link>
+          </li>
+          <li class="col-sm-4 mb-4">
+            <div class="banner-text text-center">
+              <h2 class="fw-bold mb-2">品嚐</h2>
+              <h2 class="fw-bold mb-4">
+                旅程滋味
+                <i class="bi bi-arrow-down-circle-fill"></i>
+              </h2>
             </div>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/product_list?search=體驗票券" exact-path>
-            <div class="banner-btn banner-btn-tkt">
-              <h3 class="banner-title h2-lg banner-btn-tkt-title"># 體驗票券</h3>
-            </div>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/product_list?search=包車服務" exact-path>
-            <div class="banner-btn banner-btn-rent-cart">
-              <h3 class="banner-title h2-lg banner-btn-rent-cart-title"># 包車服務</h3>
-            </div>
-          </router-link>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <router-link :to="`/product_list?search=雙北`" exact-path>
-            <div class="banner-btn banner-btn-tpe">
-              <h3 class="banner-title h4 banner-btn-tpe-title"># 大台北</h3>
-            </div>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="`/product_list?search=中彰投`" exact-path>
-            <div class="banner-btn banner-btn-txg">
-              <h3 class="banner-title h4 banner-btn-txg-title"># 中彰投</h3>
-            </div>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="`/product_list?search=嘉南`" exact-path>
-            <div class="banner-btn banner-btn-tnn">
-              <h3 class="banner-title h4 banner-btn-tnn-title"># 嘉南</h3>
-            </div>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="`/product_list?search=高屏`" exact-path>
-            <div class="banner-btn banner-btn-kao">
-              <h3 class="banner-title h4 banner-btn-kao-title"># 高屏</h3>
-            </div>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="`/product_list?search=花東`" exact-path>
-            <div class="banner-btn banner-btn-hun">
-              <h3 class="banner-title h4 banner-btn-hun-title"># 花東</h3>
-            </div>
-          </router-link>
-        </li>
-      </ul>
-      <div class="car"></div>
-      <div class="banner-text">
-        <h2 class="h1-lg fw-bold mb-2">品嚐</h2>
-        <h2 class="h1-lg fw-bold mb-4 d-flex align-items-center">
-          旅程滋味
-          <i class="bi bi-arrow-down-circle-fill h2 ms-2"></i>
-        </h2>
+          </li>
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=高屏" exact-path>
+              <div class="banner-btn banner-btn-kao mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-kao-title d-inline"># 高屏</h3>
+              </div>
+            </router-link>
+          </li>
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=雙北" exact-path>
+              <div class="banner-btn banner-btn-tpe mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-tpe-title d-inline"># 雙北</h3>
+              </div>
+            </router-link>
+          </li>
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=花東" exact-path>
+              <div class="banner-btn banner-btn-hun mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-hun-title d-inline"># 花東</h3>
+              </div>
+            </router-link>
+          </li>
+          <li class="col-sm-4 col-6 mb-4">
+            <router-link to="/product_list?search=中彰投" exact-path>
+              <div class="banner-btn banner-btn-txg mx-auto mb-2"></div>
+              <div class="text-center">
+                <h3 class="banner-title h4 banner-btn-txg-title d-inline"># 中彰投</h3>
+              </div>
+            </router-link>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="container py-8">
