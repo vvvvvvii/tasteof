@@ -63,9 +63,10 @@
 .banner-btn-city-tour,
 .banner-btn-tkt,
 .banner-btn-rent-car {
-  background-size: cover;
   width: 150px;
   height: 150px;
+  background-size: contain;
+  background-position: center;
   @include media-breakpoint-up(md) {
     width: 200px;
     height: 200px;
@@ -87,9 +88,9 @@
 .banner-btn-hun {
   width: 150px;
   height: 150px;
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
   @include media-breakpoint-up(lg) {
-    background-size: contain;
     width: 150px;
     height: 150px;
   }
@@ -202,8 +203,8 @@
     }
     &-title {
       @include media-breakpoint-up(lg) {
-        top: 50%;
-        right: 28%;
+        top: 60%;
+        left: 10%;
         transform: rotate(5deg);
         -webkit-transform: rotate(5deg);
         -moz-transform: rotate(5deg);
