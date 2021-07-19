@@ -1,14 +1,15 @@
 .searchBox {
-  border: 0.5px solid $secondary;
-  border-radius: 16px 16px 0 0;
+  border-radius: 0.5rem;
   &-header {
     border-radius: inherit;
-    background: $secondary;
-    color: $white;
-    padding: 1.25rem 1rem;
+    background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/searchBox.png?raw=true);
+    background-repeat: no-repeat;
+    height: 4rem;
   }
   &-body {
+    border-radius: inherit;
     @include media-breakpoint-up(lg) {
+      border-top: 3px solid #9a5836;
       background: $white;
       padding: 2rem 1.5rem;
     }

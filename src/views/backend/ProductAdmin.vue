@@ -144,7 +144,7 @@
     <pagination
       :page="pagination"
       @emit-pagination="getData"
-      v-if="pagination.total_pages > 1"
+      v-if="pagination.total_pages > 1 && filterProduct.length > 9"
     ></pagination>
     <!--add / edit product modal-->
     <product-edit-modal
@@ -178,6 +178,7 @@ export default {
     return {
       temp: {
         title: '',
+        totalBookingNum: 0,
         category: '',
         origin_price: 0,
         price: 0,
@@ -187,6 +188,7 @@ export default {
         duration: {},
         is_enabled: true,
         is_mainProduct: false,
+        is_freeCxl: false,
         imageUrl: '',
         otherImageUrl: '',
         imagesUrl: [],
@@ -492,6 +494,14 @@ export default {
       commentAdminBtn.children[0].classList.remove('d-none');
       const item = {};
       item.data = { ...tempProduct };
+      // 計算平均評價分數
+      if (item.data.comments !== undefined) {
+        let totalScore = 0;
+        item.data.comments.forEach((comment) => {
+          totalScore += Number(comment.score);
+        });
+        item.data.averageScore = (totalScore / item.data.comments.length).toFixed(1);
+      }
       const { id } = tempProduct;
       this.$http
         .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${id}`, item)

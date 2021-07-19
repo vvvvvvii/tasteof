@@ -21,7 +21,7 @@
         >
           <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header py-2">
+              <div class="modal-header bg-wave py-2 mb-3 position-relative">
                 <h5 class="modal-title fw-bold h4" id="filterArticlePadModalLabel">
                   篩出你的心有所屬
                 </h5>
@@ -33,6 +33,7 @@
                 >
                   <i class="bi bi-x-lg"></i>
                 </button>
+                <div class="cable-car"></div>
               </div>
               <div class="modal-body p-6">
                 <div
@@ -80,19 +81,18 @@
       </div>
     </div>
   </div>
-  <div class="bg-light">
+  <div class="bg-wave">
     <div class="container pt-lg-7">
       <div class="row py-lg-8 py-6">
         <!--電腦版搜尋欄-->
         <div class="col-lg-4 mb-lg-0">
           <div class="searchBox d-lg-block d-none">
-            <div class="searchBox-header">
-              <h3 class="fw-bold">篩選</h3>
-            </div>
+            <div class="searchBox-header"></div>
             <div class="searchBox-body">
               <h4 class="mb-6 h3">地區</h4>
               <div
-                class="d-flex flex-wrap btn-group pb-3 mb-5 border-bottom border-gray"
+                class="d-flex flex-wrap btn-group pb-3 mb-5
+                border-bottom border-gray position-relative"
                 role="group"
                 aria-label="Basic checkbox toggle button group"
               >
@@ -105,12 +105,13 @@
                     :value="item"
                     v-model="searchArticleTag"
                   />
-                  <label :for="item" class="btn btn-outline-secondary rounded-3"
+                  <label :for="item" class="btn btn-outline-secondary rounded-2"
                     ># {{ item }}
                   </label>
                 </div>
+                <div class="cable-car"></div>
               </div>
-              <h4 class="mb-6 h3">類型</h4>
+              <h4 class="pt-3 mb-6 h3">類型</h4>
               <div
                 class="d-flex flex-wrap btn-group"
                 role="group"
@@ -125,7 +126,7 @@
                     :value="item"
                     v-model="searchArticleTag"
                   />
-                  <label :for="item" class="btn btn-outline-secondary rounded-3"
+                  <label :for="item" class="btn btn-outline-secondary rounded-2"
                     ># {{ item }}
                   </label>
                 </div>
@@ -164,7 +165,7 @@
           <pagination
             :page="pagination"
             @emit-pagination="getData"
-            v-if="pagination.total_pages > 1"
+            v-if="filterArticle.length > 10"
           ></pagination>
         </div>
       </div>

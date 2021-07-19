@@ -52,7 +52,7 @@
             >
               <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header py-2">
+                  <div class="modal-header bg-wave py-2 mb-3 position-relative">
                     <h5 class="modal-title fw-bold h4" id="filterProductPadModalLabel">
                       篩出你的心有所屬
                     </h5>
@@ -64,6 +64,7 @@
                     >
                       <i class="bi bi-x-lg"></i>
                     </button>
+                    <div class="cable-car"></div>
                   </div>
                   <div class="modal-body p-6">
                     <div class="d-flex justify-content-between align-items-center mb-6">
@@ -122,7 +123,7 @@
             >
               <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header py-2">
+                  <div class="modal-header bg-wave py-2 mb-3 position-relative">
                     <h5 class="modal-title fw-bold h4" id="exampleModalLabel">
                       總是有個高低順序
                     </h5>
@@ -134,6 +135,7 @@
                     >
                       <i class="bi bi-x-lg"></i>
                     </button>
+                    <div class="cable-car"></div>
                   </div>
                   <div class="modal-body p-6">
                     <select
@@ -156,15 +158,13 @@
       </div>
     </div>
   </div>
-  <div class="bg-light">
+  <div class="bg-wave">
     <div class="container pt-lg-7">
       <div class="row py-lg-8 py-6">
         <!--電腦版搜尋欄-->
         <div class="col-lg-4 mb-lg-0">
           <div class="searchBox d-lg-block d-none">
-            <div class="searchBox-header">
-              <h3 class="fw-bold">搜尋</h3>
-            </div>
+            <div class="searchBox-header"></div>
             <div class="searchBox-body">
               <label for="searchProductDestinationPc" class="mb-6 h3">篩選</label>
               <input
@@ -182,15 +182,16 @@
                 <option value="2DaysTrip">兩天一夜</option>
                 <option value="3DaysTrip">三天兩夜</option>
               </select>
-              <div class="pb-6 mb-6 border-bottom border-gray">
+              <div class="mb-6 pb-6 border-bottom border-gray position-relative">
                 <h4 class="mb-6 h3">預算</h4>
                 <vue-slider
                   v-model="budget"
                   v-bind="options"
                   :tooltip-formatter="'NT {value}'"
                 ></vue-slider>
+                <div class="cable-car"></div>
               </div>
-              <h4 class="mb-6 h3">早已心有所屬？</h4>
+              <h4 class="pt-3 mb-6 h3">早已心有所屬？</h4>
               <div
                 class="d-flex flex-wrap btn-group"
                 role="group"
@@ -205,7 +206,7 @@
                     :value="item"
                     v-model="searchProductTag"
                   />
-                  <label :for="item" class="btn btn-outline-secondary rounded-3"
+                  <label :for="item" class="btn btn-outline-secondary rounded-2"
                     ># {{ item }}
                   </label>
                 </div>
@@ -237,17 +238,36 @@
               <template v-if="index >= pagination.page_start - 1 && index < pagination.page_end">
                 <router-link :to="`/product/${item.id}`" class="card card-row">
                   <img class="card-row-img" :src="item.imageUrl" :alt="item.title" />
-                  <div class="card-body">
+                  <div class="card-body px-6">
                     <div>
                       <h5 class="card-title">{{ item.title }}</h5>
-                      <p class="ellipsis ellipsis-width d-sm-block d-none">
+                      <p class="ellipsis-multi-line">
                         {{ item.description }}
                       </p>
                     </div>
-                    <p class="card-paragraph text-end">
-                      <span class="card-subtitle ">NT {{ addComma(item.lowestPrice) }} 起</span>
-                      / {{ item.lowestPriceUnit }}
-                    </p>
+                    <div class="d-flex justify-content-between align-items-end">
+                      <div class="h4-md h5 text-gray">
+                        <p class="mb-1" v-if="item.comments">
+                          <i class="bi bi-star-fill"></i>
+                          <span class="ms-sm-2 ms-1"
+                            >{{ item.averageScore }} ( {{ item.comments.length }} )</span
+                          >
+                        </p>
+                        <p class="mb-1" v-if="item.totalBookingNum">
+                          <i class="bi bi-hand-thumbs-up-fill"></i>
+                          <span class="ms-sm-2 ms-1">{{ item.totalBookingNum }} + </span>
+                          <span class="d-sm-inline d-none">已訂購</span>
+                        </p>
+                        <p v-if="item.is_freeCxl">
+                          <i class="bi bi-hourglass-split"></i>
+                          <span class="ms-sm-2 ms-1">免費取消政策</span>
+                        </p>
+                      </div>
+                      <p class="card-paragraph text-end">
+                        <span class="card-subtitle">NT {{ addComma(item.lowestPrice) }} 起</span>
+                        <span class="d-sm-inline d-none"> / {{ item.lowestPriceUnit }}</span>
+                      </p>
+                    </div>
                   </div>
                 </router-link>
               </template>
@@ -257,7 +277,7 @@
           <pagination
             :page="pagination"
             :filter-product="filterProduct"
-            v-if="pagination.total_pages > 1"
+            v-if="filterProduct.length > 10"
             @emit-pagination="changePage"
           ></pagination>
         </div>

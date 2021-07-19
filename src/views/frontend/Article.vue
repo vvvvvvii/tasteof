@@ -64,7 +64,7 @@
                 <img :src="item.imageUrl" :alt="item.title" class="card-img" />
               </div>
               <div class="card-body">
-                <h4 class="card-title ellipsis">{{ item.title }}</h4>
+                <h4 class="card-title ellipsis ellipsis-one-line">{{ item.title }}</h4>
                 <p class="h3-md h5 text-end">NT {{ addComma(item.lowestPrice) }} 起</p>
               </div>
             </router-link>

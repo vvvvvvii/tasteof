@@ -8,7 +8,7 @@
           tabindex="-1"
           aria-disabled="true"
           @click.prevent="changePage(page.current_page - 1)"
-          >Previous</a
+          >上一頁</a
         >
       </li>
       <li
@@ -21,7 +21,7 @@
         <a class="page-link" href="#">{{ item }}</a>
       </li>
       <li class="page-item" :class="{ disabled: !page.has_next }">
-        <a class="page-link" href="#" @click.prevent="changePage(page.current_page + 1)">Next</a>
+        <a class="page-link" href="#" @click.prevent="changePage(page.current_page + 1)">下一頁</a>
       </li>
     </ul>
   </nav>

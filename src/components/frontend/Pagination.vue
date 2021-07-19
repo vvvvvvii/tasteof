@@ -8,7 +8,7 @@
           tabindex="-1"
           aria-disabled="true"
           @click.prevent="emitChangePage(pagination.current_page - 1)"
-          >Previous</a
+          >上一頁</a
         >
       </li>
       <li
@@ -22,7 +22,7 @@
       </li>
       <li class="page-item" :class="{ disabled: !pagination.has_next }">
         <a class="page-link" href="#" @click.prevent="emitChangePage(pagination.current_page + 1)"
-          >Next</a
+          >下一頁</a
         >
       </li>
     </ul>

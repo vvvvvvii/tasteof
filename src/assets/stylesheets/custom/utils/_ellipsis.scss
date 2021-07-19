@@ -1,7 +1,5 @@
 .ellipsis {
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   &-width {
     width: 150px;
     @include media-breakpoint-up(sm) {
@@ -15,6 +13,24 @@
     }
     @include media-breakpoint-up(xl) {
       width: 450px;
+    }
+  }
+  &-one-line {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &-multi-line {
+    display: none;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: break-word;
+    @include media-breakpoint-up(sm) {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+    }
+    @include media-breakpoint-up(md) {
+      -webkit-line-clamp: 2;
     }
   }
 }

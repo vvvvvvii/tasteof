@@ -111,20 +111,32 @@
               <!--文字登打區-->
               <div class="col-8">
                 <Form v-slot="{ errors }" @submit="submitProduct" class="mb-4">
-                  <div class="mb-2">
-                    <label for="productTitle" class="form-label">標題</label>
-                    <Field
-                      type="text"
-                      id="productTitle"
-                      name="標題"
-                      class="form-control"
-                      :class="{ 'is-invalid': errors['標題'] }"
-                      rules="required"
-                      v-model="tempProduct.title"
-                    ></Field>
-                    <ErrorMessage name="標題" class="invalid-feedback"></ErrorMessage>
-                  </div>
                   <div class="row">
+                    <div class="col-8">
+                      <div class="mb-2">
+                        <label for="productTitle" class="form-label">標題</label>
+                        <Field
+                          type="text"
+                          id="productTitle"
+                          name="標題"
+                          class="form-control"
+                          :class="{ 'is-invalid': errors['標題'] }"
+                          rules="required"
+                          v-model="tempProduct.title"
+                        ></Field>
+                        <ErrorMessage name="標題" class="invalid-feedback"></ErrorMessage>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <label for="totalBookingNum" class="form-label">累積參加人數</label>
+                      <input
+                        type="number"
+                        id="totalBookingNum"
+                        min="0"
+                        class="form-control"
+                        v-model.number="tempProduct.totalBookingNum"
+                      />
+                    </div>
                     <div class="col-6 mb-2">
                       <label for="productCategory" class="form-label">分類</label>
                       <Field
@@ -145,31 +157,33 @@
                     </div>
                     <div class="col-6 mb-2">
                       <label for="productDurationDay" class="form-label">行程長度</label>
-                      <div class="d-flex">
+                      <div class="d-flex align-items-center">
                         <input
                           type="number"
                           id="productDurationDay"
-                          class="form-control"
+                          class="form-control w-50"
                           min="0"
-                          max=""
                           v-model.number="tempProduct.duration.day"
-                        />天
+                        />
+                        <span class="ms-2 w-50">天</span>
                         <input
                           type="number"
                           id="productDurationHours"
-                          class="form-control"
+                          class="form-control w-50"
                           min="0"
                           max="23"
                           v-model.number="tempProduct.duration.hours"
-                        />小時
+                        />
+                        <span class="ms-2 w-50">小時</span>
                         <input
                           type="number"
                           id="productDurationMin"
-                          class="form-control"
+                          class="form-control w-50"
                           min="0"
                           max="59"
                           v-model.number="tempProduct.duration.min"
-                        />分
+                        />
+                        <span class="ms-2 w-50">分</span>
                       </div>
                     </div>
                   </div>
@@ -232,7 +246,7 @@
                       v-model.trim="tempProduct.ageRestriction"
                     />
                   </div>
-                  <div class="mb-6">
+                  <div class="mb-2">
                     <label for="productPolicy" class="form-label">適用規定</label>
                     <Field
                       type="text"
@@ -391,23 +405,34 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="productEnabled"
-                      v-model="tempProduct.is_enabled"
-                    />
-                    <label class="form-check-label" for="productEnabled">產品是否啟用</label>
-                  </div>
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="mainProduct"
-                      v-model="tempProduct.is_mainProduct"
-                    />
-                    <label class="form-check-label" for="mainProduct">是否為主打商品</label>
+                  <div class="d-flex justify-content-between mb-6">
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="productEnabled"
+                        v-model="tempProduct.is_enabled"
+                      />
+                      <label class="form-check-label" for="productEnabled">產品是否啟用</label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="mainProduct"
+                        v-model="tempProduct.is_mainProduct"
+                      />
+                      <label class="form-check-label" for="mainProduct">是否為主打商品</label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="freeCxl"
+                        v-model="tempProduct.is_freeCxl"
+                      />
+                      <label class="form-check-label" for="freeCxl">是否享三天前免費取消</label>
+                    </div>
                   </div>
                   <div class="d-flex justify-content-center">
                     <button

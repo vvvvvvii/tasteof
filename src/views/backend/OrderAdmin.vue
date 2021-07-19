@@ -117,7 +117,7 @@
     <order-delete-modal :temp="temp" @emit-delete-modal="deleteOrder"></order-delete-modal>
     <!--pagination-->
     <pagination
-      v-if="pagination.total_pages > 1"
+      v-if="pagination.total_pages > 1 && filterOrder.length > 10"
       :page="pagination"
       @emit-pagination="getData"
     ></pagination>

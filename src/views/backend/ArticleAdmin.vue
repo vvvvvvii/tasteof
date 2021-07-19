@@ -91,7 +91,7 @@
     <pagination
       :page="pagination"
       @emit-pagination="getData"
-      v-if="pagination.total_pages > 1"
+      v-if="pagination.total_pages > 1 && filterArticle.length > 9"
     ></pagination>
     <!--add / edit modal-->
     <article-edit-modal
