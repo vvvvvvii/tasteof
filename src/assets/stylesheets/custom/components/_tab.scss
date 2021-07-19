@@ -1,9 +1,9 @@
 .tab {
-  padding: 1rem 0;
+  padding: 1rem;
   display: flex;
   align-items: center;
+  border-radius: 1rem;
   &-img {
-    border-radius: 1rem;
     width: 80px;
     height: 80px;
     @include media-breakpoint-up(lg) {

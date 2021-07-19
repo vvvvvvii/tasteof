@@ -30,7 +30,7 @@
           <li>
             <router-link :to="`/product_list?search=雙北`" exact-path>
               <div class="banner-btn banner-btn-tpe">
-                <h3 class="banner-title h4 banner-btn-tpe-title"># 大台北</h3>
+                <h3 class="banner-title h4 banner-btn-tpe-title"># 雙北</h3>
               </div>
             </router-link>
           </li>
@@ -63,7 +63,6 @@
             </router-link>
           </li>
         </ul>
-        <div class="car"></div>
         <div class="d-lg-block d-none banner-text">
           <h2 class="h1-lg fw-bold mb-2">品嚐</h2>
           <h2 class="h1-lg fw-bold mb-4 d-flex align-items-center">
@@ -151,40 +150,63 @@
         </ul>
       </div>
     </div>
+    <div class="bg-light pb-7">
+      <div class="container pt-8">
+        <div class="mb-7">
+          <h2 class="h2 text-primary mb-3">你愛的都在這！</h2>
+          <ul class="row">
+            <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in popularCategories" :key="key">
+              <router-link
+                :to="`/product_list?search=${item.urlTitle}`"
+                class="tab bg-white"
+                active-class="active"
+                exact-path
+              >
+                <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
+                <div class="tab-title">{{ item.name }}</div>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="h2 text-primary mb-3">下個目的地？</h2>
+          <ul class="row">
+            <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in cities" :key="key">
+              <router-link
+                :to="`/product_list?search=${item.name}`"
+                class="tab bg-white"
+                active-class="active"
+                exact-path
+              >
+                <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
+                <div class="tab-title">{{ item.name }}</div>
+              </router-link>
+            </li>
+            <li class="col-lg-4 col-sm-6 mb-4">
+              <!-- 讓 search= 隨機一個 tag -->
+              <router-link
+                :to="`/product_list?search=${randomCity}`"
+                class="tab bg-white"
+                active-class="active"
+                exact-path
+              >
+                <img
+                  src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/random.png?raw=true"
+                  alt="來點驚喜"
+                  class="tab-img"
+                />
+                <div class="tab-title">
+                  <p>來點<br />驚喜</p>
+                </div>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="container py-8">
-      <div class="mb-7">
-        <h2 class="h2 text-primary mb-3">下個目的地？</h2>
-        <ul class="row">
-          <li class="col-md-4 col-6 mb-4" v-for="(item, key) in cities" :key="key">
-            <router-link
-              :to="`/product_list?search=${item.name}`"
-              class="tab"
-              active-class="active"
-              exact-path
-            >
-              <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
-              <div class="tab-title">{{ item.name }}</div>
-            </router-link>
-          </li>
-          <li class="col-md-4 col-6 mb-4">
-            <!-- 讓 search= 隨機一個 tag -->
-            <router-link
-              :to="`/product_list?search=${randomCity}`"
-              class="tab"
-              active-class="active"
-              exact-path
-            >
-              <img
-                src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/random.png?raw=true"
-                alt="來點驚喜"
-                class="tab-img"
-              />
-              <div class="tab-title">
-                <p>來點<br />驚喜</p>
-              </div>
-            </router-link>
-          </li>
-        </ul>
+      <div class="position-relative">
+        <div class="car"></div>
       </div>
       <div class="mb-7" v-if="mainProducts.length > 0">
         <h2 class="h2 text-primary mb-6">本季主打</h2>
@@ -212,7 +234,10 @@
           </SwiperSlide>
         </Swiper>
       </div>
-      <div v-if="articles.length > 0">
+      <div v-if="articles.length > 0" class="pt-2">
+        <div class="position-relative">
+          <div class="car"></div>
+        </div>
         <h2 class="h2 text-primary mb-6">更多玩樂靈感</h2>
         <div class="row mb-md-3 mb-2">
           <div class="col-lg-8 col-md-6 mb-md-0 mb-2">
@@ -358,6 +383,38 @@ export default {
       },
       mainProducts: [],
       articles: [],
+      popularCategories: [
+        {
+          name: '活動',
+          urlTitle: '城市導覽',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tour.png?raw=true',
+        },
+        {
+          name: '票券',
+          urlTitle: '體驗票券',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tkt.png?raw=true',
+        },
+        {
+          name: '包車',
+          urlTitle: '包車服務',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/car.png?raw=true',
+        },
+        {
+          name: '親子',
+          urlTitle: '親子',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/children.png?raw=true',
+        },
+        {
+          name: '浪漫',
+          urlTitle: '浪漫',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/romance.png?raw=true',
+        },
+        {
+          name: '獨家',
+          urlTitle: '獨家代理',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/special.png?raw=true',
+        },
+      ],
       cities: [
         {
           name: '雙北',

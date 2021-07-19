@@ -63,8 +63,8 @@
 .banner-btn-city-tour,
 .banner-btn-tkt,
 .banner-btn-rent-car {
-  width: 150px;
-  height: 150px;
+  width: 140px;
+  height: 140px;
   background-size: contain;
   background-position: center;
   @include media-breakpoint-up(md) {
@@ -86,8 +86,8 @@
 .banner-btn-tnn,
 .banner-btn-kao,
 .banner-btn-hun {
-  width: 150px;
-  height: 150px;
+  width: 140px;
+  height: 140px;
   background-size: contain;
   background-position: center;
   @include media-breakpoint-up(lg) {
@@ -193,6 +193,10 @@
         -webkit-transform: rotate(5deg);
         -moz-transform: rotate(5deg);
       }
+      @include media-breakpoint-up(xl) {
+        bottom: 10%;
+        left: -10%;
+      }
     }
   }
   &-kao {
@@ -218,7 +222,7 @@
       left: 56%;
     }
     @include media-breakpoint-up(xl) {
-      top: 55%;
+      top: 58%;
       left: 55%;
     }
     &-title {
@@ -229,30 +233,31 @@
         -webkit-transform: rotate(5deg);
         -moz-transform: rotate(5deg);
       }
+      @include media-breakpoint-up(xl) {
+        top: 35%;
+        right: -10%;
+      }
     }
   }
 }
 .car {
   position: absolute;
   bottom: 0px;
-  left: 50%;
+  left: 90%;
   width: 70px;
   height: 70px;
   overflow: hidden;
   background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/car%20icon.png?raw=true);
   background-size: contain;
   background-repeat: no-repeat;
+  background-position-y: center;
   animation-name: car;
   animation-duration: 20s;
   animation-iteration-count: infinite;
-  display: none;
-  @include media-breakpoint-up(lg) {
-    display: block;
-  }
 }
 @keyframes car {
   0% {
-    left: 71%;
+    left: 90%;
     opacity: 0;
   }
   50% {
