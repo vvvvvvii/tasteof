@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-7">
+  <div class="pt-7 flex-fill">
     <!--平板以下搜尋欄-->
     <div class="bg-secondary pt-3 pb-2 position-fixed w-100 z-index-sticky d-lg-none">
       <div class="container">
@@ -78,10 +78,13 @@
         </div>
         <div class="col-lg-8 py-lg-0 py-md-6 py-sm-4 py-2">
           <Swiper
+            :autoplay="{
+              delay: 2500,
+              disableOnInteraction: false,
+            }"
             :loop="true"
             :slides-per-view="3"
             :spaceBetween="0"
-            :navigation="true"
             class="mySwiper"
           >
             <button
@@ -683,10 +686,8 @@ export default {
     window.removeEventListener('scroll', this.listener);
   },
   watch: {
-    '$route.params.id': {
-      handler() {
-        this.$router.go(); // 加這句不然按更多相似活動時，網址有變內容卻要手動重新整理才會變新商品
-      },
+    id() {
+      this.getData();
     },
   },
 };

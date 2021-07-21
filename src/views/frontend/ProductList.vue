@@ -1,154 +1,156 @@
 <template>
-  <!--平板以下搜尋欄-->
-  <div class="bg-secondary d-lg-none">
-    <div class="container">
-      <div class="row justify-content-center pt-8 pb-4">
-        <div class="col-8 d-lg-none d-block">
-          <div class="searchBox-body">
-            <div class="input-group mb-2">
-              <label
-                for="searchProductDestinationPad"
-                class="input-group-text bg-white border-primary border-right-0"
+  <div class="flex-fill">
+    <!--平板以下搜尋欄-->
+    <div class="bg-secondary d-lg-none">
+      <div class="container">
+        <div class="row justify-content-center pt-8 pb-4">
+          <div class="col-8 d-lg-none d-block">
+            <div class="searchBox-body">
+              <div class="input-group mb-2">
+                <label
+                  for="searchProductDestinationPad"
+                  class="input-group-text bg-white border-primary border-right-0"
+                >
+                  <span><i class="bi bi-search"></i></span>
+                </label>
+                <input
+                  type="search"
+                  class="form-control border-left-0"
+                  placeholder="今天想去哪？"
+                  v-model="searchProductDestination"
+                  id="searchProductDestinationPad"
+                />
+              </div>
+              <div class="d-flex">
+                <div class="w-50">
+                  <button
+                    type="button"
+                    class="btn btn-outline-light w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#filterProductPadModal"
+                  >
+                    篩選
+                  </button>
+                </div>
+                <div class="w-50 ms-2">
+                  <button
+                    type="button"
+                    class="btn btn-outline-light w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#sortProductPadModal"
+                  >
+                    排序
+                  </button>
+                </div>
+              </div>
+              <!-- 篩選 Modal -->
+              <div
+                class="modal fade"
+                id="filterProductPadModal"
+                tabindex="-1"
+                aria-labelledby="filterProductPadModalLabel"
+                aria-hidden="true"
               >
-                <span><i class="bi bi-search"></i></span>
-              </label>
-              <input
-                type="search"
-                class="form-control border-left-0"
-                placeholder="今天想去哪？"
-                v-model="searchProductDestination"
-                id="searchProductDestinationPad"
-              />
-            </div>
-            <div class="d-flex">
-              <div class="w-50">
-                <button
-                  type="button"
-                  class="btn btn-outline-light w-100"
-                  data-bs-toggle="modal"
-                  data-bs-target="#filterProductPadModal"
-                >
-                  篩選
-                </button>
-              </div>
-              <div class="w-50 ms-2">
-                <button
-                  type="button"
-                  class="btn btn-outline-light w-100"
-                  data-bs-toggle="modal"
-                  data-bs-target="#sortProductPadModal"
-                >
-                  排序
-                </button>
-              </div>
-            </div>
-            <!-- 篩選 Modal -->
-            <div
-              class="modal fade"
-              id="filterProductPadModal"
-              tabindex="-1"
-              aria-labelledby="filterProductPadModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header bg-wave mb-3 position-relative">
-                    <h5 class="modal-title fw-bold h4" id="filterProductPadModalLabel">
-                      篩出你的心有所屬
-                    </h5>
-                    <button
-                      type="button"
-                      class="bg-transparent border-0 p-2 text-secondary h3"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <i class="bi bi-x-lg"></i>
-                    </button>
-                    <div class="cable-car"></div>
-                  </div>
-                  <div class="modal-body p-6">
-                    <div class="d-flex justify-content-between align-items-center mb-6">
-                      <h4 class="fw-bold">想要玩多久？</h4>
-                      <select name="activityDuration" v-model="searchActivityDuration">
-                        <option selected disabled>行程長度</option>
-                        <option value="default">全部顯示</option>
-                        <option value="lessThan4hrs">小於 4 小時</option>
-                        <option value="lessThan8hrs">4 - 8 小時</option>
-                        <option value="2DaysTrip">兩天一夜</option>
-                        <option value="3DaysTrip">三天兩夜</option>
-                      </select>
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-wave mb-3 position-relative">
+                      <h5 class="modal-title fw-bold h4" id="filterProductPadModalLabel">
+                        篩出你的心有所屬
+                      </h5>
+                      <button
+                        type="button"
+                        class="bg-transparent border-0 p-2 text-secondary h3"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                      <div class="cable-car"></div>
                     </div>
-                    <div
-                      class="pb-6 mb-6 border-bottom border-gray
+                    <div class="modal-body p-6">
+                      <div class="d-flex justify-content-between align-items-center mb-6">
+                        <h4 class="fw-bold">想要玩多久？</h4>
+                        <select name="activityDuration" v-model="searchActivityDuration">
+                          <option selected disabled>行程長度</option>
+                          <option value="default">全部顯示</option>
+                          <option value="lessThan4hrs">小於 4 小時</option>
+                          <option value="lessThan8hrs">4 - 8 小時</option>
+                          <option value="2DaysTrip">兩天一夜</option>
+                          <option value="3DaysTrip">三天兩夜</option>
+                        </select>
+                      </div>
+                      <div
+                        class="pb-6 mb-6 border-bottom border-gray
                       d-flex justify-content-between align-items-center"
-                    >
-                      <h4 class="fw-bold">口袋有多深？</h4>
-                      <vue-slider
-                        v-model="budget"
-                        v-bind="options"
-                        :tooltip-formatter="'NT {value}'"
-                        class="w-50"
-                      ></vue-slider>
-                    </div>
-                    <div
-                      class="d-flex flex-wrap btn-group"
-                      role="group"
-                      aria-label="Basic checkbox toggle button group"
-                    >
-                      <div class="me-2 mb-2" v-for="(item, key) in tagCategory" :key="key">
-                        <input
-                          type="checkbox"
-                          :id="item"
-                          autocomplete="off"
-                          class="btn-check"
-                          :value="item"
-                          v-model="searchProductTag"
-                        />
-                        <label :for="item" class="btn btn-outline-secondary rounded-2 h4"
-                          ># {{ item }}
-                        </label>
+                      >
+                        <h4 class="fw-bold">口袋有多深？</h4>
+                        <vue-slider
+                          v-model="budget"
+                          v-bind="options"
+                          :tooltip-formatter="'NT {value}'"
+                          class="w-50"
+                        ></vue-slider>
+                      </div>
+                      <div
+                        class="d-flex flex-wrap btn-group"
+                        role="group"
+                        aria-label="Basic checkbox toggle button group"
+                      >
+                        <div class="me-2 mb-2" v-for="(item, key) in tagCategory" :key="key">
+                          <input
+                            type="checkbox"
+                            :id="item"
+                            autocomplete="off"
+                            class="btn-check"
+                            :value="item"
+                            v-model="searchProductTag"
+                          />
+                          <label :for="item" class="btn btn-outline-secondary rounded-2 h4"
+                            ># {{ item }}
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- 排序 Modal -->
-            <div
-              class="modal fade"
-              id="sortProductPadModal"
-              tabindex="-1"
-              aria-labelledby="sortProductPadModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header bg-wave mb-3 position-relative">
-                    <h5 class="modal-title fw-bold h4" id="exampleModalLabel">
-                      總是有個高低順序
-                    </h5>
-                    <button
-                      type="button"
-                      class="bg-transparent border-0 p-2 text-secondary h3"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <i class="bi bi-x-lg"></i>
-                    </button>
-                    <div class="cable-car"></div>
-                  </div>
-                  <div class="modal-body p-6">
-                    <select
-                      name="productArrangement"
-                      class="arrangementSelect mx-auto"
-                      v-model="productArrangement"
-                      @change="productArrange"
-                    >
-                      <option selected disabled>產品排列方式</option>
-                      <option value="default">預設排列</option>
-                      <option value="expensiveToCheap">價格由高至低</option>
-                      <option value="cheapToExpensive">價格由低至高</option>
-                    </select>
+              <!-- 排序 Modal -->
+              <div
+                class="modal fade"
+                id="sortProductPadModal"
+                tabindex="-1"
+                aria-labelledby="sortProductPadModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-wave mb-3 position-relative">
+                      <h5 class="modal-title fw-bold h4" id="exampleModalLabel">
+                        總是有個高低順序
+                      </h5>
+                      <button
+                        type="button"
+                        class="bg-transparent border-0 p-2 text-secondary h3"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                      <div class="cable-car"></div>
+                    </div>
+                    <div class="modal-body p-6">
+                      <select
+                        name="productArrangement"
+                        class="arrangementSelect mx-auto"
+                        v-model="productArrangement"
+                        @change="productArrange"
+                      >
+                        <option selected disabled>產品排列方式</option>
+                        <option value="default">預設排列</option>
+                        <option value="expensiveToCheap">價格由高至低</option>
+                        <option value="cheapToExpensive">價格由低至高</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -157,139 +159,139 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="bg-wave">
-    <div class="container pt-lg-7">
-      <div class="row py-lg-8 py-6">
-        <!--電腦版搜尋欄-->
-        <div class="col-lg-4 mb-lg-0">
-          <div class="searchBox d-lg-block d-none">
-            <div class="searchBox-header"></div>
-            <div class="searchBox-body">
-              <label for="searchProductDestinationPc" class="mb-6 h3">篩選</label>
-              <input
-                type="search"
-                id="searchProductDestinationPc"
-                placeholder="目的地"
-                class="mb-3"
-                v-model="searchProductDestination"
-              />
-              <select name="activityDuration" class="mb-6" v-model="searchActivityDuration">
-                <option selected disabled>行程長度</option>
-                <option value="default">全部顯示</option>
-                <option value="lessThan4hrs">小於 4 小時</option>
-                <option value="lessThan8hrs">4 - 8 小時</option>
-                <option value="2DaysTrip">兩天一夜</option>
-                <option value="3DaysTrip">三天兩夜</option>
-              </select>
-              <div class="mb-6 pb-6 border-bottom border-gray position-relative">
-                <h4 class="mb-6 h3">預算</h4>
-                <vue-slider
-                  v-model="budget"
-                  v-bind="options"
-                  :tooltip-formatter="'NT {value}'"
-                ></vue-slider>
-                <div class="cable-car"></div>
-              </div>
-              <h4 class="pt-3 mb-6 h3">早已心有所屬？</h4>
-              <div
-                class="d-flex flex-wrap btn-group"
-                role="group"
-                aria-label="Basic checkbox toggle button group"
-              >
-                <div class="me-2 mb-2" v-for="(item, key) in tagCategory" :key="key">
-                  <input
-                    type="checkbox"
-                    :id="item"
-                    autocomplete="off"
-                    class="btn-check"
-                    :value="item"
-                    v-model="searchProductTag"
-                  />
-                  <label :for="item" class="btn btn-outline-secondary rounded-2"
-                    ># {{ item }}
-                  </label>
+    <div class="bg-wave">
+      <div class="container pt-lg-7">
+        <div class="row py-lg-8 py-6">
+          <!--電腦版搜尋欄-->
+          <div class="col-lg-4 mb-lg-0">
+            <div class="searchBox d-lg-block d-none">
+              <div class="searchBox-header"></div>
+              <div class="searchBox-body">
+                <label for="searchProductDestinationPc" class="mb-6 h3">篩選</label>
+                <input
+                  type="search"
+                  id="searchProductDestinationPc"
+                  placeholder="目的地"
+                  class="mb-3"
+                  v-model="searchProductDestination"
+                />
+                <select name="activityDuration" class="mb-6" v-model="searchActivityDuration">
+                  <option selected disabled>行程長度</option>
+                  <option value="default">全部顯示</option>
+                  <option value="lessThan4hrs">小於 4 小時</option>
+                  <option value="lessThan8hrs">4 - 8 小時</option>
+                  <option value="2DaysTrip">兩天一夜</option>
+                  <option value="3DaysTrip">三天兩夜</option>
+                </select>
+                <div class="mb-6 pb-6 border-bottom border-gray position-relative">
+                  <h4 class="mb-6 h3">預算</h4>
+                  <vue-slider
+                    v-model="budget"
+                    v-bind="options"
+                    :tooltip-formatter="'NT {value}'"
+                  ></vue-slider>
+                  <div class="cable-car"></div>
+                </div>
+                <h4 class="pt-3 mb-6 h3">早已心有所屬？</h4>
+                <div
+                  class="d-flex flex-wrap btn-group"
+                  role="group"
+                  aria-label="Basic checkbox toggle button group"
+                >
+                  <div class="me-2 mb-2" v-for="(item, key) in tagCategory" :key="key">
+                    <input
+                      type="checkbox"
+                      :id="item"
+                      autocomplete="off"
+                      class="btn-check"
+                      :value="item"
+                      v-model="searchProductTag"
+                    />
+                    <label :for="item" class="btn btn-outline-secondary rounded-2"
+                      ># {{ item }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-8">
-          <div class="d-flex justify-content-between mb-6">
-            <h2>
-              {{ searchProductDestination || searchProductTag.join('/') || '全部' }}
-              <span class="h3 ms-5" v-if="filterProduct.length == 0">目前尚無產品</span>
-              <span class="h3 ms-5" v-else> {{ filterProduct.length }} 項產品</span>
-            </h2>
-            <select
-              name="productArrangement"
-              class="arrangementSelect d-lg-block d-none"
-              v-model="productArrangement"
-              @change="productArrange"
-            >
-              <option selected disabled>產品排列方式</option>
-              <option value="default">預設排列</option>
-              <option value="expensiveToCheap">價格由高至低</option>
-              <option value="cheapToExpensive">價格由低至高</option>
-            </select>
-          </div>
-          <ul class="mb-8">
-            <li class="mb-3" v-for="(item, index) in filterProduct" :key="item.id">
-              <template v-if="index >= pagination.page_start - 1 && index < pagination.page_end">
-                <router-link :to="`/product/${item.id}`" class="card card-row">
-                  <img class="card-row-img" :src="item.imageUrl" :alt="item.title" />
-                  <div class="card-body px-6">
-                    <div>
-                      <h5 class="card-title">{{ item.title }}</h5>
-                      <p class="ellipsis-multi-line">
-                        {{ item.description }}
-                      </p>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-end">
-                      <div class="h4-md h5 text-gray">
-                        <p class="mb-1" v-if="item.comments">
-                          <i class="bi bi-star-fill"></i>
-                          <span class="ms-sm-2 ms-1"
-                            >{{ item.averageScore }} ( {{ item.comments.length }} )</span
-                          >
-                        </p>
-                        <p class="mb-1" v-if="item.totalBookingNum">
-                          <i class="bi bi-hand-thumbs-up-fill"></i>
-                          <span class="ms-sm-2 ms-1">{{ item.totalBookingNum }} + </span>
-                          <span class="d-sm-inline d-none">已訂購</span>
-                        </p>
-                        <p v-if="item.is_freeCxl">
-                          <i class="bi bi-hourglass-split"></i>
-                          <span class="ms-sm-2 ms-1">免費取消政策</span>
+          <div class="col-lg-8">
+            <div class="d-flex justify-content-between mb-6">
+              <h2>
+                {{ searchProductDestination || searchProductTag.join('/') || '全部' }}
+                <span class="h3 ms-5" v-if="filterProduct.length == 0">目前尚無產品</span>
+                <span class="h3 ms-5" v-else> {{ filterProduct.length }} 項產品</span>
+              </h2>
+              <select
+                name="productArrangement"
+                class="arrangementSelect d-lg-block d-none"
+                v-model="productArrangement"
+                @change="productArrange"
+              >
+                <option selected disabled>產品排列方式</option>
+                <option value="default">預設排列</option>
+                <option value="expensiveToCheap">價格由高至低</option>
+                <option value="cheapToExpensive">價格由低至高</option>
+              </select>
+            </div>
+            <ul class="mb-8">
+              <li class="mb-3" v-for="(item, index) in filterProduct" :key="item.id">
+                <template v-if="index >= pagination.page_start - 1 && index < pagination.page_end">
+                  <router-link :to="`/product/${item.id}`" class="card card-row">
+                    <img class="card-row-img" :src="item.imageUrl" :alt="item.title" />
+                    <div class="card-body px-6">
+                      <div>
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="ellipsis-multi-line">
+                          {{ item.description }}
                         </p>
                       </div>
-                      <p class="card-paragraph text-end">
-                        <span class="card-subtitle">NT {{ addComma(item.lowestPrice) }} 起</span>
-                        <span class="d-sm-inline d-none"> / {{ item.lowestPriceUnit }}</span>
-                      </p>
+                      <div class="d-flex justify-content-between align-items-end">
+                        <div class="h4-md h5 text-gray">
+                          <p class="mb-1" v-if="item.comments">
+                            <i class="bi bi-star-fill"></i>
+                            <span class="ms-sm-2 ms-1"
+                              >{{ item.averageScore }} ( {{ item.comments.length }} )</span
+                            >
+                          </p>
+                          <p class="mb-1" v-if="item.totalBookingNum">
+                            <i class="bi bi-hand-thumbs-up-fill"></i>
+                            <span class="ms-sm-2 ms-1">{{ item.totalBookingNum }} + </span>
+                            <span class="d-sm-inline d-none">已訂購</span>
+                          </p>
+                          <p v-if="item.is_freeCxl">
+                            <i class="bi bi-hourglass-split"></i>
+                            <span class="ms-sm-2 ms-1">免費取消政策</span>
+                          </p>
+                        </div>
+                        <p class="card-paragraph text-end">
+                          <span class="card-subtitle">NT {{ addComma(item.lowestPrice) }} 起</span>
+                          <span class="d-sm-inline d-none"> / {{ item.lowestPriceUnit }}</span>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </router-link>
-              </template>
-            </li>
-          </ul>
-          <!--pagination-->
-          <pagination
-            :page="pagination"
-            :filter-product="filterProduct"
-            v-if="filterProduct.length > 10"
-            @emit-pagination="changePage"
-          ></pagination>
+                  </router-link>
+                </template>
+              </li>
+            </ul>
+            <!--pagination-->
+            <pagination
+              :page="pagination"
+              :filter-product="filterProduct"
+              v-if="filterProduct.length > 10"
+              @emit-pagination="changePage"
+            ></pagination>
+          </div>
         </div>
-      </div>
-      <div class="to-top-btn" @click="scrollToTop" v-if="btnShow">
-        <div class="to-top-btn-text">
-          <p>回到</p>
-          <p>上方</p>
+        <div class="to-top-btn" @click="scrollToTop" v-if="btnShow">
+          <div class="to-top-btn-text">
+            <p>回到</p>
+            <p>上方</p>
+          </div>
         </div>
+        <!--alert-->
+        <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
       </div>
-      <!--alert-->
-      <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
     </div>
   </div>
 </template>

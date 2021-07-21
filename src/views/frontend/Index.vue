@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-7">
+  <div class="pt-7 flex-fill">
     <div class="banner">
       <div class="container">
         <!--電腦以上-->

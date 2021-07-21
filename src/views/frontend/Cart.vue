@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-7">
+  <div class="pt-7 flex-fill">
     <checkCart
       v-if="checkCartPageShow"
       ref="checkCart"

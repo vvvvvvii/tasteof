@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-7">
+  <div class="pt-7 flex-fill">
     <div class="bg-404 vh-100">
       <div
         class="container position-relative d-inline-block

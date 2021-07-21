@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-7">
+  <div class="pt-7 flex-fill">
     <div class="container">
       <div class="row justify-content-center pt-8" :class="{ 'pb-8': randomProducts.length !== 0 }">
         <div class="col-lg-8">
@@ -235,10 +235,8 @@ export default {
     window.removeEventListener('scroll', this.listener);
   },
   watch: {
-    '$route.params.id': {
-      handler() {
-        this.$router.go(); // 加這句不然按更多相似活動時，網址有變內容卻要手動重新整理才會變新商品
-      },
+    id() {
+      this.getData();
     },
   },
 };
