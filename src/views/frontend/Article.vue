@@ -21,12 +21,8 @@
           </div>
           <div class="mb-8">
             <Swiper
-              :autoplay="{
-                delay: 5000,
-                disableOnInteraction: false,
-              }"
-              :loop="true"
               :centeredSlides="true"
+              :loop="true"
               :navigation="true"
               :thumbs="{ swiper: thumbsSwiper }"
               class="gallery-top"
@@ -37,7 +33,6 @@
             </Swiper>
             <Swiper
               @swiper="setThumbsSwiper"
-              :loop="true"
               :slidesPerView="4"
               :spaceBetween="10"
               :freeMode="true"
@@ -54,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-light pt-6 pb-8" id="moreActivitiesSection">
+    <div class="bg-wave pt-6 pb-8" id="moreActivitiesSection">
       <div class="container">
         <h3 class="text-primary mb-5">更多相似活動</h3>
         <div class="row">

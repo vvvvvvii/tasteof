@@ -52,7 +52,7 @@
             >
               <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header bg-wave py-2 mb-3 position-relative">
+                  <div class="modal-header bg-wave mb-3 position-relative">
                     <h5 class="modal-title fw-bold h4" id="filterProductPadModalLabel">
                       篩出你的心有所屬
                     </h5>
@@ -123,7 +123,7 @@
             >
               <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header bg-wave py-2 mb-3 position-relative">
+                  <div class="modal-header bg-wave mb-3 position-relative">
                     <h5 class="modal-title fw-bold h4" id="exampleModalLabel">
                       總是有個高低順序
                     </h5>

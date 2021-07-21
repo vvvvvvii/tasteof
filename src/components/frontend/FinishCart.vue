@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <div class="bg-light pt-6 pb-8" id="moreActivitiesSection">
+  <div class="bg-wave pt-6 pb-8" id="moreActivitiesSection">
     <div class="container">
       <h3 class="text-primary mb-5">更多活動？</h3>
       <div class="row">

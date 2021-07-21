@@ -63,6 +63,22 @@
                     ></ErrorMessage>
                   </div>
                   <div class="mb-2">
+                    <label :for="`userName-${key}`" class="form-label">使用者名稱</label>
+                    <Field
+                      type="text"
+                      :id="`userName-${key}`"
+                      :name="`使用者 ${key + 1} 名稱`"
+                      class="form-control"
+                      :class="{ 'is-invalid': errors[`使用者 ${key + 1} 名稱`] }"
+                      rules="required"
+                      v-model="tempProduct.comments[key].name"
+                    ></Field>
+                    <ErrorMessage
+                      :name="`使用者 ${key + 1} 名稱`"
+                      class="invalid-feedback"
+                    ></ErrorMessage>
+                  </div>
+                  <div class="mb-2">
                     <label :for="`userCommentScore-${key}`" class="form-label">對產品的評分</label>
                     <Field
                       :id="`userCommentScore-${key}`"
@@ -143,10 +159,20 @@ export default {
     addComment() {
       if (Object.keys(this.tempProduct).includes('comments') === false) {
         this.tempProduct.packageOptions = [];
-        this.tempProduct.packageOptions[0] = {};
+        this.tempProduct.packageOptions[0] = {
+          imageUrl: '',
+          name: '',
+          score: '',
+          content: '',
+        };
       } else {
         // 新增一個空物件讓新方案的內容可以放入
-        this.tempProduct.comments[this.tempProduct.comments.length] = {};
+        this.tempProduct.comments[this.tempProduct.comments.length] = {
+          imageUrl: '',
+          name: '',
+          score: '',
+          content: '',
+        };
       }
     },
     deleteComment(key) {
@@ -172,7 +198,14 @@ export default {
         };
       }
       if (Object.keys(this.tempProduct).includes('comments') === false) {
-        this.tempProduct.comments = [];
+        this.tempProduct.comments = [
+          {
+            imageUrl: '',
+            name: '',
+            score: '',
+            content: '',
+          },
+        ];
       }
     },
   },

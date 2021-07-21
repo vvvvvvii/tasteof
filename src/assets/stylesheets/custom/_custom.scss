@@ -27,7 +27,7 @@
 
 .to-top-btn {
   position: fixed;
-  z-index: $zindex-tooltip;
+  z-index: $zindex-offcanvas;
   bottom: 15%;
   right: 10%;
   background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/top.png?raw=true');
@@ -133,6 +133,62 @@
   height: 350px;
 }
 
+.cloud1,
+.cloud2,
+.cloud3 {
+  position: absolute;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100px;
+  height: 100px;
+  animation-duration: 50s;
+  animation-iteration-count: 5;
+}
+.cloud {
+  &1 {
+    top: 10%;
+    left: 60%;
+    background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cloud%201.png?raw=true);
+    animation-name: cloud1;
+  }
+  &2 {
+    top: 15%;
+    left: 13%;
+    background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cloud%202.png?raw=true);
+    animation-name: cloud2;
+  }
+  &3 {
+    top: 8%;
+    left: 40%;
+    background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cloud%203.png?raw=true);
+    animation-name: cloud3;
+  }
+}
+@keyframes cloud1 {
+  0% {
+    left: 60%;
+  }
+  50% {
+    left: 65%;
+  }
+}
+@keyframes cloud2 {
+  0% {
+    left: 13%;
+  }
+  50% {
+    left: 18%;
+  }
+}
+@keyframes cloud3 {
+  0% {
+    left: 40%;
+  }
+  50% {
+    left: 35%;
+  }
+}
 .user-img {
   width: 50px;
   height: 50px;
@@ -142,6 +198,29 @@
     width: 100px;
     height: 100px;
   }
+}
+.dialog {
+  position: relative;
+  background: $light;
+  border: 1px solid $gray;
+  &:hover {
+    border: 1px dashed $primary;
+    top: -5px;
+  }
+}
+.triangle {
+  position: absolute;
+  display: block;
+  left: 25%;
+  bottom: -11px;
+  width: 20px;
+  height: 30px;
+  background-color: inherit;
+  border: inherit;
+  -webkit-clip-path: polygon(0% 40%, 130% 80%, 0% 100%);
+  clip-path: polygon(4% 31%, 130% 90%, 0% 100%);
+  border-bottom-right-radius: 370px 300px;
+  transform: rotate(-10deg);
 }
 
 .bg-404 {

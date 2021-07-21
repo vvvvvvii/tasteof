@@ -10,7 +10,7 @@
           <input
             type="search"
             id="searchArticle"
-            class="ms-2 rounded-3 px-3"
+            class="ms-2 rounded-3 px-3 border border-primary"
             placeholder="搜尋文章"
             v-model="searchArticle"
           />

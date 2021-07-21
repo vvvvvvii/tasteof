@@ -24,8 +24,9 @@
       </div>
     </div>
     <div class="container">
-      <div class="row pt-8" :class="{ 'pb-8': randomProducts.length !== 0 }">
-        <div class="col-lg-4  d-lg-block d-none">
+      <div class="row py-8">
+        <!--電腦以上搜尋欄-->
+        <div class="col-lg-4 d-lg-block d-none position-relative">
           <div class="d-flex justify-content-between mb-6 px-2">
             <p class="h3">立即預購</p>
             <p class="text-end">
@@ -69,16 +70,18 @@
               >
             </li>
           </ul>
+          <ul>
+            <li class="cloud1"></li>
+            <li class="cloud2"></li>
+            <li class="cloud3"></li>
+          </ul>
         </div>
         <div class="col-lg-8 py-lg-0 py-md-6 py-sm-4 py-2">
           <Swiper
-            :autoplay="{
-              delay: 5000,
-              disableOnInteraction: false,
-            }"
             :loop="true"
             :slides-per-view="3"
             :spaceBetween="0"
+            :navigation="true"
             class="mySwiper"
           >
             <button
@@ -96,10 +99,6 @@
           <!-- 手機看產品圖 -->
           <div class="d-sm-none d-block">
             <Swiper
-              :autoplay="{
-                delay: 5000,
-                disableOnInteraction: false,
-              }"
               :loop="true"
               :centeredSlides="true"
               :navigation="true"
@@ -112,7 +111,6 @@
             </Swiper>
             <swiper
               @swiper="setThumbsSwiper"
-              :loop="true"
               :slidesPerView="4"
               :spaceBetween="10"
               :freeMode="true"
@@ -125,26 +123,24 @@
               </SwiperSlide>
             </swiper>
           </div>
-          <!-- Modal -->
+          <!-- 電腦看產品圖 Modal -->
           <div
             class="modal fade p-0"
             id="productPageImgModal"
             tabindex="-1"
-            aria-labelledby="exampleModalLabel"
+            aria-labelledby="productPageImgModalLabel"
             aria-hidden="true"
           >
             <div class="modal-dialog modal-xl">
               <div class="modal-content rounded-0">
                 <div class="modal-body p-0">
                   <Swiper
-                    :autoplay="{
-                      delay: 5000,
-                      disableOnInteraction: false,
-                    }"
-                    :loop="true"
                     :centeredSlides="true"
+                    :loop="true"
                     :navigation="true"
                     :thumbs="{ swiper: thumbsSwiper }"
+                    :observer="true"
+                    :observeParents="true"
                     class="gallery-top-modal"
                   >
                     <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
@@ -153,10 +149,11 @@
                   </Swiper>
                   <Swiper
                     @swiper="setThumbsSwiper"
-                    :loop="true"
                     :slidesPerView="4"
                     :spaceBetween="10"
                     :freeMode="true"
+                    :observer="true"
+                    :observeParents="true"
                     :watchSlidesVisibility="true"
                     :watchSlidesProgress="true"
                     class="gallery-thumbs"
@@ -169,8 +166,8 @@
               </div>
             </div>
           </div>
-          <div class="px-6 pt-6 pb-3">
-            <h2 class="text-primary text-center fw-bold mb-6">{{ moreInfo.productInfo.title }}</h2>
+          <div class="px-6 py-7">
+            <h2 class="text-primary text-center fw-bold mb-7">{{ moreInfo.productInfo.title }}</h2>
             <div class="d-flex justify-content-center mb-6">
               <div
                 v-for="(item, index) in moreInfo.productInfo.attractionArr"
@@ -204,13 +201,13 @@
               >
             </p>
           </div>
-          <div class="px-md-6 pt-6">
+          <div class="px-md-6 pt-7">
             <div
               class="d-flex flex-md-row flex-column
-              justify-content-between mb-3"
+              justify-content-between mb-6"
               id="packageOptionsSection"
             >
-              <h3 class="text-primary mb-5">選擇方案</h3>
+              <h3 class="text-primary">選擇方案</h3>
               <div class="d-flex h5 justify-content-end">
                 <div class="d-flex flex-column align-items-center">
                   <label for="tktAdultNum" class="mb-1">成人</label>
@@ -265,16 +262,16 @@
                     v-model="moreInfo.startDate"
                     class="py-1 mb-1 text-center"
                   ></flat-pickr>
-                  <p>不同使用日煩請以不同訂單預購</p>
+                  <p class="fw-bold">不同使用日煩請以不同訂單預購</p>
                 </div>
               </div>
             </div>
-            <ul class="mb-5">
+            <ul class="mb-7">
               <li
                 v-for="(item, index) in moreInfo.productInfo.packageOptions"
                 :key="item.optionName"
                 class="card card-row bg-light"
-                :class="{ 'mb-3': index !== moreInfo.productInfo.packageOptions.length - 1 }"
+                :class="{ 'mb-6': index !== moreInfo.productInfo.packageOptions.length - 1 }"
               >
                 <img
                   class="card-row-img"
@@ -296,7 +293,7 @@
                     <a
                       type="button"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      data-bs-target="#optionModal"
                       v-if="item.contentArr.length > 3"
                       class="text-secondary d-sm-inline d-none"
                     >
@@ -307,26 +304,29 @@
                     <a
                       type="button"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      data-bs-target="#optionModal"
                       class="text-secondary d-sm-none mb-2 h5"
                     >
                       <i class="bi bi-question-diamond-fill"></i>
                       查看更多方案包含細項
                     </a>
-                    <!-- Modal -->
+                    <!-- 方案 Modal -->
                     <div
                       class="modal fade"
-                      id="exampleModal"
+                      id="optionModal"
                       tabindex="-1"
-                      aria-labelledby="exampleModalLabel"
+                      aria-labelledby="optionModalLabel"
                       aria-hidden="true"
                     >
                       <div class="modal-dialog">
                         <div class="modal-content">
-                          <div class="modal-body">
-                            <h3 class="pb-3 mb-3 border-bottom border-gray">
+                          <div class="modal-header bg-wave mb-3 position-relative">
+                            <h3>
                               {{ item.optionName }}
                             </h3>
+                            <div class="cable-car"></div>
+                          </div>
+                          <div class="modal-body p-6">
                             <p v-for="(content, key) in item.contentArr" :key="key">
                               <i class="bi bi-check2"></i>
                               {{ content }}
@@ -358,55 +358,75 @@
                 </div>
               </li>
             </ul>
-            <div id="ruleSection" :class="{ 'mb-5': moreInfo.productInfo.comments }">
-              <h3 class="text-primary mb-5">
+            <div id="ruleSection" :class="{ 'mb-7': moreInfo.productInfo.comments }">
+              <h3 class="text-primary mb-6">
                 相關規定
               </h3>
               <p>{{ moreInfo.productInfo.policy }}</p>
             </div>
             <div id="commentsSection" v-if="moreInfo.productInfo.comments">
-              <h3 class="text-primary mb-5">好評推薦</h3>
+              <div class="d-flex justify-content-between mb-6">
+                <h3 class="text-primary">好評推薦</h3>
+                <div class="bg-secondary p-2 rounded-2">
+                  <p class="text-white">
+                    <span class="h3 fw-bold">{{ moreInfo.productInfo.averageScore }}</span> 星
+                  </p>
+                </div>
+              </div>
               <ul>
                 <li
                   v-for="(item, key) in moreInfo.productInfo.comments"
                   :key="key"
-                  class="card card-row p-1 align-items-center"
-                  :class="{ 'mb-3': index !== moreInfo.productInfo.comments.length - 1 }"
+                  class="d-flex align-items-center"
+                  :class="{ 'mb-6': key !== moreInfo.productInfo.comments.length - 1 }"
                 >
-                  <img class="user-img" :src="item.imageUrl" :alt="`使用者頭像 -${key}`" />
-                  <div class="card-body justify-content-start">
-                    <h4 class="card-title mb-3">
-                      <i class="bi" :class="{ 'bi-star-fill': item.score >= 1 }"></i>
-                      <i
-                        class="bi"
-                        :class="{
-                          'bi-star-fill': item.score >= 2,
-                          'bi-star': item.score <= 1,
-                        }"
-                      ></i>
-                      <i
-                        class="bi"
-                        :class="{
-                          'bi-star-fill': item.score >= 3,
-                          'bi-star': item.score <= 2,
-                        }"
-                      ></i>
-                      <i
-                        class="bi"
-                        :class="{
-                          'bi-star-fill': item.score >= 4,
-                          'bi-star': item.score <= 3,
-                        }"
-                      ></i>
-                      <i
-                        class="bi"
-                        :class="{
-                          'bi-star-fill': item.score == 5,
-                          'bi-star': item.score <= 4,
-                        }"
-                      ></i>
-                    </h4>
-                    <p>{{ item.content }}</p>
+                  <div>
+                    <img class="user-img" :src="item.imageUrl" :alt="`使用者頭像 -${key}`" />
+                  </div>
+                  <div>
+                    <div class="dialog ms-3 px-6 py-4 rounded-pill">
+                      <p class="mb-3 h4-md h5">
+                        {{ item.content || '我給的星星就代表了我的評語～' }}
+                      </p>
+                      <h4 class="h5 text-gray-dark text-end">
+                        - {{ item.name }}
+                        <span class="d-sm-inline d-none">
+                          / <i class="bi" :class="{ 'bi-star-fill': item.score >= 1 }"></i>
+                          <i
+                            class="bi"
+                            :class="{
+                              'bi-star-fill': item.score >= 2,
+                              'bi-star': item.score <= 1,
+                            }"
+                          ></i>
+                          <i
+                            class="bi"
+                            :class="{
+                              'bi-star-fill': item.score >= 3,
+                              'bi-star': item.score <= 2,
+                            }"
+                          ></i>
+                          <i
+                            class="bi"
+                            :class="{
+                              'bi-star-fill': item.score >= 4,
+                              'bi-star': item.score <= 3,
+                            }"
+                          ></i>
+                          <i
+                            class="bi"
+                            :class="{
+                              'bi-star-fill': item.score == 5,
+                              'bi-star': item.score <= 4,
+                            }"
+                          ></i>
+                        </span>
+                        <span class="d-sm-none">
+                          / {{ item.score }} <i class="bi bi-star-fill"></i>
+                        </span>
+                      </h4>
+                      <span class="triangle"></span>
+                    </div>
                   </div>
                 </li>
               </ul>
@@ -415,7 +435,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-light pt-6 pb-8" id="moreActivitiesSection" v-if="randomProducts.length !== 0">
+    <div class="bg-wave pt-6 pb-8" id="moreActivitiesSection" v-if="randomProducts.length !== 0">
       <div class="container">
         <h3 class="text-primary mb-5">更多相似活動</h3>
         <div class="row">
@@ -636,6 +656,11 @@ export default {
     },
     scrollToTop() {
       window.scrollTo(0, 0);
+    },
+    reinitializeSwiper(swiper) {
+      setTimeout(() => {
+        swiper.update();
+      }, 400);
     },
   },
   computed: {

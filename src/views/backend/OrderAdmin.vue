@@ -10,7 +10,7 @@
           <input
             type="search"
             id="searchOrder"
-            class="ms-2 rounded-3 px-3"
+            class="ms-2 rounded-3 px-3 border border-primary"
             placeholder="搜尋訂單編號"
             v-model="searchOrder"
           />
