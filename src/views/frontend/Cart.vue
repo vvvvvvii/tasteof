@@ -165,6 +165,9 @@ export default {
         });
     },
     deleteProduct(id) {
+      // 刪除相對應的方案 其他不動 > 用修改購物車的 api 去把該方案數字歸零並刪除
+
+      // 如果該產品已經沒有任何方案 那整個用 delete api 刪掉
       this.$http
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`)
         .then((res) => {

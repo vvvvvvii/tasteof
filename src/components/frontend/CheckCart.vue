@@ -52,7 +52,7 @@
                     <p>{{ item.qtyDetail.adult }}</p>
                   </div>
                   <button
-                  type="button"
+                    type="button"
                     class="border-0 bg-transparent p-2"
                     @click="$emit('emit-change-tkt-num', 'adult', 'plus', item.qtyDetail, item.id)"
                   >
@@ -62,7 +62,7 @@
                 </div>
                 <div class="d-flex align-items-center h4-sm h5" v-if="item.qtyDetail">
                   <button
-                  type="button"
+                    type="button"
                     class="border-0 bg-transparent p-2"
                     @click="$emit('emit-change-tkt-num', 'child', 'minus', item.qtyDetail, item.id)"
                   >
@@ -75,7 +75,7 @@
                     <p>{{ item.qtyDetail.child }}</p>
                   </div>
                   <button
-                  type="button"
+                    type="button"
                     class="border-0 bg-transparent p-2"
                     @click="$emit('emit-change-tkt-num', 'child', 'plus', item.qtyDetail, item.id)"
                   >

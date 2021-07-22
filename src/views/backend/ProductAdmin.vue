@@ -389,6 +389,10 @@ export default {
         item.data.tagCheck.splice(item.data.tagCheck.indexOf('包車服務'), 1);
       }
       item.data.tagCheck.push(item.data.category);
+      // 為每個方案加上專屬 id
+      item.data.packageOptions.forEach((option, optionIndex) => {
+        item.data.packageOptions[optionIndex].id = `${item.data.id}-${optionIndex}`;
+      });
       delete item.data.otherImageUrl; // 用這句把 otherImageUrl 刪掉
       if (target === '新增') {
         // 若是開新增產品的 modal
@@ -405,7 +409,6 @@ export default {
             } else {
               this.customAlert(res.data.message);
               window.setTimeout(this.closeCustomAlert, 5000);
-
               productAdminBtn.classList.remove('disabled');
               productAdminBtn.children[0].classList.add('d-none');
             }
@@ -413,7 +416,6 @@ export default {
           .catch((err) => {
             this.customAlert(err.response);
             window.setTimeout(this.closeCustomAlert, 5000);
-
             productAdminBtn.classList.remove('disabled');
             productAdminBtn.children[0].classList.add('d-none');
           });

@@ -347,8 +347,8 @@
                     <button
                       type="button"
                       class="btn btn-primary d-flex justify-content-center align-items-center"
-                      ref="addCartBtn"
-                      @click="addCart(item.optionName)"
+                      :ref="`addCartBtn-${index}`"
+                      @click="addCart(item, index)"
                       :disabled="moreInfo.startDate === '' || moreInfo.tktNum.adult < 1"
                     >
                       <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
@@ -490,6 +490,7 @@ export default {
           child: 0,
         },
       },
+      carts: [],
       totalProducts: [],
       randomProducts: [],
       showAlert: false,
@@ -519,6 +520,7 @@ export default {
             optionPrice = optionPrice.sort((x, y) => x - y);
             [this.moreInfo.productInfo.lowestPrice] = optionPrice;
             this.getTotalProducts();
+            this.getCartInfo();
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
@@ -584,6 +586,22 @@ export default {
         this.randomProducts.push(filterArr[i]); // 取得未重複的商品放進 randomProducts 陣列中
       });
     },
+    getCartInfo() {
+      this.$http
+        .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`)
+        .then((res) => {
+          if (res.data.success) {
+            this.carts = res.data.data.carts;
+          } else {
+            this.customAlert(res.data.message);
+            window.setTimeout(this.closeCustomAlert, 5000);
+          }
+        })
+        .catch((err) => {
+          this.customAlert(err.response);
+          window.setTimeout(this.closeCustomAlert, 5000);
+        });
+    },
     goAnchor(selector) {
       const anchor = this.$el.querySelector(selector);
       document.body.scrollTop = anchor.offsetTop; // chrome
@@ -592,48 +610,141 @@ export default {
     setThumbsSwiper(swiper) {
       this.thumbsSwiper = swiper;
     },
-    addCart(optionName) {
-      const { addCartBtn } = this.$refs;
+    addCart(item, index) {
+      const addCartBtn = this.$refs[`addCartBtn-${index}`];
       addCartBtn.classList.add('disabled');
       addCartBtn.children[0].classList.remove('d-none');
-      const data = {
-        data: {
-          product_id: this.moreInfo.productInfo.id,
-          qty: this.moreInfo.tktNum.adult + this.moreInfo.tktNum.child,
-          qtyDetail: this.moreInfo.tktNum,
+      const cartIds = this.carts.map((product) => product.product_id);
+      if (cartIds.includes(this.moreInfo.productInfo.id)) {
+        // 如果是 true 代表曾經加入過同商品，找出曾被加入的商品的 index
+        const repeatIndex = cartIds.indexOf(this.moreInfo.productInfo.id);
+        const propertyNameArr = Object.getOwnPropertyNames(this.carts[repeatIndex]);
+        const name = `${this.moreInfo.startDate}-${item.optionName}`;
+        if (propertyNameArr.includes(name)) {
+          // 比對該商品是否有相同屬性的名字，代表曾被加入購物車項目的方案和時間，跟現在要加入的都相同，可以累加
+          // 找到要累加的值跟現在加入的新值相加
+          const data = {
+            data: {
+              product_id: this.moreInfo.productInfo.id,
+              qty: 0,
+            },
+          };
+          data.data[name] = {
+            qtyDetail: {
+              adult: this.carts[repeatIndex][name].qtyDetail.adult + this.moreInfo.tktNum.adult,
+              child: this.carts[repeatIndex][name].qtyDetail.child + this.moreInfo.tktNum.child,
+            },
+            start_date: this.moreInfo.startDate,
+            optionName: item.optionName,
+          };
+          this.$http
+            .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
+            .then((res) => {
+              if (res.data.success) {
+                this.customAlert('已加入購物車');
+                window.setTimeout(this.closeCustomAlert, 5000);
+                this.moreInfo.startDate = '';
+                this.moreInfo.tktNum.adult = 1;
+                this.moreInfo.tktNum.child = 0;
+                addCartBtn.classList.remove('disabled');
+                addCartBtn.children[0].classList.add('d-none');
+                emitter.emit('update-cart');
+              } else {
+                this.customAlert(res.data.message);
+                window.setTimeout(this.closeCustomAlert, 5000);
+                addCartBtn.classList.remove('disabled');
+                addCartBtn.children[0].classList.add('d-none');
+                emitter.emit('update-cart');
+              }
+            })
+            .catch((err) => {
+              this.customAlert(err.response);
+              window.setTimeout(this.closeCustomAlert, 5000);
+              addCartBtn.classList.remove('disabled');
+              addCartBtn.children[0].classList.add('d-none');
+              emitter.emit('update-cart');
+            });
+        } else {
+          // 其中有東西不同，不要累加
+          const data = {
+            data: {
+              ...this.carts[repeatIndex],
+            },
+          };
+          data.data[name] = {
+            qtyDetail: { ...this.moreInfo.tktNum },
+            start_date: this.moreInfo.startDate,
+            optionName: item.optionName,
+          };
+          this.$http
+            .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
+            .then((res) => {
+              if (res.data.success) {
+                this.customAlert('已加入購物車');
+                window.setTimeout(this.closeCustomAlert, 5000);
+                this.moreInfo.startDate = '';
+                this.moreInfo.tktNum.adult = 1;
+                this.moreInfo.tktNum.child = 0;
+                addCartBtn.classList.remove('disabled');
+                addCartBtn.children[0].classList.add('d-none');
+                emitter.emit('update-cart');
+              } else {
+                this.customAlert(res.data.message);
+                window.setTimeout(this.closeCustomAlert, 5000);
+                addCartBtn.classList.remove('disabled');
+                addCartBtn.children[0].classList.add('d-none');
+                emitter.emit('update-cart');
+              }
+            })
+            .catch((err) => {
+              this.customAlert(err.response);
+              window.setTimeout(this.closeCustomAlert, 5000);
+              addCartBtn.classList.remove('disabled');
+              addCartBtn.children[0].classList.add('d-none');
+              emitter.emit('update-cart');
+            });
+        }
+      } else {
+        // 如果是 false 代表不曾加入過同商品
+        const data = {
+          data: {
+            product_id: this.moreInfo.productInfo.id,
+            qty: 0,
+          },
+        };
+        data.data[`${this.moreInfo.startDate}-${item.optionName}`] = {
+          qtyDetail: { ...this.moreInfo.tktNum },
           start_date: this.moreInfo.startDate,
-          optionName,
-        },
-      };
-      this.$http
-        .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
-        .then((res) => {
-          if (res.data.success) {
-            this.customAlert('已加入購物車');
+          optionName: item.optionName,
+        };
+        this.$http
+          .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
+          .then((res) => {
+            if (res.data.success) {
+              this.customAlert('已加入購物車');
+              window.setTimeout(this.closeCustomAlert, 5000);
+              this.moreInfo.startDate = '';
+              this.moreInfo.tktNum.adult = 1;
+              this.moreInfo.tktNum.child = 0;
+              addCartBtn.classList.remove('disabled');
+              addCartBtn.children[0].classList.add('d-none');
+              emitter.emit('update-cart');
+            } else {
+              this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
+              addCartBtn.classList.remove('disabled');
+              addCartBtn.children[0].classList.add('d-none');
+              emitter.emit('update-cart');
+            }
+          })
+          .catch((err) => {
+            this.customAlert(err.response);
             window.setTimeout(this.closeCustomAlert, 5000);
-            this.moreInfo.startDate = '';
-            this.moreInfo.tktNum.adult = 1;
-            this.moreInfo.tktNum.child = 0;
             addCartBtn.classList.remove('disabled');
             addCartBtn.children[0].classList.add('d-none');
             emitter.emit('update-cart');
-          } else {
-            this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
-
-            addCartBtn.classList.remove('disabled');
-            addCartBtn.children[0].classList.add('d-none');
-            emitter.emit('update-cart');
-          }
-        })
-        .catch((err) => {
-          this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
-
-          addCartBtn.classList.remove('disabled');
-          addCartBtn.children[0].classList.add('d-none');
-          emitter.emit('update-cart');
-        });
+          });
+      }
     },
     changeTktNum(tktType, calcType) {
       if (tktType === 'adult') {
@@ -688,6 +799,9 @@ export default {
   watch: {
     id() {
       this.getData();
+    },
+    carts() {
+      this.getCartInfo();
     },
   },
 };
