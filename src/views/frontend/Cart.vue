@@ -103,10 +103,11 @@ export default {
     closeCustomAlert() {
       this.showAlert = false;
     },
-    changeTktNum(tktType, calcType, detail, id) {
-      const adultStatus = this.$refs.checkCart.$refs[`adultStatus${id}`];
-      const childStatus = this.$refs.checkCart.$refs[`childStatus${id}`];
-      const qtyDetail = { ...detail };
+    changeTktNum(tktType, calcType, option, key, id) {
+      const adultStatus = this.$refs.checkCart.$refs[`adultStatus${option.optionName}`];
+      const childStatus = this.$refs.checkCart.$refs[`childStatus${option.optionName}`];
+      const qtyDetail = { ...option.qtyDetail };
+      console.log(qtyDetail);
       if (tktType === 'adult') {
         adultStatus.children[0].classList.remove('d-none');
         adultStatus.children[1].classList.add('d-none');
@@ -124,15 +125,24 @@ export default {
           qtyDetail.child -= 1;
         }
       }
-      const data = {
+      let originQty = 0;
+      let options = [];
+      this.cart.carts.forEach((item) => {
+        if (item.id === id) {
+          originQty = item.qty;
+          options = [...item.options];
+        }
+      });
+      const dataOuter = {
         data: {
           product_id: id,
-          qty: qtyDetail.adult + qtyDetail.child,
-          qtyDetail,
+          qty: originQty + qtyDetail.adult + qtyDetail.child,
+          options,
         },
       };
+      dataOuter.data.options[key].qtyDetail = qtyDetail;
       this.$http
-        .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`, data)
+        .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`, dataOuter)
         .then((res) => {
           if (res.data.success) {
             if (tktType === 'adult') {
