@@ -91,11 +91,18 @@
                     </button>
                     小
                   </div>
-                  <a type="button" class="delete-cart-icon" :ref="`deleteCartProduct${item.id}`">
+                  <a
+                    type="button"
+                    class="delete-cart-icon"
+                    :ref="`deleteCartProduct${option.optionName}`"
+                  >
                     <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
                       <span class="visually-hidden">Loading...</span>
                     </div>
-                    <i class="bi bi-trash-fill" @click="$emit('emit-delete-product', item.id)"></i>
+                    <i
+                      class="bi bi-trash-fill"
+                      @click="$emit('emit-delete-product', option, key, item.id)"
+                    ></i>
                   </a>
                 </div>
               </div>

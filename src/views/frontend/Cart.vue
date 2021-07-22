@@ -107,7 +107,6 @@ export default {
       const adultStatus = this.$refs.checkCart.$refs[`adultStatus${option.optionName}`];
       const childStatus = this.$refs.checkCart.$refs[`childStatus${option.optionName}`];
       const qtyDetail = { ...option.qtyDetail };
-      console.log(qtyDetail);
       if (tktType === 'adult') {
         adultStatus.children[0].classList.remove('d-none');
         adultStatus.children[1].classList.add('d-none');
@@ -174,31 +173,62 @@ export default {
           }
         });
     },
-    deleteProduct(id) {
+    deleteProduct(option, key, id) {
       // 刪除相對應的方案 其他不動 > 用修改購物車的 api 去把該方案數字歸零並刪除
-
-      // 如果該產品已經沒有任何方案 那整個用 delete api 刪掉
-      this.$http
-        .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`)
-        .then((res) => {
-          if (res.data.success) {
-            const deleteCartProduct = this.$refs.checkCart.$refs[`deleteCartProduct${id}`];
-            deleteCartProduct.children[0].classList.remove('d-none');
-            deleteCartProduct.children[1].classList.add('d-none');
-            this.customAlert('已清除商品');
-            this.getCartInfo();
+      const deleteCartProduct = this.$refs.checkCart.$refs[`deleteCartProduct${option.optionName}`];
+      // 取得該筆 id 的所有資料
+      const cartIds = this.cart.carts.map((product) => product.id);
+      const repeatIndex = cartIds.indexOf(id);
+      console.log(repeatIndex);
+      // 將該筆資料裡的 options 取出來 刪掉 key 那個號碼的資料
+      this.cart.carts[repeatIndex].options.splice(key, 1);
+      if (this.cart.carts[repeatIndex].options.length !== 0) {
+        // 如果該產品還有其他方案 那用修改購物車 api 方式上傳
+        const dataOuter = {
+          data: { ...this.cart.carts[repeatIndex] },
+        };
+        const adultArr = dataOuter.data.options.map((item) => item.qtyDetail.adult);
+        const childArr = dataOuter.data.options.map((item) => item.qtyDetail.child);
+        dataOuter.data.qty = adultArr.reduce((x, y) => x + y) + childArr.reduce((x, y) => x + y);
+        this.$http
+          .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`, dataOuter)
+          .then((res) => {
+            if (res.data.success && res.data.message !== '更新購物車有誤') {
+              this.customAlert('已清除商品');
+              window.setTimeout(this.closeCustomAlert, 5000);
+              this.getCartInfo();
+            } else {
+              this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
+            }
+          })
+          .catch((err) => {
+            this.customAlert(err.response);
             window.setTimeout(this.closeCustomAlert, 5000);
-            emitter.emit('update-cart'); // navbar 即時更新
-          } else {
-            this.customAlert(res.data.message);
+          });
+      } else {
+        // 如果該產品已經沒有任何方案 那整個用 delete api 刪掉
+        this.$http
+          .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`)
+          .then((res) => {
+            if (res.data.success) {
+              deleteCartProduct.children[0].classList.remove('d-none');
+              deleteCartProduct.children[1].classList.add('d-none');
+              this.customAlert('已清除商品');
+              this.getCartInfo();
+              window.setTimeout(this.closeCustomAlert, 5000);
+              emitter.emit('update-cart'); // navbar 即時更新
+            } else {
+              this.customAlert(res.data.message);
+              window.setTimeout(this.closeCustomAlert, 5000);
+              emitter.emit('update-cart'); // navbar 即時更新
+            }
+          })
+          .catch((err) => {
+            this.customAlert(err.response);
             window.setTimeout(this.closeCustomAlert, 5000);
-            emitter.emit('update-cart'); // navbar 即時更新
-          }
-        })
-        .catch((err) => {
-          this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
-        });
+          });
+      }
     },
     deleteAllProducts() {
       //   if (confirm('真的要全數清空嗎Ｑ口Ｑ')) {
