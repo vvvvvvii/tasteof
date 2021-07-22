@@ -626,7 +626,6 @@ export default {
           const data = {
             data: {
               product_id: this.moreInfo.productInfo.id,
-              qty: 0,
             },
           };
           data.data[name] = {
@@ -637,6 +636,7 @@ export default {
             start_date: this.moreInfo.startDate,
             optionName: item.optionName,
           };
+          data.data.qty = this.moreInfo.tktNum.adult + this.moreInfo.tktNum.child;
           this.$http
             .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
             .then((res) => {
@@ -676,6 +676,8 @@ export default {
             start_date: this.moreInfo.startDate,
             optionName: item.optionName,
           };
+          data.data.qty = data.data[name].qtyDetail.adult + data.data[name].qtyDetail.child;
+          data.data.optionLength += 1;
           this.$http
             .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
             .then((res) => {
@@ -706,17 +708,19 @@ export default {
         }
       } else {
         // 如果是 false 代表不曾加入過同商品
+        const name = `${this.moreInfo.startDate}-${item.optionName}`;
         const data = {
           data: {
             product_id: this.moreInfo.productInfo.id,
-            qty: 0,
           },
         };
-        data.data[`${this.moreInfo.startDate}-${item.optionName}`] = {
+        data.data[name] = {
           qtyDetail: { ...this.moreInfo.tktNum },
           start_date: this.moreInfo.startDate,
           optionName: item.optionName,
         };
+        data.data.qty = data.data[name].qtyDetail.adult + data.data[name].qtyDetail.child;
+        data.data.optionLength = 1;
         this.$http
           .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, data)
           .then((res) => {

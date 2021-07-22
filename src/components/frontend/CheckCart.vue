@@ -19,6 +19,7 @@
         </div>
         <div class="row mb-7">
           <div v-for="item in cart.carts" :key="item.id" class="col-xl-4 col-md-6">
+            <div v-if="item"></div>
             <div class="px-3 py-4 mb-2 border border-primary rounded-1 position-relative">
               <div
                 class="d-flex justify-content-between pb-3 mb-2
