@@ -3,28 +3,37 @@
     <div class="bg-light rounded-3 p-7">
       <h2 class="h3 text-primary mb-6">訂單內容</h2>
       <div class="row mb-7 rounded-1">
-        <div v-for="item in cart.carts" :key="item.id" class="col-xl-4 col-md-6">
-          <div class="px-3 py-4 mb-2 border border-primary rounded-1 position-relative">
-            <div
-              class="d-flex justify-content-between pb-2 mb-2
-           border-bottom border-gray"
-            >
-              <div>
-                <p class="mb-2">{{ item.start_date }}</p>
-                <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
+        <template v-for="item in cart.carts" :key="item.id">
+          <div v-for="(option, key) in item.options" :key="key" class="col-md-6">
+            <div class="px-3 py-4 mb-2 border border-primary rounded-1 position-relative">
+              <div
+                class="d-flex justify-content-between pb-2 mb-2
+                border-bottom border-gray"
+              >
+                <div>
+                  <p class="mb-2">{{ option.start_date }}</p>
+                  <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
+                </div>
+                <div class="w-50">
+                  <p class="h3">{{ item.product.title }}</p>
+                  <p class="h4 mb-3">{{ option.optionName }}</p>
+                  <p class="text-end">
+                    NT
+                    {{
+                      addComma(
+                        option.optionPrice * (option.qtyDetail.adult + option.qtyDetail.child),
+                      )
+                    }}
+                  </p>
+                </div>
               </div>
-              <div class="w-50">
-                <p class="h3">{{ item.product.title }}</p>
-                <p class="h4 mb-3">{{ item.optionName }}</p>
-                <p class="text-end">NT {{ addComma(item.total) }}</p>
+              <div class="d-flex justify-content-evenly">
+                <div class="d-flex align-items-center">{{ option.qtyDetail.adult }} 大</div>
+                <div class="d-flex align-items-center">{{ option.qtyDetail.child }} 小</div>
               </div>
-            </div>
-            <div class="d-flex justify-content-evenly">
-              <div class="d-flex align-items-center">{{ item.qtyDetail.adult }} 大</div>
-              <div class="d-flex align-items-center">{{ item.qtyDetail.child }} 小</div>
             </div>
           </div>
-        </div>
+        </template>
       </div>
       <h2 class="h3 text-primary mb-6">客戶資料</h2>
       <div class="row mb-7">

@@ -252,10 +252,10 @@
             </div>
           </template>
           <div class="mb-7" v-if="customerDetail.users.length !== 0">
-            <label :for="bookMessageCart" class="form-label">備註（選填）</label>
+            <label for="bookMessageCart" class="form-label">備註（選填）</label>
             <textarea
               class="form-control"
-              :id="bookMessageCart"
+              id="bookMessageCart"
               rows="2"
               v-model="customerDetail.message"
             ></textarea>

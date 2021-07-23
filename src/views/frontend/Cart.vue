@@ -179,7 +179,6 @@ export default {
       // 取得該筆 id 的所有資料
       const cartIds = this.cart.carts.map((product) => product.id);
       const repeatIndex = cartIds.indexOf(id);
-      console.log(repeatIndex);
       // 將該筆資料裡的 options 取出來 刪掉 key 那個號碼的資料
       this.cart.carts[repeatIndex].options.splice(key, 1);
       if (this.cart.carts[repeatIndex].options.length !== 0) {
@@ -297,9 +296,10 @@ export default {
         .then((res) => {
           if (res.data.success) {
             const { data } = res;
+            console.log(res.data);
             this.customAlert(data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
-            data.data.final_total = Math.floor(this.cart.final_total);
+            this.cart.final_total = Math.floor(data.data.final_total);
             checkCouponBtn.classList.remove('disabled');
             checkCouponBtn.children[0].classList.add('d-none');
           } else {

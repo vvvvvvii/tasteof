@@ -665,7 +665,6 @@ export default {
           const { qtyDetail } = dataOuter.data.options[dataOuter.data.options.length - 1];
           dataOuter.data.qty = qtyDetail.adult + qtyDetail.child;
         }
-        console.log(dataOuter);
       } else {
         // 如果是 false 代表不曾加入過同商品
         dataOuter = {
