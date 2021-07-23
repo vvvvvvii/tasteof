@@ -115,10 +115,10 @@
             <small class="collapse" :id="'collapseProduct-' + key">{{ item.description }}</small>
           </td>
           <td width="200">
-            {{ item.lowestOriginPrice }} 起 / <small>{{ item.lowestOriginPriceUnit }}</small>
+            NT {{ item.lowestOriginPrice }} 起 / <small>{{ item.lowestOriginPriceUnit }}</small>
           </td>
           <td width="200">
-            {{ item.lowestPrice }} 起 / <small>{{ item.lowestPriceUnit }}</small>
+            NT {{ item.lowestPrice }} 起 / <small>{{ item.lowestPriceUnit }}</small>
           </td>
           <td width="120">
             <i

@@ -20,7 +20,6 @@
               <i class="bi bi-x-lg"></i>
             </button>
           </div>
-
           <div class="container">
             <div class="row mb-8">
               <div class="col-6">
@@ -33,17 +32,41 @@
                     <h3 class="h4">
                       <span class="fw-bold">購買細項：</span>
                       <ul class="pt-2">
-                        <li v-for="(item, key) in tempOrder.products" :key="key">
-                          <p class="mb-2 ms-3">
-                            <i class="bi bi-check2"></i>
-                            {{ item.product.category }} / {{ item.product.title }} *
-                            <span v-if="item.qtyDetail">
-                              {{ item.qtyDetail.adult }} 大
-                              <span v-if="item.qtyDetail.child > 0">
-                                {{ item.qtyDetail.child }} 小
-                              </span>
-                            </span>
-                          </p>
+                        <li v-for="(item, key) in tempOrder.products" :key="key" class="mb-3">
+                          <template
+                            v-for="(option, optionIndex) in item.options"
+                            :key="optionIndex"
+                          >
+                            <div class="d-flex">
+                              <p
+                                class="badge rounded-pill h-50"
+                                :class="{
+                                  'bg-danger': item.product.category === '城市導覽',
+                                  'bg-warning': item.product.category === '體驗票券',
+                                  'bg-success': item.product.category === '包車服務',
+                                }"
+                              >
+                                {{ item.product.category }}
+                              </p>
+                              <div class="ms-3">
+                                <p class="mb-1 fw-bold">{{ item.product.title }}</p>
+                                <p class="mb-1 text-gray">{{ option.optionName }}</p>
+                                <p v-if="option.qtyDetail && item.product.category !== '包車服務'">
+                                  {{ option.qtyDetail.adult }} 大
+                                  <span v-if="option.qtyDetail.child > 0">
+                                    {{ option.qtyDetail.child }} 小
+                                  </span>
+                                </p>
+                                <p
+                                  v-else-if="
+                                    option.qtyDetail && item.product.category === '包車服務'
+                                  "
+                                >
+                                  {{ option.qtyDetail.adult }} 組
+                                </p>
+                              </div>
+                            </div>
+                          </template>
                         </li>
                       </ul>
                     </h3>
@@ -54,7 +77,7 @@
                       <span>NT {{ tempOrder.total }}</span>
                     </h3>
                   </li>
-                  <li class="mb-3">
+                  <li class="mb-3" v-if="tempOrder.message">
                     <h3 class="h4">
                       <span class="fw-bold">客戶訂單備註：</span>
                       <p class="pt-2 ms-3">{{ tempOrder.message }}</p>
@@ -74,12 +97,12 @@
               <div class="col-6">
                 <h2 class="h3 pb-3 mb-3 border-bottom border-gray">客戶資料</h2>
                 <ul>
-                  <li>
+                  <li class="mb-3">
                     {{ tempOrder.user.name }}
                     {{ tempOrder.user.gender }}
                   </li>
                   <li>身分證字號：{{ tempOrder.user.idNum }}</li>
-                  <li>護照號碼：{{ tempOrder.user.passportNum }}</li>
+                  <li class="mb-3">護照號碼：{{ tempOrder.user.passportNum }}</li>
                   <li>聯繫電話：{{ tempOrder.user.tel }}</li>
                   <li>聯繫信箱：{{ tempOrder.user.email }}</li>
                   <li>住址：{{ tempOrder.user.address }}</li>

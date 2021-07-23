@@ -296,7 +296,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             const { data } = res;
-            console.log(res.data);
             this.customAlert(data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
             this.cart.final_total = Math.floor(data.data.final_total);

@@ -2,7 +2,7 @@
   <div class="container py-8">
     <div class="d-flex flex-md-row flex-column align-items-center">
       <img
-        src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/cart.png?raw=true"
+        src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/finish%20cart.png?raw=true"
         alt="恭喜您完成付款"
         class="w-50"
       />

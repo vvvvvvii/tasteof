@@ -30,9 +30,6 @@
           <p v-else>此分頁為您查到 {{ filterOrder.length }} 筆訂單</p>
         </small>
       </div>
-      <!-- <small class="ms-6 text-dark-primary" v-if="filterOrder.length == 0">
-        <p>查找不到相關訂單</p>
-      </small> -->
     </div>
   </div>
   <div class="container py-4">
@@ -62,9 +59,7 @@
             <td class="pe-4">
               {{ item.id }}
             </td>
-            <td width="120">
-              {{ item.total }}
-            </td>
+            <td width="120">NT {{ item.total }}</td>
             <td width="120">
               <i
                 class="bi bi-credit-card-2-back-fill"
@@ -89,12 +84,18 @@
             <td colspan="5" class="collapse border-bottom-0" :id="'collapseOrder-' + key">
               <small>訂單內容：</small>
               <ul v-for="(i, k) in item.products" :key="'product-' + k">
-                <li>
+                <li v-for="(option, optionIndex) in i.options" :key="optionIndex">
                   <small>
-                    {{ i.start_date.replace(/-/g, ' / ') }} {{ i.product.title }} *
-                    <span v-if="i.qtyDetail">
-                      {{ i.qtyDetail.adult }} 大
-                      <span v-if="i.qtyDetail.child > 0"> {{ i.qtyDetail.child }} 小 </span>
+                    {{ option.start_date.replace(/-/g, ' / ') }}
+                    <span class="ms-2">
+                      {{ i.product.title }} -
+                      {{ option.optionName }}
+                    </span>
+                    <span v-if="option.qtyDetail" class="ms-2">
+                      * {{ option.qtyDetail.adult }} 大
+                      <span v-if="option.qtyDetail.child > 0">
+                        {{ option.qtyDetail.child }} 小
+                      </span>
                     </span>
                   </small>
                 </li>
