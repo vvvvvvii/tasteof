@@ -213,7 +213,33 @@
               <h3 class="text-primary">選擇方案</h3>
               <div class="d-flex h5 justify-content-end">
                 <div class="d-flex flex-column align-items-center">
-                  <label for="tktAdultNum" class="mb-1">成人</label>
+                  <label
+                    for="tktAdultNum"
+                    class="mb-1"
+                    v-if="moreInfo.productInfo.lowestPriceUnit === '每人'"
+                  >
+                    成人
+                  </label>
+                  <label
+                    for="tktOthersNum"
+                    class="mb-1"
+                    v-if="
+                      moreInfo.productInfo.category !== '包車服務' &&
+                        moreInfo.productInfo.lowestPriceUnit !== '每人'
+                    "
+                  >
+                    數量
+                  </label>
+                  <label
+                    for="tktCarNum"
+                    class="mb-1"
+                    v-if="
+                      moreInfo.productInfo.category === '包車服務' &&
+                        moreInfo.productInfo.lowestPriceUnit !== '每人'
+                    "
+                  >
+                    台
+                  </label>
                   <div class="d-flex align-items-center">
                     <button
                       type="button"
@@ -234,7 +260,10 @@
                     </button>
                   </div>
                 </div>
-                <div class="d-flex flex-column align-items-center ms-2">
+                <div
+                  class="d-flex flex-column align-items-center ms-2"
+                  v-if="moreInfo.productInfo.lowestPriceUnit === '每人'"
+                >
                   <label for="tktChildNum" class="mb-1">孩童</label>
                   <div class="d-flex align-items-center">
                     <button
@@ -265,7 +294,6 @@
                     v-model="moreInfo.startDate"
                     class="py-1 mb-1 text-center"
                   ></flat-pickr>
-                  <p class="fw-bold">不同使用日煩請以不同訂單預購</p>
                 </div>
               </div>
             </div>
