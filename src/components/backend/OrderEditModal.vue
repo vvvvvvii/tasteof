@@ -31,13 +31,13 @@
                   <li class="mb-3">
                     <h3 class="h4">
                       <span class="fw-bold">購買細項：</span>
-                      <ul class="pt-2">
-                        <li v-for="(item, key) in tempOrder.products" :key="key" class="mb-3">
+                      <ul class="pt-3">
+                        <li v-for="(item, key) in tempOrder.products" :key="key">
                           <template
                             v-for="(option, optionIndex) in item.options"
                             :key="optionIndex"
                           >
-                            <div class="d-flex">
+                            <div class="d-flex mb-3">
                               <p
                                 class="badge rounded-pill h-50"
                                 :class="{
@@ -51,7 +51,30 @@
                               <div class="ms-3">
                                 <p class="mb-1 fw-bold">{{ item.product.title }}</p>
                                 <p class="mb-1 text-gray">{{ option.optionName }}</p>
-                                <p v-if="option.qtyDetail && item.product.category !== '包車服務'">
+                                <p v-if="option.qtyDetail">
+                                  {{ option.qtyDetail.adult }}
+                                  <span v-if="item.product.lowestPriceUnit === '每人'"> 大 </span>
+                                  <span
+                                    v-else-if="
+                                      item.product.category !== '包車服務' &&
+                                        item.product.lowestPriceUnit !== '每人'
+                                    "
+                                  >
+                                    組
+                                  </span>
+                                  <span
+                                    v-else-if="
+                                      item.product.category === '包車服務' &&
+                                        item.product.lowestPriceUnit !== '每人'
+                                    "
+                                  >
+                                    台
+                                  </span>
+                                  <span v-if="option.qtyDetail.child > 0">
+                                    {{ option.qtyDetail.child }} 小
+                                  </span>
+                                </p>
+                                <!-- <p v-if="option.qtyDetail && item.product.category !== '包車服務'">
                                   {{ option.qtyDetail.adult }} 大
                                   <span v-if="option.qtyDetail.child > 0">
                                     {{ option.qtyDetail.child }} 小
@@ -63,7 +86,7 @@
                                   "
                                 >
                                   {{ option.qtyDetail.adult }} 組
-                                </p>
+                                </p> -->
                               </div>
                             </div>
                           </template>

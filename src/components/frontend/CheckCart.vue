@@ -66,9 +66,26 @@
                     >
                       <i class="bi bi-plus-lg"></i>
                     </button>
-                    大
+                    <span v-if="item.product.lowestPriceUnit === '每人'">大</span>
+                    <span
+                      v-else-if="
+                        item.product.category !== '包車服務' &&
+                          item.product.lowestPriceUnit !== '每人'
+                      "
+                      >組</span
+                    >
+                    <span
+                      v-else-if="
+                        item.product.category === '包車服務' &&
+                          item.product.lowestPriceUnit !== '每人'
+                      "
+                      >台</span
+                    >
                   </div>
-                  <div class="d-flex align-items-center h4-sm h5" v-if="option.qtyDetail">
+                  <div
+                    class="d-flex align-items-center h4-sm h5"
+                    v-if="option.qtyDetail && item.product.lowestPriceUnit === '每人'"
+                  >
                     <button
                       type="button"
                       class="border-0 bg-transparent p-2"

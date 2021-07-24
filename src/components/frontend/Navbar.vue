@@ -78,7 +78,7 @@
           <li class="nav-item">
             <router-link to="/cart" class="nav-link px-3 position-relative" active-class="active">
               <i class="bi bi-cart4"></i>
-              <div class="cart-num">{{ cart.carts.length }}</div>
+              <div class="cart-num">{{ this.cart.totalAmount }}</div>
             </router-link>
           </li>
           <li class="nav-item">
@@ -109,6 +109,8 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
+            // 讓購物車以加入的方案計算總數
+            this.cart.totalAmount = this.cart.carts.map((item) => item.options).flat().length;
           } else {
             this.customAlert(res.data.message);
             window.setTimeout(this.closeCustomAlert, 5000);

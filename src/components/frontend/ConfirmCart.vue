@@ -28,8 +28,32 @@
                 </div>
               </div>
               <div class="d-flex justify-content-evenly">
-                <div class="d-flex align-items-center">{{ option.qtyDetail.adult }} 大</div>
-                <div class="d-flex align-items-center">{{ option.qtyDetail.child }} 小</div>
+                <div class="d-flex align-items-center">
+                  {{ option.qtyDetail.adult }}
+                  <span v-if="item.product.lowestPriceUnit === '每人'"> 大</span>
+                  <span
+                    v-else-if="
+                      item.product.category !== '包車服務' &&
+                        item.product.lowestPriceUnit !== '每人'
+                    "
+                  >
+                    組</span
+                  >
+                  <span
+                    v-else-if="
+                      item.product.category === '包車服務' &&
+                        item.product.lowestPriceUnit !== '每人'
+                    "
+                  >
+                    台</span
+                  >
+                </div>
+                <div
+                  class="d-flex align-items-center"
+                  v-if="item.product.lowestPriceUnit === '每人'"
+                >
+                  {{ option.qtyDetail.child }} 小
+                </div>
               </div>
             </div>
           </div>

@@ -92,7 +92,22 @@
                       {{ option.optionName }}
                     </span>
                     <span v-if="option.qtyDetail" class="ms-2">
-                      * {{ option.qtyDetail.adult }} 大
+                      * {{ option.qtyDetail.adult }}
+                      <span v-if="i.product.lowestPriceUnit === '每人'"> 大 </span>
+                      <span
+                        v-else-if="
+                          i.product.category !== '包車服務' && i.product.lowestPriceUnit !== '每人'
+                        "
+                      >
+                        組
+                      </span>
+                      <span
+                        v-else-if="
+                          i.product.category === '包車服務' && i.product.lowestPriceUnit !== '每人'
+                        "
+                      >
+                        台
+                      </span>
                       <span v-if="option.qtyDetail.child > 0">
                         {{ option.qtyDetail.child }} 小
                       </span>
