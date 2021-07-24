@@ -1,9 +1,11 @@
 <template>
-  <!--top navbar-->
-  <Navbar></Navbar>
-  <router-view></router-view>
-  <!--footer-->
-  <Footer :check-success="checkSuccess"></Footer>
+  <div class="d-flex flex-column min-vh-100">
+    <!--top navbar-->
+    <Navbar></Navbar>
+    <router-view></router-view>
+    <!--footer-->
+    <Footer :check-success="checkSuccess"></Footer>
+  </div>
 </template>
 <script>
 import Navbar from '@/components/frontend/Navbar.vue';
