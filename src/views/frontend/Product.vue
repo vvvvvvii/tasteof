@@ -710,6 +710,9 @@ export default {
         const { qtyDetail } = dataOuter.data.options[0];
         dataOuter.data.qty = qtyDetail.adult + qtyDetail.child;
       }
+      dataOuter.data.options.forEach((i, key) => {
+        dataOuter.data.options[key].total = i.optionPrice * (i.qtyDetail.adult + i.qtyDetail.child);
+      });
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, dataOuter)
         .then((res) => {

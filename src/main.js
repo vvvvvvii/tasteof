@@ -24,8 +24,10 @@ import 'bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import SwiperCore, { Autoplay, Navigation, Thumbs } from 'swiper/core';
 
+import { PageFlip } from 'page-flip';
+
 import router from './router';
-import App from './App.vue'; // <--- ADDED
+import App from './App.vue';
 
 export default class ClassicEditor extends ClassicEditorBase {}
 
@@ -81,6 +83,7 @@ createApp(App)
   .use(router)
   .use(VueAxios, axios)
   .use(CKEditor)
+  .use('PageFlip', PageFlip)
   .component('Form', Form)
   .component('Field', Field)
   .component('ErrorMessage', ErrorMessage)

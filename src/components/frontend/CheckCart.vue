@@ -1,7 +1,7 @@
 <template>
-  <div class="container py-8">
+  <div class="container py-8 position-relative">
     <div class="bg-light rounded-3 p-7">
-      <div v-if="cart.total > 0">
+      <div v-show="cart.total > 0">
         <div class="d-flex justify-content-between mb-6">
           <h2 class="h3 text-primary">訂單內容</h2>
           <button
@@ -19,17 +19,17 @@
         </div>
         <div class="row mb-7">
           <template v-for="item in cart.carts" :key="item.id">
-            <div v-for="(option, key) in item.options" :key="key" class="col-md-6">
+            <div v-for="(option, key) in item.options" :key="key" class="col-lg-6">
               <div class="px-3 py-4 mb-2 border border-primary rounded-1 position-relative">
                 <div
-                  class="d-flex justify-content-between pb-3 mb-2
+                  class="row justify-content-between pb-3 mb-2
                 border-bottom border-gray"
                 >
-                  <div>
+                  <div class="col-4">
                     <p class="mb-2">{{ option.start_date }}</p>
                     <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
                   </div>
-                  <div class="w-50 d-flex flex-column justify-content-between">
+                  <div class="col-8 d-flex flex-column justify-content-between">
                     <div>
                       <p class="h3-sm">{{ item.product.title }}</p>
                       <p class="h4-sm h5 mb-3">{{ option.optionName }}</p>
@@ -126,6 +126,224 @@
             </div>
           </template>
         </div>
+        <h2 class="h3 text-primary mb-lg-4 mb-2">客戶資料</h2>
+        <div class="row">
+          <div class="col-4">
+            <div class="list-group" role="tablist">
+              <a
+                class="list-group-item list-group-item-action px-3 py-2
+                  d-flex justify-content-between"
+                :class="{ active: key === 0 }"
+                data-bs-toggle="list"
+                :href="`#listPax${key + 1}`"
+                role="tab"
+                v-for="(item, key) in customerDetail.users"
+                :key="key"
+              >
+                <span>{{ `第 ${key + 1} 位旅客` }}</span>
+                <span>
+                  <button
+                    type="button"
+                    ref="addPaxTooltip"
+                    class="btn btn-outline-light rounded-circle px-1 py-0"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    :title="`新增第 ${key + 2} 位旅客`"
+                    @click="$emit('emit-add-pax')"
+                  >
+                    <i class="bi bi-person-plus"></i>
+                  </button>
+                  <button
+                    type="button"
+                    ref="deletePaxTooltip"
+                    class="btn btn-outline-light rounded-circle ms-2 px-1 py-0"
+                    :disabled="key === 0"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    :title="`刪除第 ${key + 1} 位旅客`"
+                    @click="$emit('emit-delete-pax', key)"
+                  >
+                    <i class="bi bi-person-x"></i>
+                  </button>
+                </span>
+              </a>
+              <a
+                class="list-group-item list-group-item-action px-3 py-2"
+                data-bs-toggle="list"
+                href="#requestNote"
+                role="tab"
+              >
+                特殊需求備註
+              </a>
+            </div>
+          </div>
+          <div class="col-8">
+            <div class="tab-content mb-7">
+              <template v-for="(item, key) in customerDetail.users" :key="key">
+                <div
+                  class="tab-pane"
+                  :class="{ active: key === 0 }"
+                  :id="`listPax${key + 1}`"
+                  role="tabpanel"
+                >
+                  <Form v-slot="{ errors }">
+                    <div class="row" :class="{ 'mb-6': key !== customerDetail.users.length - 1 }">
+                      <div class="col-6 mb-3">
+                        <label :for="`bookNameCartInput-${key}`" class="form-label">姓名</label>
+                        <Field
+                          type="text"
+                          :id="`bookNameCartInput-${key}`"
+                          :name="`第 ${key + 1} 位姓名`"
+                          class="form-control"
+                          :class="{ 'is-invalid': errors[`第 ${key + 1} 位姓名`] }"
+                          rules="required"
+                          v-model="customerDetail.users[key].name"
+                        ></Field>
+                        <ErrorMessage
+                          :name="`第 ${key + 1} 位姓名`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label :for="`bookGenderCartInput-${key}`" class="form-label">稱謂</label>
+                        <Field
+                          :name="`第 ${key + 1} 位稱謂`"
+                          class="form-select"
+                          :id="`bookGenderCartInput-${key}`"
+                          :class="{ 'is-invalid': errors[`第 ${key + 1} 位稱謂`] }"
+                          rules="required"
+                          v-model="customerDetail.users[key].gender"
+                          as="select"
+                        >
+                          <option disabled value="">請選擇稱謂</option>
+                          <option selected value="先生">先生</option>
+                          <option value="女士">女士</option>
+                        </Field>
+                        <ErrorMessage
+                          :name="`第 ${key + 1} 位稱謂`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label :for="`bookIdNumCartInput-${key}`" class="form-label"
+                          >身分證字號</label
+                        >
+                        <Field
+                          type="text"
+                          :name="`第 ${key + 1} 位身分證`"
+                          class="form-control"
+                          :id="`bookIdNumCartInput-${key}`"
+                          :class="{ 'is-invalid': errors[`第 ${key + 1} 位身分證`] }"
+                          :rules="isIdNum"
+                          v-model="customerDetail.users[key].idNum"
+                        ></Field>
+                        <ErrorMessage
+                          :name="`第 ${key + 1} 位身分證`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label :for="`bookPassportNumCartInput-${key}`" class="form-label">
+                          護照號碼
+                        </label>
+                        <Field
+                          type="text"
+                          :name="`第 ${key + 1} 位護照號碼`"
+                          class="form-control"
+                          :id="`bookPassportNumCartInput-${key}`"
+                          :class="{ 'is-invalid': errors[`第 ${key + 1} 位護照號碼`] }"
+                          rules="length:9|numeric"
+                          v-model="customerDetail.users[key].passportNum"
+                        ></Field>
+                        <ErrorMessage
+                          :name="`第 ${key + 1} 位護照號碼`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div class="col-lg-6 col-sm-4 mb-3">
+                        <label :for="`bookTelCartInput-${key}`" class="form-label">聯繫電話</label>
+                        <Field
+                          type="tel"
+                          :name="`第 ${key + 1} 位電話`"
+                          class="form-control"
+                          :id="`bookTelCartInput-${key}`"
+                          :class="{ 'is-invalid': errors[`第 ${key + 1} 位電話`] }"
+                          rules="required|numeric|max:10"
+                          v-model="customerDetail.users[key].tel"
+                        ></Field>
+                        <ErrorMessage
+                          :name="`第 ${key + 1} 位電話`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div class="col-lg-6 col-sm-8 mb-3">
+                        <label :for="`bookEmailCartInput-${key}`" class="form-label">
+                          電子信箱
+                        </label>
+                        <Field
+                          type="email"
+                          :name="`第 ${key + 1} 位 email`"
+                          class="form-control"
+                          :id="`bookEmailCartInput-${key}`"
+                          placeholder="customer@example.com"
+                          :class="{ 'is-invalid': errors[`第 ${key + 1} 位 email`] }"
+                          rules="email|required"
+                          v-model="customerDetail.users[key].email"
+                        ></Field>
+                        <ErrorMessage
+                          :name="`第 ${key + 1} 位 email`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div class="mb-3">
+                        <label :for="`bookAddrCartInput-${key}`" class="form-label">地址</label>
+                        <Field
+                          type="text"
+                          :name="`第 ${key + 1} 位地址`"
+                          class="form-control"
+                          :id="`bookAddrCartInput-${key}`"
+                          :class="{ 'is-invalid': errors[`第 ${key + 1} 位地址`] }"
+                          rules="required"
+                          v-model="customerDetail.users[key].address"
+                        ></Field>
+                        <ErrorMessage
+                          :name="`第 ${key + 1} 位地址`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                    </div>
+                  </Form>
+                </div>
+              </template>
+              <div class="tab-pane fade" id="requestNote" role="tabpanel">
+                <div class="mb-7" v-if="customerDetail.users.length !== 0">
+                  <label for="bookMessageCart" class="form-label">備註（選填）</label>
+                  <textarea
+                    class="form-control"
+                    id="bookMessageCart"
+                    rows="2"
+                    v-model="customerDetail.message"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-column align-items-end">
+              <h5 class="h3 mb-3">
+                總金額
+                <span class="h2 text-primary">NT {{ addComma(Math.floor(cart.final_total)) }}</span>
+              </h5>
+              <button
+                type="submit"
+                class="btn btn-primary d-block px-5 py-2"
+                :disabled="Object.keys(cart).length == 0 || cart.total == 0"
+                @click="toNextPage"
+              >
+                <p class="h3">下一步</p>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--勿動下面的
         <div class="d-flex justify-content-between mb-lg-4 mb-2">
           <h2 class="h3 text-primary">客戶資料</h2>
           <button type="button" class="btn btn-primary d-block px-5" @click="$emit('emit-add-pax')">
@@ -282,7 +500,6 @@
               總金額
               <span class="h2 text-primary">NT {{ addComma(Math.floor(cart.final_total)) }}</span>
             </h5>
-            <!--cart 是空物件或價格為 0 時不可點清空或結帳（確保購物車為空時不可點擊）-->
             <button
               type="submit"
               class="btn btn-primary d-block px-5 py-2"
@@ -295,10 +512,10 @@
               <p class="h3">下一步</p>
             </button>
           </div>
-        </Form>
+        </Form>-->
       </div>
       <!--無商品時顯示-->
-      <div class="text-center" v-else>
+      <div class="text-center" v-show="cart.total < 0">
         <p class="mb-4">
           購物車目前還沒有商品耶
           <i class="bi bi-eraser"></i>
@@ -322,6 +539,8 @@
   </div>
 </template>
 <script>
+import { Tooltip } from 'bootstrap';
+
 export default {
   props: ['cartInfo', 'customer'],
   data() {
@@ -331,8 +550,11 @@ export default {
         users: [],
         message: '',
       },
+      addPaxTooltip: '',
+      deletePaxTooltip: '',
     };
   },
+
   methods: {
     isIdNum(value) {
       const idNum = /^[A-Z][0-9]{9}$/;
@@ -350,8 +572,11 @@ export default {
       },
       deep: true,
     },
-    customer() {
-      this.customerDetail = { ...this.customer };
+    customer: {
+      handler() {
+        this.customerDetail = { ...this.customer };
+      },
+      deep: true,
     },
   },
   computed: {
@@ -366,6 +591,10 @@ export default {
   created() {
     this.cart = { ...this.cartInfo };
     this.customerDetail = { ...this.customer };
+  },
+  mounted() {
+    this.addPaxTooltip = new Tooltip(this.$refs.addPaxTooltip);
+    this.deletePaxTooltip = new Tooltip(this.$refs.deletePaxTooltip);
   },
 };
 </script>

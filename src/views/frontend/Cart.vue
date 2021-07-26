@@ -1,28 +1,56 @@
 <template>
   <div class="pt-7 flex-fill">
-    <checkCart
-      v-if="checkCartPageShow"
-      ref="checkCart"
-      :customer="customerDetail"
-      :cart-info="cart"
-      @emit-change-tkt-num="changeTktNum"
-      @emit-delete-product="deleteProduct"
-      @emit-delete-all-products="deleteAllProducts"
-      @emit-add-pax="addPax"
-      @emit-delete-pax="deletePax"
-      @emit-next-page="saveCustomerDetail"
-    ></checkCart>
-    <confirmCart
-      v-if="confirmCartPageShow"
-      ref="confirmCart"
-      :customer="customerDetail"
-      :cart-info="cart"
-      :payment="paymentDetail"
-      @emit-check-coupon="checkCoupon"
-      @emit-pre-page="backToFirstPage"
-      @emit-add-order="addOrder"
-    ></confirmCart>
-    <finishCart v-if="finishCartPageShow" :order-detail="orderDetail"></finishCart>
+    <div class="pt-5">
+      <ul class="step-list d-flex justify-content-center">
+        <li class="step-item" :class="{ 'bg-warning': checkCartPageShow }">
+          <div class="step-icon">
+            <i class="bi bi-flag-fill d-block" v-if="checkCartPageShow"></i>
+          </div>
+          <p class="step-text h3-md h4 text-center" :class="{ 'text-dark': checkCartPageShow }">
+            查看
+          </p>
+        </li>
+        <li class="step-item ms-md-5 ms-3" :class="{ 'bg-danger': confirmCartPageShow }">
+          <div class="step-icon">
+            <i class="bi bi-flag-fill d-block" v-if="confirmCartPageShow"></i>
+          </div>
+          <p class="step-text h3-md h4 text-center" :class="{ 'text-dark': confirmCartPageShow }">
+            確認
+          </p>
+        </li>
+        <li class="step-item ms-md-5 ms-3" :class="{ 'bg-success': finishCartPageShow }">
+          <div class="step-icon">
+            <i class="bi bi-flag-fill d-block" v-if="finishCartPageShow"></i>
+          </div>
+          <p class="step-text h3-md h4 text-center" :class="{ 'text-dark': finishCartPageShow }">
+            完成
+          </p>
+        </li>
+      </ul>
+      <checkCart
+        v-if="checkCartPageShow"
+        ref="checkCart"
+        :customer="customerDetail"
+        :cart-info="cart"
+        @emit-change-tkt-num="changeTktNum"
+        @emit-delete-product="deleteProduct"
+        @emit-delete-all-products="deleteAllProducts"
+        @emit-add-pax="addPax"
+        @emit-delete-pax="deletePax"
+        @emit-next-page="saveCustomerDetail"
+      ></checkCart>
+      <confirmCart
+        v-if="confirmCartPageShow"
+        ref="confirmCart"
+        :customer="customerDetail"
+        :cart-info="cart"
+        :payment="paymentDetail"
+        @emit-check-coupon="checkCoupon"
+        @emit-pre-page="backToFirstPage"
+        @emit-add-order="addOrder"
+      ></confirmCart>
+      <finishCart v-if="finishCartPageShow" :order-detail="orderDetail"></finishCart>
+    </div>
   </div>
   <!--alert-->
   <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
@@ -38,7 +66,7 @@ export default {
   data() {
     return {
       customerDetail: {
-        users: [],
+        users: [{}],
         message: '',
       },
       cart: {},
@@ -71,6 +99,27 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
+            this.cart.total = 0;
+            this.cart.carts.forEach((item, index) => {
+              this.cart.carts[index].total = 0;
+              item.options.forEach((i) => {
+                this.cart.carts[index].total += i.total;
+                this.cart.total += i.total;
+              });
+              if (Object.keys(item).includes('coupon') === false) {
+                this.cart.carts[index].final_total = this.cart.carts[index].total;
+                this.cart.final_total = this.cart.total;
+              } else {
+                this.cart.final_total = 0;
+                this.cart.carts.forEach((i, key) => {
+                  console.log(i);
+                  this.cart.carts[key].final_total = (i.total * i.coupon.percent) / 100;
+                  this.cart.final_total += this.cart.carts[key].final_total;
+                });
+                this.cart.final_total = Math.floor(this.cart.final_total);
+                console.log(this.cart.carts);
+              }
+            });
             if (status) {
               // 若有傳入參數才進行這塊
               status.children[0].classList.add('d-none');
@@ -262,13 +311,8 @@ export default {
       //   }
     },
     addPax() {
-      if (Object.keys(this.customerDetail).includes('users') === false) {
-        this.customerDetail.users = [];
-        this.customerDetail.users[0] = {};
-      } else {
-        // 新增一個空物件讓新方案的內容可以放入
-        this.customerDetail.users[this.customerDetail.users.length] = {};
-      }
+      // 新增一個空物件讓新方案的內容可以放入
+      this.customerDetail.users[this.customerDetail.users.length] = {};
     },
     deletePax(num) {
       this.customerDetail.users.splice(num, 1);
@@ -294,11 +338,12 @@ export default {
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/coupon`, CouponData)
         .then((res) => {
+          console.log(res);
           if (res.data.success) {
             const { data } = res;
             this.customAlert(data.message);
             window.setTimeout(this.closeCustomAlert, 5000);
-            this.cart.final_total = Math.floor(data.data.final_total);
+            this.getCartInfo();
             checkCouponBtn.classList.remove('disabled');
             checkCouponBtn.children[0].classList.add('d-none');
           } else {
@@ -309,6 +354,7 @@ export default {
           }
         })
         .catch((err) => {
+          console.log(err);
           this.customAlert(err.response);
           window.setTimeout(this.closeCustomAlert, 5000);
           checkCouponBtn.classList.remove('disabled');

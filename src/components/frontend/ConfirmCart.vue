@@ -61,37 +61,35 @@
       </div>
       <h2 class="h3 text-primary mb-6">客戶資料</h2>
       <div class="row mb-7">
-        <div
-          class="col-lg-6 position-relative p-md-6 p-3 bg-white"
-          v-for="(item, key) in customer.users"
-          :key="key"
-        >
-          <div class="d-flex justify-content-between">
-            <div class="w-50 d-flex flex-column justify-content-between">
-              <p class="h3 mb-5">
-                {{ item.name }}
-                <span class="h4 ms-1">
-                  {{ item.gender }}
-                </span>
-              </p>
-              <p class="pax-num d-sm-inline d-none">{{ `第${key + 1}位旅客` }}</p>
-              <img
-                src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/num.png?raw=true"
-                :alt="`第${key + 1}位旅客`"
-                class="pax-num-img d-sm-block d-none"
-              />
+        <div class="col-lg-6" v-for="(item, key) in customer.users" :key="key">
+          <div class="position-relative p-md-6 p-3 bg-white">
+            <div class="d-flex justify-content-between">
+              <div class="w-50 d-flex flex-column justify-content-between">
+                <p class="h3 mb-5">
+                  {{ item.name }}
+                  <span class="h4 ms-1">
+                    {{ item.gender }}
+                  </span>
+                </p>
+                <p class="pax-num d-sm-inline d-none">{{ `第${key + 1}位旅客` }}</p>
+                <img
+                  src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/num.png?raw=true"
+                  :alt="`第${key + 1}位旅客`"
+                  class="pax-num-img d-sm-block d-none"
+                />
+              </div>
+              <div class="w-50">
+                <p class="mb-2">身分證字號： {{ item.idNum }}</p>
+                <p class="mb-4">護照號碼： {{ item.passportNum }}</p>
+                <p class="mb-2 d-sm-block d-none">{{ item.tel }}</p>
+                <p class="mb-2 d-sm-block d-none">{{ item.email }}</p>
+                <p class="mb-2 d-sm-block d-none">{{ item.address }}</p>
+              </div>
             </div>
-            <div class="w-50">
-              <p class="mb-2">身分證字號： {{ item.idNum }}</p>
-              <p class="mb-4">護照號碼： {{ item.passportNum }}</p>
-              <p class="mb-2 d-sm-block d-none">{{ item.tel }}</p>
-              <p class="mb-2 d-sm-block d-none">{{ item.email }}</p>
-              <p class="mb-2 d-sm-block d-none">{{ item.address }}</p>
-            </div>
+            <p class="mb-2 h5 d-sm-none">{{ item.tel }}</p>
+            <p class="mb-2 h5 d-sm-none">{{ item.email }}</p>
+            <p class="mb-2 h5 d-sm-none">{{ item.address }}</p>
           </div>
-          <p class="mb-2 h5 d-sm-none">{{ item.tel }}</p>
-          <p class="mb-2 h5 d-sm-none">{{ item.email }}</p>
-          <p class="mb-2 h5 d-sm-none">{{ item.address }}</p>
         </div>
       </div>
       <h2 class="h3 text-primary mb-6">付款資料</h2>
