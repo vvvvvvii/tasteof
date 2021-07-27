@@ -107,32 +107,52 @@
                     </h3>
                   </li>
                 </ul>
-                <div class="form-check mb-2">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="paymentStatus"
-                    v-model="tempOrder.is_paid"
-                  />
-                  <label class="form-check-label" for="paymentStatus">付款狀態</label>
-                </div>
+                <div class="form-check mb-2"></div>
               </div>
               <div class="col-6">
-                <h2 class="h3 pb-3 mb-3 border-bottom border-gray">客戶資料</h2>
-                <ul>
-                  <li class="mb-3">
-                    {{ tempOrder.user.name }}
-                    {{ tempOrder.user.gender }}
-                  </li>
-                  <li>身分證字號：{{ tempOrder.user.idNum }}</li>
-                  <li class="mb-3">護照號碼：{{ tempOrder.user.passportNum }}</li>
-                  <li>聯繫電話：{{ tempOrder.user.tel }}</li>
-                  <li>聯繫信箱：{{ tempOrder.user.email }}</li>
-                  <li>住址：{{ tempOrder.user.address }}</li>
-                </ul>
+                <div class="mb-7">
+                  <h2 class="h3 pb-3 mb-3 border-bottom border-gray">客戶資料</h2>
+                  <ul>
+                    <li class="mb-3">
+                      {{ tempOrder.user.name }}
+                      {{ tempOrder.user.gender }}
+                    </li>
+                    <li>身分證字號：{{ tempOrder.user.idNum }}</li>
+                    <li class="mb-3">護照號碼：{{ tempOrder.user.passportNum }}</li>
+                    <li>聯繫電話：{{ tempOrder.user.tel }}</li>
+                    <li>聯繫信箱：{{ tempOrder.user.email }}</li>
+                    <li>住址：{{ tempOrder.user.address }}</li>
+                  </ul>
+                </div>
+                <template v-if="tempOrder.user.paymentDetail">
+                  <h2 class="h3 pb-3 mb-3 border-bottom border-gray">付款資料</h2>
+                  <div class="d-flex align-items-center">
+                    <label class="form-check-label" for="paymentStatus">{{
+                      tempOrder.is_paid ? '已付款' : '未付款'
+                    }}</label>
+                    <input
+                      type="checkbox"
+                      class="form-check-input ms-2"
+                      id="paymentStatus"
+                      v-model="tempOrder.is_paid"
+                    />
+                  </div>
+                  <ul>
+                    <li>付款方式：{{ tempOrder.user.paymentDetail.payment_method }}</li>
+                    <li>統一編號：{{ tempOrder.user.paymentDetail.taxIdNum || '不需統一編號' }}</li>
+                    <li>
+                      <p v-if="tempOrder.user.paymentDetail.coupon">
+                        使用優惠碼： {{ tempOrder.user.paymentDetail.coupon }} （原價 NT{{
+                          tempOrder.user.paymentDetail.total
+                        }}
+                        ）
+                      </p>
+                      <p v-else>未使用優惠碼</p>
+                    </li>
+                  </ul>
+                </template>
               </div>
             </div>
-
             <div class="d-flex justify-content-center">
               <button
                 type="button"

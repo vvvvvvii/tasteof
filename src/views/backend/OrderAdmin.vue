@@ -176,6 +176,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             const { data } = res;
+            console.log(data.orders);
             this.orders = data.orders;
             // 把時間戳轉成易閱讀的日期
             this.orders.forEach((item, index) => {
@@ -187,7 +188,11 @@ export default {
                   .replace(/-/g, ' / ');
                 this.orders[index].create_at = time;
               }
-              this.orders[index].total = Math.floor(this.orders[index].total);
+              // 整理付款資料
+              this.orders[index].total = item.user.paymentDetail.final_total;
+              if (item.user.paymentDetail.payment_method !== '') {
+                this.orders[index].is_paid = true;
+              }
             });
             this.pagination = res.data.pagination;
           } else {

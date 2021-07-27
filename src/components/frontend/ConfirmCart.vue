@@ -188,6 +188,7 @@ export default {
   },
   methods: {
     addOrder() {
+      console.log(this.paymentDetail);
       this.$emit('emit-add-order', this.paymentDetail);
     },
   },
@@ -202,8 +203,11 @@ export default {
     customer() {
       this.customerDetail = { ...this.customer };
     },
-    payment() {
-      this.paymentDetail = { ...this.payment };
+    payment: {
+      handler() {
+        this.paymentDetail = { ...this.payment };
+      },
+      deep: true,
     },
   },
   computed: {

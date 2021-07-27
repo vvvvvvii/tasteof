@@ -515,7 +515,7 @@
         </Form>-->
       </div>
       <!--無商品時顯示-->
-      <div class="text-center" v-show="cart.total < 0">
+      <div class="text-center" v-show="cart.total === 0">
         <p class="mb-4">
           購物車目前還沒有商品耶
           <i class="bi bi-eraser"></i>

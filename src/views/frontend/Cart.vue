@@ -67,13 +67,13 @@ export default {
     return {
       customerDetail: {
         users: [{}],
-        message: '',
+        message: '無備註事項',
       },
       cart: {},
       paymentDetail: {
         method: '',
         taxIdNum: '',
-        coupons: '',
+        coupon: '',
       },
       orderDetail: {
         total: 0,
@@ -361,19 +361,32 @@ export default {
           checkCouponBtn.children[0].classList.add('d-none');
         });
     },
-    addOrder() {
+    addOrder(info) {
+      this.paymentDetail = info;
       const { addOrderBtn } = this.$refs.confirmCart.$refs;
       addOrderBtn.classList.add('disabled');
       addOrderBtn.children[0].classList.remove('d-none');
-      this.customerDetail.user = { ...this.customerDetail.users[0] };
       const data = {
-        data: this.customerDetail,
+        data: {
+          user: {
+            ...this.customerDetail.users[0],
+            paymentDetail: {
+              total: this.cart.total,
+              final_total: this.cart.final_total,
+              payment_method: this.paymentDetail.method,
+              taxIdNum: this.paymentDetail.taxIdNum,
+              coupon: this.paymentDetail.coupon,
+            },
+          },
+          message: this.customerDetail.message,
+        },
       };
+      console.log(data.data);
+      this.orderDetail.total = this.cart.final_total;
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)
         .then((res) => {
           if (res.data.success) {
-            this.orderDetail.total = res.data.total;
             this.orderDetail.orderId = res.data.orderId;
             this.getCartInfo();
             addOrderBtn.classList.remove('disabled');
