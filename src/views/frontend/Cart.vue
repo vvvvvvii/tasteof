@@ -31,6 +31,7 @@
         v-if="checkCartPageShow"
         ref="checkCart"
         :customer="customerDetail"
+        :other-info="otherDetail"
         :cart-info="cart"
         @emit-change-tkt-num="changeTktNum"
         @emit-delete-product="deleteProduct"
@@ -75,6 +76,7 @@ export default {
         taxIdNum: '',
         coupon: '',
       },
+      otherDetail: [],
       orderDetail: {
         total: 0,
         orderId: '',

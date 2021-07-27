@@ -189,6 +189,8 @@ export default {
         is_enabled: true,
         is_mainProduct: false,
         is_freeCxl: false,
+        translate: {},
+        transfer: {},
         imageUrl: '',
         otherImageUrl: '',
         imagesUrl: [],

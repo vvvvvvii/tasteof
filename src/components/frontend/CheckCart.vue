@@ -178,15 +178,15 @@
             </div>
           </div>
           <div class="col-8">
-            <div class="tab-content mb-7">
-              <template v-for="(item, key) in customerDetail.users" :key="key">
-                <div
-                  class="tab-pane"
-                  :class="{ active: key === 0 }"
-                  :id="`listPax${key + 1}`"
-                  role="tabpanel"
-                >
-                  <Form v-slot="{ errors }">
+            <Form v-slot="{ errors }" @submit="toNextPage">
+              <div class="tab-content mb-7">
+                <template v-for="(item, key) in customerDetail.users" :key="key">
+                  <div
+                    class="tab-pane"
+                    :class="{ active: key === 0 }"
+                    :id="`listPax${key + 1}`"
+                    role="tabpanel"
+                  >
                     <div class="row" :class="{ 'mb-6': key !== customerDetail.users.length - 1 }">
                       <div class="col-6 mb-3">
                         <label :for="`bookNameCartInput-${key}`" class="form-label">姓名</label>
@@ -312,35 +312,177 @@
                         ></ErrorMessage>
                       </div>
                     </div>
-                  </Form>
-                </div>
-              </template>
-              <div class="tab-pane fade" id="requestNote" role="tabpanel">
-                <div class="mb-7" v-if="customerDetail.users.length !== 0">
-                  <label for="bookMessageCart" class="form-label">備註（選填）</label>
-                  <textarea
-                    class="form-control"
-                    id="bookMessageCart"
-                    rows="2"
-                    v-model="customerDetail.message"
-                  ></textarea>
+                  </div>
+                </template>
+                <div class="tab-pane fade" id="requestNote" role="tabpanel">
+                  <div v-for="(detail, key) in otherDetail" :key="key">
+                    <div class="mb-6 pb-6 border-bottom border-gray w-75 mx-auto">
+                      <div class="mb-3">
+                        <h4 class="h3 mb-1">{{ detail.product.title }}</h4>
+                        <h4>{{ detail.optionName }}</h4>
+                      </div>
+                      <div class="mb-3" v-if="detail.product.transfer.time">
+                        <label :for="`pickupTime-${key}`" class="form-label">接送時間</label>
+                        <Field
+                          type="text"
+                          :id="`pickupTime-${key}`"
+                          :name="`${detail.product.title}：${detail.optionName} 的接送時間`"
+                          class="form-control"
+                          :class="{
+                            'is-invalid':
+                              errors[`${detail.product.title}：${detail.optionName} 的接送時間`],
+                          }"
+                          rules="required"
+                          v-model="otherDetail[key].pickUpTime"
+                        >
+                        </Field>
+                        <ErrorMessage
+                          :name="`${detail.product.title}：${detail.optionName} 的接送時間`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div
+                        class="mb-3"
+                        v-if="
+                          detail.product.transfer.place &&
+                            detail.optionName.includes('火車' || '高鐵') === false
+                        "
+                      >
+                        <label :for="`pickupPlace-${key}`" class="form-label">接送地點</label>
+                        <Field
+                          type="text"
+                          :id="`pickupPlace-${key}`"
+                          :name="`${detail.product.title}：${detail.optionName} 的接送地點`"
+                          class="form-control"
+                          :class="{
+                            'is-invalid':
+                              errors[`${detail.product.title}：${detail.optionName} 的接送地點`],
+                          }"
+                          rules="required"
+                          v-model="otherDetail[key].pickUpPlace"
+                        >
+                        </Field>
+                        <ErrorMessage
+                          :name="`${detail.product.title}：${detail.optionName} 的接送地點`"
+                          class="invalid-feedback"
+                        ></ErrorMessage>
+                      </div>
+                      <div
+                        class="mb-3"
+                        v-if="
+                          detail.product.category === '包車服務' &&
+                            detail.product.title.includes('包車')
+                        "
+                      >
+                        <label :for="`rentCarSchedule-${key}`" class="form-label"
+                          >包車行程規劃</label
+                        >
+                        <textarea
+                          class="form-control"
+                          :id="`rentCarSchedule-${key}`"
+                          rows="6"
+                          v-model="otherDetail[key].schedule"
+                          placeholder="歡迎提供您對包車行程的初步規劃，我們的司機將與您討論並協助行程安排"
+                        ></textarea>
+                      </div>
+                      <div class="mb-3" v-if="detail.product.transfer.childRestrict">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :id="`rentCarChildInclude-${key}`"
+                            v-model="otherDetail[key].includeChild"
+                          />
+                          <label class="form-check-label" :for="`rentCarChildInclude-${key}`">
+                            旅客中有未滿 4 歲孩童
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row" v-if="otherDetail[key].includeChild">
+                        <div class="col-4 mb-3">
+                          <label :for="`rentCarChildBd-${key}`" class="form-label"
+                            >孩童出生年月日</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            :id="`rentCarChildBd-${key}`"
+                            placeholder="1900 / 01 / 01"
+                            v-model="otherDetail[key].childBd"
+                          />
+                        </div>
+                        <div class="col-4 mb-3">
+                          <label :for="`rentCarChildHeight-${key}`" class="form-label"
+                            >孩童身高</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            :id="`rentCarChildHeight-${key}`"
+                            placeholder="公分"
+                            v-model="otherDetail[key].childHeight"
+                          />
+                        </div>
+                        <div class="col-4 mb-3">
+                          <label :for="`rentCarChildWeight-${key}`" class="form-label"
+                            >孩童體重</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            :id="`rentCarChildWeight-${key}`"
+                            placeholder="公斤"
+                            v-model="otherDetail[key].childWeight"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="mb-3"
+                        v-if="detail.product.translate.eng || detail.product.translate.jpy"
+                      >
+                        <label for="translateLanguage" class="form-label">導覽語言</label>
+                        <select
+                          class="form-select"
+                          id="translateLanguage"
+                          v-model="otherDetail[key].translateLanguage"
+                        >
+                          <option value="中文" selected>中文</option>
+                          <option value="英文" v-if="detail.product.translate.eng">英文</option>
+                          <option value="日文" v-if="detail.product.translate.jpy">日文</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 w-75 mx-auto">
+                    <label for="bookMessageCart" class="form-label"
+                      >其他特殊需求（飲食、禁菸房...）</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="bookMessageCart"
+                      rows="2"
+                      v-model="customerDetail.message"
+                      placeholder="此備註不在商品包含範圍，不保證提供，但我們仍將盡力替您達成特殊需求"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="d-flex flex-column align-items-end">
-              <h5 class="h3 mb-3">
-                總金額
-                <span class="h2 text-primary">NT {{ addComma(Math.floor(cart.final_total)) }}</span>
-              </h5>
-              <button
-                type="submit"
-                class="btn btn-primary d-block px-5 py-2"
-                :disabled="Object.keys(cart).length == 0 || cart.total == 0"
-                @click="toNextPage"
-              >
-                <p class="h3">下一步</p>
-              </button>
-            </div>
+              <div class="d-flex flex-column align-items-end">
+                <h5 class="h3 mb-3">
+                  總金額
+                  <span class="h2 text-primary"
+                    >NT {{ addComma(Math.floor(cart.final_total)) }}</span
+                  >
+                </h5>
+                <button
+                  type="submit"
+                  class="btn btn-primary d-block px-5 py-2"
+                  :disabled="Object.keys(cart).length == 0 || cart.total == 0"
+                >
+                  <p class="h3">下一步</p>
+                </button>
+              </div>
+            </Form>
           </div>
         </div>
         <!--勿動下面的
@@ -550,6 +692,7 @@ export default {
         users: [],
         message: '',
       },
+      otherDetail: [],
       addPaxTooltip: '',
       deletePaxTooltip: '',
     };
@@ -569,6 +712,56 @@ export default {
       handler() {
         this.cart = { ...this.cartInfo }; // props 有變時更改資料
         this.cart.final_total = this.cartInfo.final_total;
+        this.cart.carts.forEach((item) => {
+          if (
+            Object.values(item.product.transfer).includes(true)
+            || Object.values(item.product.translate).includes(true)
+          ) {
+            if (this.otherDetail.map((i) => i.id).includes(item.id)) {
+              // 確認有沒有方案名相同或時間相同的
+              const otherDetailOptionName = this.otherDetail.map((i) => i.optionName);
+              const otherDetailStartDate = this.otherDetail.map((i) => i.start_date);
+              item.options.forEach((i) => {
+                if (
+                  otherDetailOptionName.includes(i.optionName) === false
+                  && otherDetailStartDate.includes(i.start_date) === false
+                ) {
+                  this.otherDetail.push({
+                    id: item.id,
+                    product: { ...item.product },
+                    optionName: i.optionName,
+                    start_date: i.start_date,
+                    pickUpTime: '',
+                    pickUpPlace: '',
+                    schedule: '',
+                    includeChild: false,
+                    childBd: '',
+                    childHeight: '',
+                    childWeight: '',
+                    translateLanguage: '中文',
+                  });
+                }
+              });
+            } else {
+              item.options.forEach((i) => {
+                this.otherDetail.push({
+                  id: item.id,
+                  product: { ...item.product },
+                  optionName: i.optionName,
+                  start_date: i.start_date,
+                  pickUpTime: '',
+                  pickUpPlace: '',
+                  schedule: '',
+                  includeChild: false,
+                  childBd: '',
+                  childHeight: '',
+                  childWeight: '',
+                  translateLanguage: '中文',
+                });
+              });
+            }
+          }
+        });
       },
       deep: true,
     },

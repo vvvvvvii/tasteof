@@ -95,16 +95,121 @@
                     </li>
                   </ul>
                   <h5 class="h4 mb-2">選擇標籤</h5>
-                  <div class="row">
+                  <div class="row mb-4">
                     <div v-for="(tag, tagIndex) in tagCategory" :key="tagIndex" class="col-4">
-                      <input
-                        type="checkbox"
-                        :id="`tagCheck-${tagIndex}`"
-                        v-model="tempProduct.tagCheck"
-                        :value="tag"
-                      />
-                      <label :for="`tagCheck-${tagIndex}`" class="ms-1">{{ tag }}</label>
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          :id="`tagCheck-${tagIndex}`"
+                          v-model="tempProduct.tagCheck"
+                          class="form-check-input"
+                          :value="tag"
+                        />
+                        <label :for="`tagCheck-${tagIndex}`" class="form-check-label">{{
+                          tag
+                        }}</label>
+                      </div>
                     </div>
+                  </div>
+                  <h5 class="h4 mb-2">額外語言</h5>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="translateLanguageEng"
+                          v-model="tempProduct.translate.eng"
+                        />
+                        <label class="form-check-label" for="translateLanguageEng">英文翻譯</label>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="translateLanguageJpy"
+                          v-model="tempProduct.translate.jpy"
+                        />
+                        <label class="form-check-label" for="translateLanguageJpy">日文翻譯</label>
+                      </div>
+                    </div>
+                  </div>
+                  <h5 class="h4 mb-2">接送選擇</h5>
+                  <div class="row mb-4">
+                    <div class="col-6">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="transferTimeEnable"
+                          v-model="tempProduct.transfer.time"
+                        />
+                        <label class="form-check-label" for="transferTimeEnable"
+                          >可自選接送時間</label
+                        >
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="transferPlaceEnable"
+                          v-model="tempProduct.transfer.place"
+                        />
+                        <label class="form-check-label" for="transferPlaceEnable"
+                          >可自選接送地點</label
+                        >
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="transferChildRestrict"
+                          v-model="tempProduct.transfer.childRestrict"
+                        />
+                        <label class="form-check-label" for="transferChildRestrict"
+                          >有 4 歲孩童限制</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="productEnabled"
+                          v-model="tempProduct.is_enabled"
+                        />
+                        <label class="form-check-label" for="productEnabled">啟用</label>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="mainProduct"
+                          v-model="tempProduct.is_mainProduct"
+                        />
+                        <label class="form-check-label" for="mainProduct">主打商品</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="freeCxl"
+                      v-model="tempProduct.is_freeCxl"
+                    />
+                    <label class="form-check-label" for="freeCxl">享三天前免費取消</label>
                   </div>
                 </div>
               </div>
@@ -405,35 +510,6 @@
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-between mb-6">
-                    <div class="form-check">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="productEnabled"
-                        v-model="tempProduct.is_enabled"
-                      />
-                      <label class="form-check-label" for="productEnabled">產品是否啟用</label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="mainProduct"
-                        v-model="tempProduct.is_mainProduct"
-                      />
-                      <label class="form-check-label" for="mainProduct">是否為主打商品</label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="freeCxl"
-                        v-model="tempProduct.is_freeCxl"
-                      />
-                      <label class="form-check-label" for="freeCxl">是否享三天前免費取消</label>
-                    </div>
-                  </div>
                   <div class="d-flex justify-content-center">
                     <button
                       type="submit"
@@ -475,6 +551,8 @@ export default {
       tempProduct: {
         ...this.temp,
         tagCheck: [],
+        translate: {},
+        transfer: {},
       },
       showAlert: false,
       alertMsg: '',
@@ -565,12 +643,27 @@ export default {
           min: 0,
         };
       }
+      if (Object.keys(this.tempProduct).includes('translate') === false) {
+        this.tempProduct.translate = {
+          eng: false,
+          jpy: false,
+        };
+      }
+      if (Object.keys(this.tempProduct).includes('transfer') === false) {
+        this.tempProduct.transfer = {
+          time: false,
+          place: false,
+          childRestrict: false,
+        };
+      }
     },
   },
   created() {
     this.tempProduct = {
       ...this.temp,
       tagCheck: [],
+      translate: {},
+      transfer: {},
     };
   },
 };
