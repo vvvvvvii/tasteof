@@ -241,7 +241,7 @@
         <h2 class="h2 text-primary mb-6">更多玩樂靈感</h2>
         <div class="row mb-md-3 mb-2">
           <div class="col-lg-8 col-md-6 mb-md-0 mb-2">
-            <div class="list-item">
+            <div class="list-item rounded-2">
               <router-link :to="`/article/${articles[0].id}`" title="查看更多">
                 <div class="list-item-img-outer">
                   <img
@@ -264,7 +264,7 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="d-flex flex-column">
-              <div class="list-item mb-2">
+              <div class="list-item rounded-2 mb-2">
                 <router-link :to="`/article/${articles[1].id}`" title="查看更多">
                   <div class="list-item-img-outer">
                     <img
@@ -284,7 +284,7 @@
                   </div>
                 </router-link>
               </div>
-              <div class="list-item">
+              <div class="list-item rounded-2">
                 <router-link :to="`/article/${articles[2].id}`" title="查看更多">
                   <div class="list-item-img-outer">
                     <img
@@ -309,7 +309,7 @@
         </div>
         <div class="row">
           <div class="col-md-6 mb-md-0 mb-2">
-            <div class="list-item">
+            <div class="list-item rounded-2">
               <router-link :to="`/article/${articles[3].id}`" title="查看更多">
                 <div class="list-item-img-outer">
                   <img class="list-item-img object-fit-cover" :src="`${articles[3].image}`" />
@@ -328,7 +328,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="list-item">
+            <div class="list-item rounded-2">
               <router-link :to="`/article/${articles[4].id}`" title="查看更多">
                 <div class="list-item-img-outer">
                   <img class="list-item-img object-fit-cover" :src="`${articles[4].image}`" />

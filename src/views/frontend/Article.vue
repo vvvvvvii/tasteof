@@ -25,10 +25,10 @@
               :loop="true"
               :navigation="true"
               :thumbs="{ swiper: thumbsSwiper }"
-              class="gallery-top"
+              class="gallery-top rounded-2"
             >
               <SwiperSlide v-for="item in article.imagesUrl" :key="item.id">
-                <img :src="item" class="swiper-img" />
+                <img :src="item" class="swiper-img rounded-2" />
               </SwiperSlide>
             </Swiper>
             <Swiper
@@ -38,7 +38,7 @@
               :freeMode="true"
               :watchSlidesVisibility="true"
               :watchSlidesProgress="true"
-              class="gallery-thumbs"
+              class="gallery-thumbs rounded-2"
             >
               <SwiperSlide v-for="item in article.imagesUrl" :key="item.id">
                 <img :src="item" class="swiper-img" />
@@ -203,6 +203,7 @@ export default {
     },
     setThumbsSwiper(swiper) {
       this.thumbsSwiper = swiper;
+      console.log(this.thumbsSwiper);
     },
     customAlert(msg) {
       this.alertMsg = msg;

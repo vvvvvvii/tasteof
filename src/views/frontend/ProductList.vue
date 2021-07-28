@@ -283,7 +283,7 @@
             ></pagination>
           </div>
         </div>
-        <div class="to-top-btn" @click="scrollToTop" v-if="btnShow">
+        <div class="to-top-btn d-sm-block d-none" @click="scrollToTop" v-if="btnShow">
           <div class="to-top-btn-text">
             <p>回到</p>
             <p>上方</p>

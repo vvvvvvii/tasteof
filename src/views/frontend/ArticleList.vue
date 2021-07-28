@@ -145,7 +145,7 @@
                     <div>
                       <div class="d-flex justify-content-between">
                         <h5 class="card-title mb-2">{{ item.title }}</h5>
-                        <p class="h5 text-gray-dark">{{ item.create_at }}</p>
+                        <p class="h5 text-gray-dark d-sm-inline d-none">{{ item.create_at }}</p>
                       </div>
                       <p class="h5 text-gray-dark mb-5">
                         <span v-if="item.author !== '旅味精選'">網紅好評推薦 ｜ </span>
@@ -170,7 +170,7 @@
             ></pagination>
           </div>
         </div>
-        <div class="to-top-btn" @click="scrollToTop" v-if="btnShow">
+        <div class="to-top-btn d-sm-block d-none" @click="scrollToTop" v-if="btnShow">
           <div class="to-top-btn-text">
             <p>回到</p>
             <p>上方</p>

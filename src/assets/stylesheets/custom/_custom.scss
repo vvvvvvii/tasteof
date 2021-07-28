@@ -223,3 +223,15 @@
   border-bottom-right-radius: 370px 300px;
   transform: rotate(-10deg);
 }
+
+.buy-now-btn {
+  position: fixed;
+  z-index: $zindex-offcanvas;
+  bottom: 0;
+  font-size: 1.25rem;
+  text-align: center;
+  width: 100%;
+  padding: 16px;
+  color: white;
+  background: $primary;
+}

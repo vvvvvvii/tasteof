@@ -85,7 +85,7 @@
             :loop="true"
             :slides-per-view="3"
             :spaceBetween="0"
-            class="mySwiper"
+            class="mySwiper rounded-2"
           >
             <button
               type="button"
@@ -96,7 +96,7 @@
               <i class="bi bi-arrows-fullscreen"></i>
             </button>
             <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
-              <img :src="item" class="swiper-img opacity-50" />
+              <img :src="item" class="swiper-img opacity-50 rounded-2" />
             </SwiperSlide>
           </Swiper>
           <!-- 手機看產品圖 -->
@@ -105,26 +105,26 @@
               :loop="true"
               :centeredSlides="true"
               :navigation="true"
-              :thumbs="{ swiper: thumbsSwiper }"
+              :thumbs="{ swiper: thumbsSwiperMobile }"
               class="gallery-top-modal"
             >
               <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
-                <img :src="item" class="swiper-img" />
+                <img :src="item" class="swiper-img rounded-2" />
               </SwiperSlide>
             </Swiper>
-            <swiper
-              @swiper="setThumbsSwiper"
+            <Swiper
+              @swiper="setThumbsSwiperMobile"
               :slidesPerView="4"
               :spaceBetween="10"
               :freeMode="true"
               :watchSlidesVisibility="true"
               :watchSlidesProgress="true"
-              class="gallery-thumbs"
+              class="gallery-thumbs rounded-2"
             >
               <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
                 <img :src="item" class="swiper-img" />
               </SwiperSlide>
-            </swiper>
+            </Swiper>
           </div>
           <!-- 電腦看產品圖 Modal -->
           <div
@@ -484,11 +484,18 @@
         </div>
       </div>
     </div>
-    <div class="to-top-btn" @click="scrollToTop" v-if="btnShow">
+    <div class="to-top-btn d-sm-block d-none" @click="scrollToTop" v-if="topBtnShow">
       <div class="to-top-btn-text">
         <p>回到</p>
         <p>上方</p>
       </div>
+    </div>
+    <div
+      class="buy-now-btn d-sm-none d-block"
+      @click="goAnchor('#packageOptionsSection')"
+      v-if="buyBtnShow"
+    >
+      現在購買
     </div>
     <!--alert-->
     <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
@@ -523,8 +530,10 @@ export default {
       randomProducts: [],
       showAlert: false,
       alertMsg: '',
-      btnShow: true,
+      topBtnShow: true,
+      buyBtnShow: true,
       thumbsSwiper: null,
+      thumbsSwiperMobile: null,
     };
   },
   props: ['id'],
@@ -632,11 +641,14 @@ export default {
     },
     goAnchor(selector) {
       const anchor = this.$el.querySelector(selector);
-      document.body.scrollTop = anchor.offsetTop; // chrome
-      document.documentElement.scrollTop = anchor.offsetTop; // firefox
+      document.body.scrollTop = anchor.offsetTop - 150; // chrome
+      document.documentElement.scrollTop = anchor.offsetTop - 150; // firefox
     },
     setThumbsSwiper(swiper) {
       this.thumbsSwiper = swiper;
+    },
+    setThumbsSwiperMobile(swiper) {
+      this.thumbsSwiperMobile = swiper;
     },
     addCart(item, index) {
       const addCartBtn = this.$refs[`addCartBtn-${index}`];
@@ -784,7 +796,9 @@ export default {
   mounted() {
     this.getData();
     this.listener = () => {
-      this.btnShow = window.scrollY > 0;
+      this.topBtnShow = window.scrollY > 0;
+      this.buyBtnShow = window.scrollY > 0;
+      this.buyBtnShow = window.scrollY < document.body.clientHeight - 900;
     };
     window.addEventListener('scroll', this.listener);
   },
