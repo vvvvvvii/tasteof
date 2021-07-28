@@ -239,6 +239,18 @@
                 <template v-if="index >= pagination.page_start - 1 && index < pagination.page_end">
                   <router-link :to="`/product/${item.id}`" class="card card-row">
                     <img class="card-row-img" :src="item.imageUrl" :alt="item.title" />
+                    <div class="card-tag">
+                      <i
+                        class="bi"
+                        :class="{
+                          'bi-building': item.category === '城市導覽',
+                          'bi-credit-card-2-front': item.category === '體驗票券',
+                          'bi-truck': item.category === '包車服務',
+                        }"
+                      ></i>
+                      <span class="d-sm-inline d-none ms-1">{{ item.category }}</span>
+                      <!--城市導覽-->
+                    </div>
                     <div class="card-body px-6">
                       <div>
                         <h5 class="card-title">{{ item.title }}</h5>
