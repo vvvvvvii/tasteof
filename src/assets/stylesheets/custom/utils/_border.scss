@@ -39,3 +39,9 @@
     }
   }
 }
+
+.rounded-md-2 {
+  @include media-breakpoint-up(md) {
+    border-radius: $border-radius !important;
+  }
+}

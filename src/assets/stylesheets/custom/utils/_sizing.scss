@@ -3,3 +3,13 @@
     width: 50%;
   }
 }
+.w-lg-75 {
+  @include media-breakpoint-up(lg) {
+    width: 75%;
+  }
+}
+.w-md-100 {
+  @include media-breakpoint-up(md) {
+    width: 100% !important;
+  }
+}

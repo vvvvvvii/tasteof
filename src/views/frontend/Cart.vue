@@ -45,6 +45,7 @@
         ref="confirmCart"
         :customer="customerDetail"
         :cart-info="cart"
+        :other-info="otherDetail"
         :payment="paymentDetail"
         @emit-check-coupon="checkCoupon"
         @emit-pre-page="backToFirstPage"
@@ -101,27 +102,73 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
-            this.cart.total = 0;
-            this.cart.carts.forEach((item, index) => {
-              this.cart.carts[index].total = 0;
-              item.options.forEach((i) => {
-                this.cart.carts[index].total += i.total;
-                this.cart.total += i.total;
-              });
-              if (Object.keys(item).includes('coupon') === false) {
-                this.cart.carts[index].final_total = this.cart.carts[index].total;
-                this.cart.final_total = this.cart.total;
+            console.log(this.cart);
+            const couponCheck = [];
+            this.cart.carts.forEach((product) => {
+              if (Object.keys(product).includes('coupon')) {
+                // 有加入優惠券時，會以商品為一項（即使很多方案），顯示 true
+                couponCheck.push(true); // 如果購物車裡曾有任何一個商品加過優惠碼，顯示 true
               } else {
-                this.cart.final_total = 0;
-                this.cart.carts.forEach((i, key) => {
-                  console.log(i);
-                  this.cart.carts[key].final_total = (i.total * i.coupon.percent) / 100;
-                  this.cart.final_total += this.cart.carts[key].final_total;
-                });
-                this.cart.final_total = Math.floor(this.cart.final_total);
-                console.log(this.cart.carts);
+                couponCheck.push(false);
               }
             });
+            if (couponCheck.every((e) => e === false)) {
+              console.log('加商品，尚未加優惠碼');
+              // 加商品，尚未加優惠碼
+              // couponCheck 每個都是 false ，計算購物車正確價錢
+              this.cart.total = 0; // 整個購物車的總數歸零
+              this.cart.carts.forEach((product, key) => {
+                this.cart.carts[key].total = 0; // 各項商品的總數也歸零
+                product.options.forEach((option) => {
+                  this.cart.carts[key].total += option.total; // 各項商品真正的價格為各項方案價格相加
+                  this.cart.total += option.total; // 整個購物車真正的價格為各項產品的各方案價格相加
+                });
+                // 各項商品的 final_total 等於 total、整個購物車的 final_total 等於 total
+                this.cart.carts[key].final_total = this.cart.carts[key].total;
+                this.cart.final_total = this.cart.total;
+              });
+            } else if (couponCheck.every((e) => e === true)) {
+              console.log('加商品，已經加優惠碼');
+              // 加商品，已經加優惠碼
+              // couponCheck 每個都是 true ，計算購物車正確價錢、該價錢乘以 coupon.percent / 100 等於優惠後的價錢
+              const { coupon } = this.cart.carts.find((product) => product.coupon); // 找到已被加過的優惠碼物件
+              this.paymentDetail.coupon = coupon.code;
+              this.cart.total = 0; // 整個購物車的總數歸零
+              this.cart.final_total = 0; // 整個購物車 final_total 歸零
+              this.cart.carts.forEach((product, key) => {
+                this.cart.carts[key].total = 0; // 各項商品的總數也歸零
+                product.options.forEach((option) => {
+                  this.cart.carts[key].total += option.total; // 各項商品真正的價格為各項方案價格相加
+                  this.cart.total += option.total; // 整個購物車真正的價格為各項產品的各方案價格相加
+                });
+                // 各項商品的 final_total 等於 total 乘以優惠幅度、整個購物車的 final_total 等於 total 乘以優惠幅度後相加
+                this.cart.carts[key].final_total = (product.total * product.coupon.percent) / 100;
+                this.cart.final_total += this.cart.carts[key].final_total;
+              });
+              this.cart.final_total = Math.floor(this.cart.final_total); // 去掉小數點
+            } else {
+              console.log('加商品，已經加優惠碼，又再加新商品（新商品會沒有加到優惠）');
+              // 加商品，已經加優惠碼，又再加新商品（新商品會沒有加到優惠）
+              // couponCheck 有 true 也有 false ，找到有加過優惠的那個 coupon 物件，把每個產品都加上該物件，計算購物車正確價錢
+              console.log(this.cart);
+              const { coupon } = this.cart.carts.find((product) => product.coupon); // 找到已被加過的優惠碼物件
+              this.paymentDetail.coupon = coupon.code;
+              this.cart.total = 0; // 整個購物車的總數歸零
+              this.cart.final_total = 0; // 整個購物車 final_total 歸零
+              this.cart.carts.forEach((product, key) => {
+                this.cart.carts[key].coupon = coupon; // 每個產品都加上該優惠碼物件
+                this.cart.carts[key].total = 0; // 各項商品的總數也歸零
+                product.options.forEach((option) => {
+                  this.cart.carts[key].total += option.total; // 各項商品真正的價格為各項方案價格相加
+                  this.cart.total += option.total; // 整個購物車真正的價格為各項產品的各方案價格相加
+                });
+                // 各項商品的 final_total 等於 total 乘以優惠幅度、整個購物車的 final_total 等於 total 乘以優惠幅度後相加
+                this.cart.carts[key].final_total = (product.total * product.coupon.percent) / 100;
+                this.cart.final_total += this.cart.carts[key].final_total;
+              });
+              this.cart.final_total = Math.floor(this.cart.final_total); // 去掉小數點
+              console.log(this.cart);
+            }
             if (status) {
               // 若有傳入參數才進行這塊
               status.children[0].classList.add('d-none');
@@ -319,8 +366,9 @@ export default {
     deletePax(num) {
       this.customerDetail.users.splice(num, 1);
     },
-    saveCustomerDetail(info) {
+    saveCustomerDetail(info, remark) {
       this.customerDetail = info;
+      this.otherDetail = remark;
       this.checkCartPageShow = false; // 關掉第一頁
       this.confirmCartPageShow = true; // 換成第二頁
     },

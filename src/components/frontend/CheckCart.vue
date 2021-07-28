@@ -6,7 +6,8 @@
           <h2 class="h3 text-primary">訂單內容</h2>
           <button
             type="button"
-            class="btn btn-outline-primary d-flex justify-content-center align-items-center px-5"
+            class="btn btn-outline-primary d-flex justify-content-center align-items-center
+            px-sm-3 py-sm-2 opacity-25"
             @click="$emit('emit-delete-all-products')"
             ref="deleteOrderBtn"
             :disabled="Object.keys(cart).length == 0 || cart.total == 0"
@@ -14,7 +15,7 @@
             <div class="spinner-border spinner-border-sm text-light d-none me-1" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
-            <p>清空購物車</p>
+            <p class="h4-md h5">清空購物車</p>
           </button>
         </div>
         <div class="row mb-7">
@@ -126,13 +127,17 @@
             </div>
           </template>
         </div>
-        <h2 class="h3 text-primary mb-lg-4 mb-2">客戶資料</h2>
+        <h2 class="h3 text-primary mb-6">客戶資料</h2>
         <div class="row">
-          <div class="col-4">
-            <div class="list-group" role="tablist">
+          <div class="col-md-4 mb-md-0 mb-6">
+            <div
+              class="list-group rounded-md-2 rounded-0 flex-md-column flex-row flex-wrap"
+              role="tablist"
+            >
               <a
-                class="list-group-item list-group-item-action px-3 py-2
-                  d-flex justify-content-between"
+                class="list-group-item list-group-item-action
+                px-3 py-2 w-md-100 w-50 border-0 border-bottom
+                  d-flex flex-md-row flex-column justify-content-md-between align-items-center"
                 :class="{ active: key === 0 }"
                 data-bs-toggle="list"
                 :href="`#listPax${key + 1}`"
@@ -140,7 +145,7 @@
                 v-for="(item, key) in customerDetail.users"
                 :key="key"
               >
-                <span>{{ `第 ${key + 1} 位旅客` }}</span>
+                <span class="mb-md-0 mb-3">{{ `旅客 ${key + 1}` }}</span>
                 <span>
                   <button
                     type="button"
@@ -168,7 +173,8 @@
                 </span>
               </a>
               <a
-                class="list-group-item list-group-item-action px-3 py-2"
+                class="list-group-item list-group-item-action px-3 py-2
+                w-md-100 w-50 border-0 border-bottom"
                 data-bs-toggle="list"
                 href="#requestNote"
                 role="tab"
@@ -177,7 +183,7 @@
               </a>
             </div>
           </div>
-          <div class="col-8">
+          <div class="col-md-8">
             <Form v-slot="{ errors }" @submit="toNextPage">
               <div class="tab-content mb-7">
                 <template v-for="(item, key) in customerDetail.users" :key="key">
@@ -260,7 +266,7 @@
                           class="invalid-feedback"
                         ></ErrorMessage>
                       </div>
-                      <div class="col-lg-6 col-sm-4 mb-3">
+                      <div class="col-lg-6 mb-3">
                         <label :for="`bookTelCartInput-${key}`" class="form-label">聯繫電話</label>
                         <Field
                           type="tel"
@@ -276,7 +282,7 @@
                           class="invalid-feedback"
                         ></ErrorMessage>
                       </div>
-                      <div class="col-lg-6 col-sm-8 mb-3">
+                      <div class="col-lg-6 mb-3">
                         <label :for="`bookEmailCartInput-${key}`" class="form-label">
                           電子信箱
                         </label>
@@ -316,7 +322,7 @@
                 </template>
                 <div class="tab-pane fade" id="requestNote" role="tabpanel">
                   <div v-for="(detail, key) in otherDetail" :key="key">
-                    <div class="mb-6 pb-6 border-bottom border-gray w-75 mx-auto">
+                    <div class="mb-6 pb-6 border-bottom border-gray w-lg-75 mx-auto">
                       <div class="mb-3">
                         <h4 class="h3 mb-1">{{ detail.product.title }}</h4>
                         <h4>{{ detail.optionName }}</h4>
@@ -399,41 +405,71 @@
                         </div>
                       </div>
                       <div class="row" v-if="otherDetail[key].includeChild">
-                        <div class="col-4 mb-3">
+                        <div class="col-lg-4 mb-3">
                           <label :for="`rentCarChildBd-${key}`" class="form-label"
                             >孩童出生年月日</label
                           >
-                          <input
+                          <Field
                             type="text"
-                            class="form-control"
                             :id="`rentCarChildBd-${key}`"
+                            :name="`${detail.product.title}：${detail.optionName} 的出生日期`"
+                            class="form-control"
+                            :class="{
+                              'is-invalid':
+                                errors[`${detail.product.title}：${detail.optionName} 的出生日期`],
+                            }"
+                            rules="required"
                             placeholder="1900 / 01 / 01"
                             v-model="otherDetail[key].childBd"
-                          />
+                          ></Field>
+                          <ErrorMessage
+                            :name="`${detail.product.title}：${detail.optionName} 的出生日期`"
+                            class="invalid-feedback"
+                          ></ErrorMessage>
                         </div>
-                        <div class="col-4 mb-3">
+                        <div class="col-lg-4 col-6 mb-3">
                           <label :for="`rentCarChildHeight-${key}`" class="form-label"
                             >孩童身高</label
                           >
-                          <input
+                          <Field
                             type="text"
-                            class="form-control"
                             :id="`rentCarChildHeight-${key}`"
+                            :name="`${detail.product.title}：${detail.optionName} 的孩童身高`"
+                            class="form-control"
+                            :class="{
+                              'is-invalid':
+                                errors[`${detail.product.title}：${detail.optionName} 的孩童身高`],
+                            }"
+                            rules="required"
                             placeholder="公分"
                             v-model="otherDetail[key].childHeight"
-                          />
+                          ></Field>
+                          <ErrorMessage
+                            :name="`${detail.product.title}：${detail.optionName} 的孩童身高`"
+                            class="invalid-feedback"
+                          ></ErrorMessage>
                         </div>
-                        <div class="col-4 mb-3">
+                        <div class="col-lg-4 col-6 mb-3">
                           <label :for="`rentCarChildWeight-${key}`" class="form-label"
                             >孩童體重</label
                           >
-                          <input
+                          <Field
                             type="text"
-                            class="form-control"
                             :id="`rentCarChildWeight-${key}`"
+                            :name="`${detail.product.title}：${detail.optionName} 的孩童體重`"
+                            class="form-control"
+                            :class="{
+                              'is-invalid':
+                                errors[`${detail.product.title}：${detail.optionName} 的孩童體重`],
+                            }"
+                            rules="required"
                             placeholder="公斤"
                             v-model="otherDetail[key].childWeight"
-                          />
+                          ></Field>
+                          <ErrorMessage
+                            :name="`${detail.product.title}：${detail.optionName} 的孩童體重`"
+                            class="invalid-feedback"
+                          ></ErrorMessage>
                         </div>
                       </div>
                       <div
@@ -453,7 +489,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="mb-3 w-75 mx-auto">
+                  <div class="mb-3 w-lg-75 mx-auto">
                     <label for="bookMessageCart" class="form-label"
                       >其他特殊需求（飲食、禁菸房...）</label
                     >
@@ -485,176 +521,6 @@
             </Form>
           </div>
         </div>
-        <!--勿動下面的
-        <div class="d-flex justify-content-between mb-lg-4 mb-2">
-          <h2 class="h3 text-primary">客戶資料</h2>
-          <button type="button" class="btn btn-primary d-block px-5" @click="$emit('emit-add-pax')">
-            新增旅客
-          </button>
-        </div>
-        <Form v-slot="{ errors }" @submit="toNextPage">
-          <template v-for="(item, key) in customerDetail.users" :key="key">
-            <div class="d-flex justify-content-between mb-4">
-              <p>{{ `第 ${key + 1} 位旅客` }}</p>
-              <button
-                type="button"
-                class="btn btn-outline-primary d-block px-5"
-                @click="$emit('emit-delete-pax', key)"
-              >
-                刪除旅客
-              </button>
-            </div>
-            <div class="row" :class="{ 'mb-6': key !== customerDetail.users.length - 1 }">
-              <div class="col-md-3 col-6 mb-3">
-                <label :for="`bookNameCartInput-${key}`" class="form-label">姓名</label>
-                <Field
-                  type="text"
-                  :id="`bookNameCartInput-${key}`"
-                  :name="`第 ${key + 1} 位姓名`"
-                  class="form-control"
-                  :class="{ 'is-invalid': errors[`第 ${key + 1} 位姓名`] }"
-                  rules="required"
-                  v-model="customerDetail.users[key].name"
-                ></Field>
-                <ErrorMessage
-                  :name="`第 ${key + 1} 位姓名`"
-                  class="invalid-feedback"
-                ></ErrorMessage>
-              </div>
-              <div class="col-md-3 col-6 mb-3">
-                <label :for="`bookGenderCartInput-${key}`" class="form-label">稱謂</label>
-                <Field
-                  :name="`第 ${key + 1} 位稱謂`"
-                  class="form-select"
-                  :id="`bookGenderCartInput-${key}`"
-                  :class="{ 'is-invalid': errors[`第 ${key + 1} 位稱謂`] }"
-                  rules="required"
-                  v-model="customerDetail.users[key].gender"
-                  as="select"
-                >
-                  <option disabled value="">請選擇稱謂</option>
-                  <option selected value="先生">先生</option>
-                  <option value="女士">女士</option>
-                </Field>
-                <ErrorMessage
-                  :name="`第 ${key + 1} 位稱謂`"
-                  class="invalid-feedback"
-                ></ErrorMessage>
-              </div>
-              <div class="col-md-3 col-6 mb-3">
-                <label :for="`bookIdNumCartInput-${key}`" class="form-label">身分證字號</label>
-                <Field
-                  type="text"
-                  :name="`第 ${key + 1} 位身分證`"
-                  class="form-control"
-                  :id="`bookIdNumCartInput-${key}`"
-                  :class="{ 'is-invalid': errors[`第 ${key + 1} 位身分證`] }"
-                  :rules="isIdNum"
-                  v-model="customerDetail.users[key].idNum"
-                ></Field>
-                <ErrorMessage
-                  :name="`第 ${key + 1} 位身分證`"
-                  class="invalid-feedback"
-                ></ErrorMessage>
-              </div>
-              <div class="col-md-3 col-6 mb-3">
-                <label :for="`bookPassportNumCartInput-${key}`" class="form-label">
-                  護照號碼
-                </label>
-                <Field
-                  type="text"
-                  :name="`第 ${key + 1} 位護照號碼`"
-                  class="form-control"
-                  :id="`bookPassportNumCartInput-${key}`"
-                  :class="{ 'is-invalid': errors[`第 ${key + 1} 位護照號碼`] }"
-                  rules="length:9|numeric"
-                  v-model="customerDetail.users[key].passportNum"
-                ></Field>
-                <ErrorMessage
-                  :name="`第 ${key + 1} 位護照號碼`"
-                  class="invalid-feedback"
-                ></ErrorMessage>
-              </div>
-              <div class="col-lg-3 col-sm-4 mb-3">
-                <label :for="`bookTelCartInput-${key}`" class="form-label">聯繫電話</label>
-                <Field
-                  type="tel"
-                  :name="`第 ${key + 1} 位電話`"
-                  class="form-control"
-                  :id="`bookTelCartInput-${key}`"
-                  :class="{ 'is-invalid': errors[`第 ${key + 1} 位電話`] }"
-                  rules="required|numeric|max:10"
-                  v-model="customerDetail.users[key].tel"
-                ></Field>
-                <ErrorMessage
-                  :name="`第 ${key + 1} 位電話`"
-                  class="invalid-feedback"
-                ></ErrorMessage>
-              </div>
-              <div class="col-lg-3 col-sm-8 mb-3">
-                <label :for="`bookEmailCartInput-${key}`" class="form-label">
-                  電子信箱
-                </label>
-                <Field
-                  type="email"
-                  :name="`第 ${key + 1} 位 email`"
-                  class="form-control"
-                  :id="`bookEmailCartInput-${key}`"
-                  placeholder="customer@example.com"
-                  :class="{ 'is-invalid': errors[`第 ${key + 1} 位 email`] }"
-                  rules="email|required"
-                  v-model="customerDetail.users[key].email"
-                ></Field>
-                <ErrorMessage
-                  :name="`第 ${key + 1} 位 email`"
-                  class="invalid-feedback"
-                ></ErrorMessage>
-              </div>
-              <div class="col-lg-6 mb-3">
-                <label :for="`bookAddrCartInput-${key}`" class="form-label">地址</label>
-                <Field
-                  type="text"
-                  :name="`第 ${key + 1} 位地址`"
-                  class="form-control"
-                  :id="`bookAddrCartInput-${key}`"
-                  :class="{ 'is-invalid': errors[`第 ${key + 1} 位地址`] }"
-                  rules="required"
-                  v-model="customerDetail.users[key].address"
-                ></Field>
-                <ErrorMessage
-                  :name="`第 ${key + 1} 位地址`"
-                  class="invalid-feedback"
-                ></ErrorMessage>
-              </div>
-            </div>
-          </template>
-          <div class="mb-7" v-if="customerDetail.users.length !== 0">
-            <label for="bookMessageCart" class="form-label">備註（選填）</label>
-            <textarea
-              class="form-control"
-              id="bookMessageCart"
-              rows="2"
-              v-model="customerDetail.message"
-            ></textarea>
-          </div>
-          <div class="d-flex flex-column align-items-end">
-            <h5 class="h3 mb-3">
-              總金額
-              <span class="h2 text-primary">NT {{ addComma(Math.floor(cart.final_total)) }}</span>
-            </h5>
-            <button
-              type="submit"
-              class="btn btn-primary d-block px-5 py-2"
-              :disabled="
-                Object.keys(cart).length == 0 ||
-                  cart.total == 0 ||
-                  customerDetail.users.length === 0
-              "
-            >
-              <p class="h3">下一步</p>
-            </button>
-          </div>
-        </Form>-->
       </div>
       <!--無商品時顯示-->
       <div class="text-center" v-show="cart.total === 0">
@@ -684,7 +550,7 @@
 import { Tooltip } from 'bootstrap';
 
 export default {
-  props: ['cartInfo', 'customer'],
+  props: ['cartInfo', 'customer', 'otherInfo'],
   data() {
     return {
       cart: { ...this.cartInfo },
@@ -704,7 +570,7 @@ export default {
       return idNum.test(value) ? true : '請輸入正確的身分證字號';
     },
     toNextPage() {
-      this.$emit('emit-next-page', this.customerDetail);
+      this.$emit('emit-next-page', this.customerDetail, this.otherDetail);
     },
   },
   watch: {
@@ -784,6 +650,7 @@ export default {
   created() {
     this.cart = { ...this.cartInfo };
     this.customerDetail = { ...this.customer };
+    this.otherDetail = [...this.otherInfo];
   },
   mounted() {
     this.addPaxTooltip = new Tooltip(this.$refs.addPaxTooltip);

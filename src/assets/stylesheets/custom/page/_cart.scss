@@ -106,11 +106,15 @@
 
 .delete-cart-icon {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 2px;
+  right: 2px;
   color: $black;
   opacity: 0.1;
   &:hover {
     opacity: 0.9;
+  }
+  @include media-breakpoint-up(sm) {
+    bottom: 10px;
+    right: 10px;
   }
 }

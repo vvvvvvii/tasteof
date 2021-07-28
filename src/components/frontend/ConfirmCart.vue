@@ -27,37 +27,84 @@
                   </p>
                 </div>
               </div>
-              <div class="d-flex justify-content-evenly">
-                <div class="d-flex align-items-center">
-                  {{ option.qtyDetail.adult }}
-                  <span v-if="item.product.lowestPriceUnit === '每人'"> 大</span>
-                  <span
-                    v-else-if="
-                      item.product.category !== '包車服務' &&
-                        item.product.lowestPriceUnit !== '每人'
-                    "
+              <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-evenly w-50">
+                  <div class="d-flex align-items-center">
+                    {{ option.qtyDetail.adult }}
+                    <span v-if="item.product.lowestPriceUnit === '每人'" class="ms-1">大</span>
+                    <span
+                      v-else-if="
+                        item.product.category !== '包車服務' &&
+                          item.product.lowestPriceUnit !== '每人'
+                      "
+                      class="ms-1"
+                    >
+                      組
+                    </span>
+                    <span
+                      v-else-if="
+                        item.product.category === '包車服務' &&
+                          item.product.lowestPriceUnit !== '每人'
+                      "
+                      class="ms-1"
+                    >
+                      台
+                    </span>
+                  </div>
+                  <div
+                    class="d-flex align-items-center"
+                    v-if="item.product.lowestPriceUnit === '每人'"
                   >
-                    組</span
-                  >
-                  <span
-                    v-else-if="
-                      item.product.category === '包車服務' &&
-                        item.product.lowestPriceUnit !== '每人'
-                    "
-                  >
-                    台</span
-                  >
+                    {{ option.qtyDetail.child }}
+                    <span class="ms-1">小</span>
+                  </div>
                 </div>
-                <div
-                  class="d-flex align-items-center"
-                  v-if="item.product.lowestPriceUnit === '每人'"
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#productRemark"
+                  @click="openModal(item, option)"
                 >
-                  {{ option.qtyDetail.child }} 小
-                </div>
+                  查看備註
+                </button>
               </div>
             </div>
           </div>
         </template>
+      </div>
+      <!-- Remark Modal -->
+      <div
+        class="modal fade"
+        id="productRemark"
+        tabindex="-1"
+        aria-labelledby="productRemarkLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-wave mb-3 position-relative">
+              <h3 class="modal-title">商品備註</h3>
+              <div class="cable-car"></div>
+            </div>
+            <div class="modal-body p-6">
+              <ul>
+                <li v-if="temp.pickUpTime">接送時間：{{ temp.pickUpTime }}</li>
+                <li v-if="temp.pickUpPlace">接送地點：{{ temp.pickUpPlace }}</li>
+                <li v-if="temp.schedule">包車行程規劃：{{ temp.schedule }}</li>
+                <li v-if="temp.includeChild">
+                  <p>含有 4 歲以下幼童</p>
+                  <p>出生年月日：{{ temp.childBd }}</p>
+                  <p>{{ temp.childHeight }} 公分 / {{ temp.childWeight }} 公斤</p>
+                </li>
+                <li v-if="temp.translateLanguage && temp.translateLanguage !== '中文'">
+                  導覽翻譯：{{ temp.translateLanguage }}
+                </li>
+                <li>其他特殊需求（飲食、禁菸房...）：{{ temp.message }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       <h2 class="h3 text-primary mb-6">客戶資料</h2>
       <div class="row mb-7">
@@ -124,7 +171,7 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <label for="couponInput" class="form-label">優惠券（選填）</label>
-            <div class="input-group">
+            <div class="input-group mb-2">
               <input
                 type="text"
                 id="couponInput"
@@ -143,6 +190,9 @@
                 套用優惠碼
               </div>
             </div>
+            <p v-if="paymentDetail.coupon" class="ms-1 h5 text-primary">
+              已套用優惠券 {{ paymentDetail.coupon }}
+            </p>
           </div>
         </div>
         <div class="d-flex flex-column align-items-end">
@@ -177,19 +227,35 @@
   </div>
 </template>
 <script>
+import { Modal } from 'bootstrap';
+
 export default {
-  props: ['cartInfo', 'customer', 'payment'],
+  props: ['cartInfo', 'customer', 'otherInfo', 'payment'],
   data() {
     return {
       cart: { ...this.cartInfo },
       customerDetail: { ...this.customer },
+      otherDetail: [...this.otherInfo],
       paymentDetail: { ...this.payment },
+      remarkModal: {},
+      temp: {},
     };
   },
   methods: {
     addOrder() {
-      console.log(this.paymentDetail);
       this.$emit('emit-add-order', this.paymentDetail);
+    },
+    openModal(item, option) {
+      this.temp = {};
+      this.otherDetail.forEach((detail) => {
+        if (detail.id === item.id && detail.optionName === option.optionName) {
+          this.temp = {
+            ...detail,
+          };
+        }
+      });
+      this.temp.message = this.customerDetail.message;
+      this.remarkModal.show();
     },
   },
   watch: {
@@ -202,6 +268,9 @@ export default {
     },
     customer() {
       this.customerDetail = { ...this.customer };
+    },
+    otherInfo() {
+      this.otherDetail = [...this.otherInfo];
     },
     payment: {
       handler() {
@@ -222,7 +291,13 @@ export default {
   created() {
     this.cart = { ...this.cartInfo };
     this.customerDetail = { ...this.customer };
+    this.otherDetail = [...this.otherInfo];
     this.paymentDetail = { ...this.payment };
+  },
+  mounted() {
+    this.remarkModal = new Modal(document.getElementById('productRemark'), {
+      keyboard: false,
+    });
   },
 };
 </script>
