@@ -74,19 +74,6 @@
                                     {{ option.qtyDetail.child }} 小
                                   </span>
                                 </p>
-                                <!-- <p v-if="option.qtyDetail && item.product.category !== '包車服務'">
-                                  {{ option.qtyDetail.adult }} 大
-                                  <span v-if="option.qtyDetail.child > 0">
-                                    {{ option.qtyDetail.child }} 小
-                                  </span>
-                                </p>
-                                <p
-                                  v-else-if="
-                                    option.qtyDetail && item.product.category === '包車服務'
-                                  "
-                                >
-                                  {{ option.qtyDetail.adult }} 組
-                                </p> -->
                               </div>
                             </div>
                           </template>

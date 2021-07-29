@@ -102,7 +102,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
-            console.log(this.cart);
             const couponCheck = [];
             this.cart.carts.forEach((product) => {
               if (Object.keys(product).includes('coupon')) {
@@ -113,7 +112,6 @@ export default {
               }
             });
             if (couponCheck.every((e) => e === false)) {
-              console.log('加商品，尚未加優惠碼');
               // 加商品，尚未加優惠碼
               // couponCheck 每個都是 false ，計算購物車正確價錢
               this.cart.total = 0; // 整個購物車的總數歸零
@@ -128,7 +126,6 @@ export default {
                 this.cart.final_total = this.cart.total;
               });
             } else if (couponCheck.every((e) => e === true)) {
-              console.log('加商品，已經加優惠碼');
               // 加商品，已經加優惠碼
               // couponCheck 每個都是 true ，計算購物車正確價錢、該價錢乘以 coupon.percent / 100 等於優惠後的價錢
               const { coupon } = this.cart.carts.find((product) => product.coupon); // 找到已被加過的優惠碼物件
@@ -147,10 +144,8 @@ export default {
               });
               this.cart.final_total = Math.floor(this.cart.final_total); // 去掉小數點
             } else {
-              console.log('加商品，已經加優惠碼，又再加新商品（新商品會沒有加到優惠）');
               // 加商品，已經加優惠碼，又再加新商品（新商品會沒有加到優惠）
               // couponCheck 有 true 也有 false ，找到有加過優惠的那個 coupon 物件，把每個產品都加上該物件，計算購物車正確價錢
-              console.log(this.cart);
               const { coupon } = this.cart.carts.find((product) => product.coupon); // 找到已被加過的優惠碼物件
               this.paymentDetail.coupon = coupon.code;
               this.cart.total = 0; // 整個購物車的總數歸零
@@ -167,7 +162,6 @@ export default {
                 this.cart.final_total += this.cart.carts[key].final_total;
               });
               this.cart.final_total = Math.floor(this.cart.final_total); // 去掉小數點
-              console.log(this.cart);
             }
             if (status) {
               // 若有傳入參數才進行這塊
@@ -388,7 +382,6 @@ export default {
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/coupon`, CouponData)
         .then((res) => {
-          console.log(res);
           if (res.data.success) {
             const { data } = res;
             this.customAlert(data.message);
@@ -404,7 +397,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.customAlert(err.response);
           window.setTimeout(this.closeCustomAlert, 5000);
           checkCouponBtn.classList.remove('disabled');
@@ -431,7 +423,6 @@ export default {
           message: this.customerDetail.message,
         },
       };
-      console.log(data.data);
       this.orderDetail.total = this.cart.final_total;
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)

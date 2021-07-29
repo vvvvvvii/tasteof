@@ -176,7 +176,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             const { data } = res;
-            console.log(data.orders);
             this.orders = data.orders;
             // 把時間戳轉成易閱讀的日期
             this.orders.forEach((item, index) => {

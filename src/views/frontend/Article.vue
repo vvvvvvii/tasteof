@@ -109,7 +109,7 @@ export default {
               .toISOString()
               .split('T')[0]
               .replace(/-/g, ' / ');
-            // // 如果 imagesUrl 裡有空字串，把它刪掉再顯示，避免圖片顯示錯誤
+            // 如果 imagesUrl 裡有空字串，把它刪掉再顯示，避免圖片顯示錯誤
             // this.moreInfo.productInfo.imagesUrl = this.moreInfo.productInfo.imagesUrl.filter(
             //   (e) => e !== '',
             // );
@@ -203,7 +203,6 @@ export default {
     },
     setThumbsSwiper(swiper) {
       this.thumbsSwiper = swiper;
-      console.log(this.thumbsSwiper);
     },
     customAlert(msg) {
       this.alertMsg = msg;
