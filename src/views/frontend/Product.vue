@@ -96,7 +96,7 @@
               <i class="bi bi-arrows-fullscreen"></i>
             </button>
             <SwiperSlide v-for="item in moreInfo.productInfo.imagesUrl" :key="item.id">
-              <img :src="item" class="swiper-img opacity-50 rounded-2" />
+              <img :src="item" class="swiper-img rounded-2" />
             </SwiperSlide>
           </Swiper>
           <!-- 手機看產品圖 -->
@@ -466,7 +466,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-wave pt-6 pb-8" id="moreActivitiesSection" v-if="randomProducts.length !== 0">
+    <div class="bg-wave py-7" id="moreActivitiesSection" v-if="randomProducts.length !== 0">
       <div class="container">
         <h3 class="text-primary mb-5">更多相似活動</h3>
         <div class="row">
