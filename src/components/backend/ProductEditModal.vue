@@ -548,12 +548,7 @@ export default {
   emits: ['emit-product-modal'],
   data() {
     return {
-      tempProduct: {
-        ...this.temp,
-        tagCheck: [],
-        translate: {},
-        transfer: {},
-      },
+      tempProduct: {},
       showAlert: false,
       alertMsg: '',
     };

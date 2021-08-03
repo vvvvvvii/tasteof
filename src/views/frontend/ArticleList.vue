@@ -163,11 +163,11 @@
               </li>
             </ul>
             <!--pagination-->
-            <pagination
+            <Pagination
               :page="pagination"
               @emit-pagination="getData"
               v-if="filterArticle.length > 10"
-            ></pagination>
+            ></Pagination>
           </div>
         </div>
         <div class="to-top-btn d-sm-block d-none" @click="scrollToTop" v-if="btnShow">
@@ -177,15 +177,15 @@
           </div>
         </div>
         <!--alert-->
-        <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+        <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import alert from '@/components/backend/Alert.vue';
-import pagination from '@/components/frontend/Pagination.vue';
+import Alert from '@/components/backend/Alert.vue';
+import Pagination from '@/components/frontend/Pagination.vue';
 
 export default {
   name: 'Product',
@@ -228,7 +228,7 @@ export default {
       alertMsg: '',
     };
   },
-  components: { alert, pagination },
+  components: { Alert, Pagination },
   methods: {
     getData(currentPage = 1) {
       //   若未傳入則預設為第一頁

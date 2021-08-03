@@ -223,7 +223,7 @@
                   <label
                     for="tktOthersNum"
                     class="mb-1"
-                    v-if="
+                    v-else-if="
                       moreInfo.productInfo.category !== '包車服務' &&
                         moreInfo.productInfo.lowestPriceUnit !== '每人'
                     "
@@ -233,7 +233,7 @@
                   <label
                     for="tktCarNum"
                     class="mb-1"
-                    v-if="
+                    v-else-if="
                       moreInfo.productInfo.category === '包車服務' &&
                         moreInfo.productInfo.lowestPriceUnit !== '每人'
                     "
@@ -498,12 +498,12 @@
       現在購買
     </div>
     <!--alert-->
-    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+    <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
   </div>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-import flatPickr from 'vue-flatpickr-component';
+import Alert from '@/components/backend/Alert.vue';
+import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import emitter from '../../assets/js/emitter';
 
@@ -538,8 +538,8 @@ export default {
   },
   props: ['id'],
   components: {
-    alert,
-    flatPickr,
+    Alert,
+    FlatPickr,
   },
   methods: {
     getData() {

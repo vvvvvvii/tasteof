@@ -49,30 +49,30 @@
       </tbody>
     </table>
     <!--alert-->
-    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+    <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
     <!--pagination-->
-    <pagination
+    <Pagination
       v-if="pagination.total_pages > 1"
       :page="pagination"
       @emit-pagination="getData"
-    ></pagination>
+    ></Pagination>
     <!--add / edit modal-->
-    <coupon-edit-modal
+    <Coupon-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
       @emit-coupon-modal="addNewCoupon"
       ref="couponModal"
-    ></coupon-edit-modal>
+    ></Coupon-edit-modal>
   </div>
   <!--delete modal-->
-  <coupon-delete-modal :temp="temp" @emit-delete-modal="deleteCoupon"></coupon-delete-modal>
+  <Coupon-delete-modal :temp="temp" @emit-delete-modal="deleteCoupon"></Coupon-delete-modal>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-import pagination from '@/components/backend/PaginationAdmin.vue';
+import Alert from '@/components/backend/Alert.vue';
+import Pagination from '@/components/backend/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
-import couponEditModal from '@/components/backend/CouponEditModal.vue';
-import couponDeleteModal from '@/components/backend/DeleteModal.vue';
+import CouponEditModal from '@/components/backend/CouponEditModal.vue';
+import CouponDeleteModal from '@/components/backend/DeleteModal.vue';
 
 export default {
   data() {
@@ -88,10 +88,10 @@ export default {
     };
   },
   components: {
-    alert,
-    pagination,
-    couponEditModal,
-    couponDeleteModal,
+    Alert,
+    Pagination,
+    CouponEditModal,
+    CouponDeleteModal,
   },
   methods: {
     getData(currentPage = 1) {

@@ -287,12 +287,12 @@
               </li>
             </ul>
             <!--pagination-->
-            <pagination
+            <Pagination
               :page="pagination"
               :filter-product="filterProduct"
               v-if="filterProduct.length > 10"
               @emit-pagination="changePage"
-            ></pagination>
+            ></Pagination>
           </div>
         </div>
         <div class="to-top-btn d-sm-block d-none" @click="scrollToTop" v-if="btnShow">
@@ -302,15 +302,15 @@
           </div>
         </div>
         <!--alert-->
-        <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+        <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import alert from '@/components/backend/Alert.vue';
-import pagination from '@/components/frontend/Pagination.vue';
+import Alert from '@/components/backend/Alert.vue';
+import Pagination from '@/components/frontend/Pagination.vue';
 import VueSlider from 'vue-slider-component';
 
 export default {
@@ -364,7 +364,7 @@ export default {
       alertMsg: '',
     };
   },
-  components: { alert, pagination, VueSlider },
+  components: { Alert, Pagination, VueSlider },
   methods: {
     getTotalData(currentPage = 1) {
       this.$http

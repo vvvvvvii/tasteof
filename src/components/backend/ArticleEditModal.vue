@@ -220,7 +220,7 @@ export default {
   emits: ['emit-article-modal'],
   data() {
     return {
-      tempArticle: { ...this.temp, tagCheck: [] },
+      tempArticle: {},
       showAlert: false,
       alertMsg: '',
       editor: ClassicEditor,

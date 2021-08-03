@@ -121,30 +121,30 @@
       </tbody>
     </table>
     <!--alert-->
-    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+    <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
     <!--add / edit modal-->
-    <order-edit-modal
+    <Order-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
       @emit-order-modal="editOrder"
       ref="orderModal"
-    ></order-edit-modal>
+    ></Order-edit-modal>
     <!--delete modal-->
-    <order-delete-modal :temp="temp" @emit-delete-modal="deleteOrder"></order-delete-modal>
+    <Order-delete-modal :temp="temp" @emit-delete-modal="deleteOrder"></Order-delete-modal>
     <!--pagination-->
-    <pagination
+    <Pagination
       v-if="pagination.total_pages > 1 && filterOrder.length > 10"
       :page="pagination"
       @emit-pagination="getData"
-    ></pagination>
+    ></Pagination>
   </div>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-import pagination from '@/components/backend/PaginationAdmin.vue';
+import Alert from '@/components/backend/Alert.vue';
+import Pagination from '@/components/backend/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
-import orderEditModal from '@/components/backend/OrderEditModal.vue';
-import orderDeleteModal from '@/components/backend/DeleteModal.vue';
+import OrderEditModal from '@/components/backend/OrderEditModal.vue';
+import OrderDeleteModal from '@/components/backend/DeleteModal.vue';
 
 export default {
   data() {
@@ -161,10 +161,10 @@ export default {
     };
   },
   components: {
-    alert,
-    pagination,
-    orderEditModal,
-    orderDeleteModal,
+    Alert,
+    Pagination,
+    OrderEditModal,
+    OrderDeleteModal,
   },
   methods: {
     getData(currentPage = 1) {

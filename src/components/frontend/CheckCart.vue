@@ -551,13 +551,18 @@ import { Tooltip } from 'bootstrap';
 
 export default {
   props: ['cartInfo', 'customer', 'otherInfo'],
+  emits: [
+    'emit-delete-all-products',
+    'emit-change-tkt-num',
+    'emit-delete-product',
+    'emit-add-pax',
+    'emit-delete-pax',
+    'emit-next-page',
+  ],
   data() {
     return {
-      cart: { ...this.cartInfo },
-      customerDetail: {
-        users: [],
-        message: '',
-      },
+      cart: {},
+      customerDetail: {},
       otherDetail: [],
       addPaxTooltip: '',
       deletePaxTooltip: '',

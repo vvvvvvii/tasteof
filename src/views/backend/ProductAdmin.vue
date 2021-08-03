@@ -139,39 +139,39 @@
       </tbody>
     </table>
     <!--alert-->
-    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+    <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
     <!--pagination-->
-    <pagination
+    <Pagination
       :page="pagination"
       @emit-pagination="getData"
       v-if="pagination.total_pages > 1 && filterProduct.length > 9"
-    ></pagination>
+    ></Pagination>
     <!--add / edit product modal-->
-    <product-edit-modal
+    <Product-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
       :tag-category="tagCategory"
       @emit-product-modal="addNewProduct"
       ref="productModal"
-    ></product-edit-modal>
+    ></Product-edit-modal>
     <!--edit comment modal-->
-    <comment-edit-modal
+    <Comment-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
       @emit-comment-modal="addNewComment"
       ref="commentModal"
-    ></comment-edit-modal>
+    ></Comment-edit-modal>
     <!--delete modal-->
-    <product-delete-modal :temp="temp" @emit-delete-modal="deleteProduct"></product-delete-modal>
+    <Product-delete-modal :temp="temp" @emit-delete-modal="deleteProduct"></Product-delete-modal>
   </div>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-import pagination from '@/components/backend/PaginationAdmin.vue';
+import Alert from '@/components/backend/Alert.vue';
+import Pagination from '@/components/backend/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
-import productEditModal from '@/components/backend/ProductEditModal.vue';
-import commentEditModal from '@/components/backend/CommentEditModal.vue';
-import productDeleteModal from '@/components/backend/DeleteModal.vue';
+import ProductEditModal from '@/components/backend/ProductEditModal.vue';
+import CommentEditModal from '@/components/backend/CommentEditModal.vue';
+import ProductDeleteModal from '@/components/backend/DeleteModal.vue';
 
 export default {
   data() {
@@ -228,11 +228,11 @@ export default {
     };
   },
   components: {
-    alert,
-    pagination,
-    productEditModal,
-    commentEditModal,
-    productDeleteModal,
+    Alert,
+    Pagination,
+    ProductEditModal,
+    CommentEditModal,
+    ProductDeleteModal,
   },
   methods: {
     getData(currentPage = 1) {

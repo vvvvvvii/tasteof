@@ -66,9 +66,10 @@
 <script>
 export default {
   props: ['temp'],
+  emits: ['emit-delete-modal'],
   data() {
     return {
-      tempItem: { ...this.temp },
+      tempItem: {},
     };
   },
   watch: {

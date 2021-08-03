@@ -148,11 +148,7 @@ export default {
   emits: ['emit-comment-modal'],
   data() {
     return {
-      tempProduct: {
-        ...this.temp,
-        tagCheck: [],
-        comments: [],
-      },
+      tempProduct: {},
     };
   },
   methods: {

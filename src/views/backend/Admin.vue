@@ -111,10 +111,10 @@
   <!-- 主要內容 -->
   <router-view v-if="checkSuccess"></router-view>
   <!--alert-->
-  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+  <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
+import Alert from '@/components/backend/Alert.vue';
 import { Modal } from 'bootstrap';
 
 export default {
@@ -133,7 +133,7 @@ export default {
     };
   },
   components: {
-    alert,
+    Alert,
   },
   methods: {
     checkLogin() {

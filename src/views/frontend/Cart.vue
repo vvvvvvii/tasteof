@@ -27,7 +27,7 @@
           </p>
         </li>
       </ul>
-      <checkCart
+      <CheckCart
         v-if="checkCartPageShow"
         ref="checkCart"
         :customer="customerDetail"
@@ -39,8 +39,8 @@
         @emit-add-pax="addPax"
         @emit-delete-pax="deletePax"
         @emit-next-page="saveCustomerDetail"
-      ></checkCart>
-      <confirmCart
+      ></CheckCart>
+      <ConfirmCart
         v-if="confirmCartPageShow"
         ref="confirmCart"
         :customer="customerDetail"
@@ -50,18 +50,18 @@
         @emit-check-coupon="checkCoupon"
         @emit-pre-page="backToFirstPage"
         @emit-add-order="addOrder"
-      ></confirmCart>
-      <finishCart v-if="finishCartPageShow" :order-detail="orderDetail"></finishCart>
+      ></ConfirmCart>
+      <FinishCart v-if="finishCartPageShow" :order-detail="orderDetail"></FinishCart>
     </div>
   </div>
   <!--alert-->
-  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+  <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-import checkCart from '@/components/frontend/CheckCart.vue';
-import confirmCart from '@/components/frontend/ConfirmCart.vue';
-import finishCart from '@/components/frontend/FinishCart.vue';
+import Alert from '@/components/backend/Alert.vue';
+import CheckCart from '@/components/frontend/CheckCart.vue';
+import ConfirmCart from '@/components/frontend/ConfirmCart.vue';
+import FinishCart from '@/components/frontend/FinishCart.vue';
 import emitter from '../../assets/js/emitter';
 
 export default {
@@ -90,10 +90,10 @@ export default {
     };
   },
   components: {
-    alert,
-    checkCart,
-    confirmCart,
-    finishCart,
+    Alert,
+    CheckCart,
+    ConfirmCart,
+    FinishCart,
   },
   methods: {
     getCartInfo(status) {

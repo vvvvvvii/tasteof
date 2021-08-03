@@ -29,6 +29,7 @@
 <script>
 export default {
   props: ['page'],
+  emits: ['emit-pagination'],
   data() {
     return {
       pagination: { ...this.page },

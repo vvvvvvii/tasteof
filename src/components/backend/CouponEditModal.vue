@@ -130,7 +130,7 @@ import 'flatpickr/dist/flatpickr.css';
 
 export default {
   props: ['modalTitle', 'temp'],
-  emits: ['coupon-order-modal'],
+  emits: ['emit-coupon-modal'],
   data() {
     return {
       tempCoupon: {},

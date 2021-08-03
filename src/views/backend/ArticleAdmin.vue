@@ -86,31 +86,31 @@
       </tbody>
     </table>
     <!--alert-->
-    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+    <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
     <!--pagination-->
-    <pagination
+    <Pagination
       :page="pagination"
       @emit-pagination="getData"
       v-if="pagination.total_pages > 1 && filterArticle.length > 9"
-    ></pagination>
+    ></Pagination>
     <!--add / edit modal-->
-    <article-edit-modal
+    <Article-edit-modal
       :modal-title="modalTitle"
       :temp="temp"
       :tag-category="tagCategory"
       @emit-article-modal="addNewArticle"
       ref="articleModal"
-    ></article-edit-modal>
+    ></Article-edit-modal>
     <!--delete modal-->
-    <article-delete-modal :temp="temp" @emit-delete-modal="deleteArticle"></article-delete-modal>
+    <Article-delete-modal :temp="temp" @emit-delete-modal="deleteArticle"></Article-delete-modal>
   </div>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-import pagination from '@/components/backend/PaginationAdmin.vue';
+import Alert from '@/components/backend/Alert.vue';
+import Pagination from '@/components/backend/PaginationAdmin.vue';
 import { Modal } from 'bootstrap';
-import articleEditModal from '@/components/backend/ArticleEditModal.vue';
-import articleDeleteModal from '@/components/backend/DeleteModal.vue';
+import ArticleEditModal from '@/components/backend/ArticleEditModal.vue';
+import ArticleDeleteModal from '@/components/backend/DeleteModal.vue';
 
 export default {
   data() {
@@ -168,10 +168,10 @@ export default {
     };
   },
   components: {
-    alert,
-    pagination,
-    articleEditModal,
-    articleDeleteModal,
+    Alert,
+    Pagination,
+    ArticleEditModal,
+    ArticleDeleteModal,
   },
   methods: {
     getData(currentPage = 1) {

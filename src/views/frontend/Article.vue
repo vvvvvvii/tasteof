@@ -74,11 +74,11 @@
       </div>
     </div>
     <!--alert-->
-    <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+    <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
   </div>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
+import Alert from '@/components/backend/Alert.vue';
 
 export default {
   data() {
@@ -95,7 +95,7 @@ export default {
   },
   props: ['id'],
   components: {
-    alert,
+    Alert,
   },
   methods: {
     getArticleData() {

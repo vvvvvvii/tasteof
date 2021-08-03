@@ -73,10 +73,10 @@
     </div>
   </div>
   <!--alert-->
-  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
+  <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
+import Alert from '@/components/backend/Alert.vue';
 
 export default {
   data() {
@@ -89,7 +89,7 @@ export default {
     };
   },
   components: {
-    alert,
+    Alert,
   },
   methods: {
     customAlert(msg) {

@@ -231,12 +231,13 @@ import { Modal } from 'bootstrap';
 
 export default {
   props: ['cartInfo', 'customer', 'otherInfo', 'payment'],
+  emits: ['emit-check-coupon', 'emit-pre-page', 'emit-add-order'],
   data() {
     return {
-      cart: { ...this.cartInfo },
-      customerDetail: { ...this.customer },
-      otherDetail: [...this.otherInfo],
-      paymentDetail: { ...this.payment },
+      cart: {},
+      customerDetail: {},
+      otherDetail: [],
+      paymentDetail: {},
       remarkModal: {},
       temp: {},
     };
