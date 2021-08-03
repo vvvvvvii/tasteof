@@ -376,7 +376,6 @@ export default {
               // 個別取出每個產品
               let packageOptionsPrice = item.packageOptions.map((i) => i.price); // 取出該產品的所有方案中的價格
               packageOptionsPrice = packageOptionsPrice.sort((x, y) => x - y); // 價格小排到大
-              // this.products[index].lowestPrice = packageOptionsPrice[0];
               const [lowestPrice] = packageOptionsPrice; // 該產品最低價格為陣列第一個數
               this.totalProducts[index].lowestPrice = lowestPrice;
               // 找到該價格對應的單位

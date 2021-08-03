@@ -322,7 +322,6 @@ export default {
       }
     },
     deleteAllProducts() {
-      //   if (confirm('真的要全數清空嗎Ｑ口Ｑ')) {
       const { deleteOrderBtn } = this.$refs.checkCart.$refs;
       deleteOrderBtn.classList.add('disabled');
       deleteOrderBtn.children[0].classList.remove('d-none');
@@ -351,7 +350,6 @@ export default {
           deleteOrderBtn.classList.remove('disabled');
           deleteOrderBtn.children[0].classList.add('d-none');
         });
-      //   }
     },
     addPax() {
       // 新增一個空物件讓新方案的內容可以放入

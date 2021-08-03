@@ -16,7 +16,7 @@
         v-for="item in pagipages"
         :key="item"
         :class="{ active: pagination.current_page === item }"
-        @click.prevent="emitChangePage(item)"
+        @click="emitChangePage(item)"
       >
         <a class="page-link" href="#">{{ item }}</a>
       </li>
@@ -55,7 +55,7 @@ export default {
     },
   },
   computed: {
-    pagipages: function pagipage() {
+    pagipages() {
       // This calculates the amount of pages
       return Math.ceil(this.filterProduct.length / this.page.per_page);
     },

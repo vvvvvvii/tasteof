@@ -125,7 +125,6 @@
   &:not(:first-child)::after {
     right: calc(50% + 10px);
     width: calc(100% - 25px);
-    // width: calc(100% - 15px);
   }
 }
 
