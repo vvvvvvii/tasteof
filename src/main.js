@@ -20,6 +20,7 @@ import {
 import AllRules from '@vee-validate/rules';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
+
 import 'bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import SwiperCore, { Autoplay, Navigation, Thumbs } from 'swiper/core';

@@ -7,4 +7,18 @@
   @include media-breakpoint-up(md) {
     padding: 0.5rem 1rem;
   }
+  &-outline-primary {
+    color: $primary;
+  }
+  &-danger {
+    background: $danger;
+    color: $dark;
+  }
+}
+.nav-pills .nav-link-outline-primary {
+  border: 1px solid $primary;
+}
+.nav-pills .nav-link-danger {
+  background: $danger;
+  border: 1px solid $danger;
 }

@@ -36,8 +36,6 @@
         @emit-change-tkt-num="changeTktNum"
         @emit-delete-product="deleteProduct"
         @emit-delete-all-products="deleteAllProducts"
-        @emit-add-pax="addPax"
-        @emit-delete-pax="deletePax"
         @emit-next-page="saveCustomerDetail"
       ></CheckCart>
       <ConfirmCart
@@ -103,13 +101,15 @@ export default {
           if (res.data.success) {
             this.cart = res.data.data;
             const couponCheck = [];
-            this.cart.carts.forEach((product) => {
+            this.cart.carts.forEach((product, key) => {
               if (Object.keys(product).includes('coupon')) {
                 // 有加入優惠券時，會以商品為一項（即使很多方案），顯示 true
                 couponCheck.push(true); // 如果購物車裡曾有任何一個商品加過優惠碼，顯示 true
               } else {
                 couponCheck.push(false);
               }
+              // 在每個商品新增對應客人陣列
+              this.cart.carts[key].users = [];
             });
             if (couponCheck.every((e) => e === false)) {
               // 加商品，尚未加優惠碼
@@ -196,8 +196,12 @@ export default {
       this.showAlert = false;
     },
     changeTktNum(tktType, calcType, option, key, id) {
-      const adultStatus = this.$refs.checkCart.$refs[`adultStatus${option.optionName}`];
-      const childStatus = this.$refs.checkCart.$refs[`childStatus${option.optionName}`];
+      const adultStatus = this.$refs.checkCart.$refs[
+        `adultStatus${option.optionName}-${option.start_date}`
+      ];
+      const childStatus = this.$refs.checkCart.$refs[
+        `childStatus${option.optionName}-${option.start_date}`
+      ];
       const qtyDetail = { ...option.qtyDetail };
       if (tktType === 'adult') {
         adultStatus.children[0].classList.remove('d-none');
@@ -216,18 +220,16 @@ export default {
           qtyDetail.child -= 1;
         }
       }
-      let originQty = 0;
       let options = [];
       this.cart.carts.forEach((item) => {
         if (item.id === id) {
-          originQty = item.qty;
           options = [...item.options];
         }
       });
       const dataOuter = {
         data: {
           product_id: id,
-          qty: originQty + qtyDetail.adult + qtyDetail.child,
+          qty: qtyDetail.adult + qtyDetail.child,
           options,
         },
       };
@@ -350,13 +352,6 @@ export default {
           deleteOrderBtn.classList.remove('disabled');
           deleteOrderBtn.children[0].classList.add('d-none');
         });
-    },
-    addPax() {
-      // 新增一個空物件讓新方案的內容可以放入
-      this.customerDetail.users[this.customerDetail.users.length] = {};
-    },
-    deletePax(num) {
-      this.customerDetail.users.splice(num, 1);
     },
     saveCustomerDetail(info, remark) {
       this.customerDetail = info;

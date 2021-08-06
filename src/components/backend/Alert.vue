@@ -1,6 +1,6 @@
 <template>
-  <div class="alert alert-primary alert-dismissible fade show" role="alert">
-    {{ alertMsg }}
+  <div class="alert alert-primary fade show" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 text-primary"></i>{{ alertMsg }}
   </div>
 </template>
 <script>
