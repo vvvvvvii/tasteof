@@ -204,7 +204,7 @@
               >
             </p>
           </div>
-          <div class="px-md-6 pt-7">
+          <div class="px-md-6 py-7">
             <div
               class="d-flex flex-md-row flex-column
               justify-content-between mb-6"
@@ -396,67 +396,106 @@
               <p>{{ moreInfo.productInfo.policy }}</p>
             </div>
             <div id="commentsSection" v-if="moreInfo.productInfo.comments">
-              <div class="d-flex justify-content-between mb-6">
-                <h3 class="text-primary">好評推薦</h3>
-                <div class="bg-secondary p-2 rounded-2">
-                  <p class="text-white">
-                    <span class="h3 fw-bold">{{ moreInfo.productInfo.averageScore }}</span> 星
-                  </p>
+              <h3 class="text-primary mb-6">好評推薦</h3>
+              <div
+                class="d-flex justify-content-around align-items-center
+              text-center bg-light py-5 mb-6"
+              >
+                <div>
+                  <h3 class="mb-3">
+                    <span class="text-secondary fw-bold h2"
+                      >{{ moreInfo.productInfo.averageScore }}
+                    </span>
+                    星
+                  </h3>
+                  <p>{{ moreInfo.productInfo.comments.length }} 則評論</p>
                 </div>
+                <ul class="w-50" v-if="moreInfo.productInfo.scoreObj">
+                  <li
+                    class="d-flex align-items-center mb-2"
+                    v-for="(score, scoreKey) in moreInfo.productInfo.scoreObj"
+                    :key="scoreKey"
+                  >
+                    <span class="d-sm-inline d-none">{{ scoreKey.split('r')[1] }} 星</span>
+                    <div
+                      class="progress ms-sm-3 w-75"
+                      :class="{ 'align-items-center': score <= 0 }"
+                    >
+                      <p v-if="score <= 0" class="text-gray ms-3">
+                        <span class="d-sm-none d-inline">{{ scoreKey.split('r')[1] }} 星</span>
+                        <span class="d-sm-inline d-none">0 %</span>
+                      </p>
+                      <div
+                        class="progress-bar bg-secondary"
+                        role="progressbar"
+                        :style="{ width: `${score}%` }"
+                        :aria-valuenow="score"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <span class="d-sm-none d-inline">{{ scoreKey.split('r')[1] }} 星</span>
+                        <span class="d-sm-inline d-none">{{ score }} %</span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
               </div>
-              <ul>
+              <ul class="px-6 py-3">
                 <li
                   v-for="(item, key) in moreInfo.productInfo.comments"
                   :key="key"
-                  class="d-flex align-items-center"
-                  :class="{ 'mb-6': key !== moreInfo.productInfo.comments.length - 1 }"
+                  :class="{
+                    'pb-6': key !== moreInfo.productInfo.comments.length - 1,
+                    'mb-6': key !== moreInfo.productInfo.comments.length - 1,
+                    'border-bottom': key !== moreInfo.productInfo.comments.length - 1,
+                    'border-light': key !== moreInfo.productInfo.comments.length - 1,
+                  }"
                 >
-                  <div>
+                  <div class="d-flex">
                     <img class="user-img" :src="item.imageUrl" :alt="`使用者頭像 -${key}`" />
-                  </div>
-                  <div>
-                    <div class="dialog ms-3 px-6 py-4 rounded-pill">
-                      <p class="mb-3 h4-md h5">
-                        {{ item.content || '我給的星星就代表了我的評語～' }}
-                      </p>
-                      <h4 class="h5 text-gray-dark text-end">
-                        - {{ item.name }}
+                    <div class="ms-3 w-75">
+                      <h5 class="text-gray-dark mb-1">
+                        {{ item.name }}
+                        <span class="d-sm-none text-warning h4 ms-2">
+                          {{ item.score }} <i class="bi bi-star-fill"></i>
+                        </span>
+                      </h5>
+                      <h4 class="text-warning mb-3">
                         <span class="d-sm-inline d-none">
-                          / <i class="bi" :class="{ 'bi-star-fill': item.score >= 1 }"></i>
+                          <i class="bi" :class="{ 'bi-star-fill': item.score >= 1 }"></i>
                           <i
-                            class="bi"
+                            class="bi ms-1"
                             :class="{
                               'bi-star-fill': item.score >= 2,
                               'bi-star': item.score <= 1,
                             }"
                           ></i>
                           <i
-                            class="bi"
+                            class="bi ms-1"
                             :class="{
                               'bi-star-fill': item.score >= 3,
                               'bi-star': item.score <= 2,
                             }"
                           ></i>
                           <i
-                            class="bi"
+                            class="bi ms-1"
                             :class="{
                               'bi-star-fill': item.score >= 4,
                               'bi-star': item.score <= 3,
                             }"
                           ></i>
                           <i
-                            class="bi"
+                            class="bi ms-1"
                             :class="{
                               'bi-star-fill': item.score == 5,
                               'bi-star': item.score <= 4,
                             }"
                           ></i>
                         </span>
-                        <span class="d-sm-none">
-                          / {{ item.score }} <i class="bi bi-star-fill"></i>
-                        </span>
                       </h4>
-                      <span class="triangle"></span>
+                      <p class="h4-md h5">
+                        {{ item.content || '我給的星星就代表了我的評語～' }}
+                      </p>
                     </div>
                   </div>
                 </li>

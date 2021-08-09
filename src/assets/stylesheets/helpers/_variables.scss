@@ -381,7 +381,7 @@ $border-widths: (
     4: 3px,
   // 4px,
     5: 4px,
-  // 5px,,,,,,,,,,,,,,,,,,,,,,,
+  // 5px,,,,,,,,,,,,,,,,,,,,,,,,
 ) !default;
 
 $border-color: $gray-300 !default;
@@ -1313,7 +1313,7 @@ $alert-dismissible-padding-r: $alert-padding-x * 3 !default; // 3x covers width 
 // Progress bars
 
 // scss-docs-start progress-variables
-$progress-height: 1rem !default;
+$progress-height: 1.5rem !default;
 $progress-font-size: $font-size-base * 0.75 !default;
 $progress-bg: $gray-200 !default;
 $progress-border-radius: $border-radius !default;

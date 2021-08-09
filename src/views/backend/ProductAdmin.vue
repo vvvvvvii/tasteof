@@ -501,9 +501,39 @@ export default {
       // 計算平均評價分數
       if (item.data.comments !== undefined) {
         let totalScore = 0;
+        let scoreArr = [0, 0, 0, 0, 0];
         item.data.comments.forEach((comment) => {
           totalScore += Number(comment.score);
+          switch (comment.score) {
+            case '1':
+              scoreArr[0] += 1;
+              break;
+            case '2':
+              scoreArr[1] += 1;
+              break;
+            case '3':
+              scoreArr[2] += 1;
+              break;
+            case '4':
+              scoreArr[3] += 1;
+              break;
+            case '5':
+              scoreArr[4] += 1;
+              break;
+            default:
+              break;
+          }
         });
+        console.log((scoreArr[4] / item.data.comments.length) * 100);
+        scoreArr = scoreArr.map((score) => ((score / item.data.comments.length) * 100).toFixed(1));
+        const scoreObj = {
+          star1: scoreArr[0],
+          star2: scoreArr[1],
+          star3: scoreArr[2],
+          star4: scoreArr[3],
+          star5: scoreArr[4],
+        };
+        item.data.scoreObj = scoreObj;
         item.data.averageScore = (totalScore / item.data.comments.length).toFixed(1);
       }
       const { id } = tempProduct;
