@@ -210,19 +210,19 @@
               justify-content-between mb-6"
               id="packageOptionsSection"
             >
-              <h3 class="text-primary">選擇方案</h3>
-              <div class="d-flex h5 justify-content-end">
+              <h3 class="text-primary mb-md-0 mb-3">選擇方案</h3>
+              <div class="d-flex h5 justify-content-md-end justify-content-center">
                 <div class="d-flex flex-column align-items-center">
                   <label
                     for="tktAdultNum"
-                    class="mb-1"
+                    class="h5-md h4 mb-md-1 mb-3"
                     v-if="moreInfo.productInfo.lowestPriceUnit === '每人'"
                   >
                     成人
                   </label>
                   <label
                     for="tktOthersNum"
-                    class="mb-1"
+                    class="h5-md h4 mb-md-1 mb-3"
                     v-else-if="
                       moreInfo.productInfo.category !== '包車服務' &&
                         moreInfo.productInfo.lowestPriceUnit !== '每人'
@@ -232,7 +232,7 @@
                   </label>
                   <label
                     for="tktCarNum"
-                    class="mb-1"
+                    class="h5-md h4 mb-md-1 mb-3"
                     v-else-if="
                       moreInfo.productInfo.category === '包車服務' &&
                         moreInfo.productInfo.lowestPriceUnit !== '每人'
@@ -261,10 +261,10 @@
                   </div>
                 </div>
                 <div
-                  class="d-flex flex-column align-items-center ms-2"
+                  class="d-flex flex-column align-items-center ms-sm-2"
                   v-if="moreInfo.productInfo.lowestPriceUnit === '每人'"
                 >
-                  <label for="tktChildNum" class="mb-1">孩童</label>
+                  <label for="tktChildNum" class="h5-md h4 mb-md-1 mb-3">孩童</label>
                   <div class="d-flex align-items-center">
                     <button
                       type="button"
@@ -285,8 +285,8 @@
                     </button>
                   </div>
                 </div>
-                <div class="d-flex flex-column  ms-2">
-                  <label for="startDate" class="mb-2 text-center">使用日</label>
+                <div class="d-flex flex-column ms-sm-2">
+                  <label for="startDate" class="h5-md h4 mb-md-2 mb-3 text-center">日期</label>
                   <flat-pickr
                     id="startDate"
                     ref="startDate"
@@ -309,83 +309,84 @@
                   :src="moreInfo.productInfo.imageUrl"
                   :alt="item.optionName"
                 />
-                <div class="card-body flex-sm-row">
-                  <div>
-                    <h3 class="card-title mb-2">
-                      {{ item.optionName }}
-                    </h3>
-                    <p class="h5 mb-sm-3 mb-2">集合時間： {{ item.meetingTime }}</p>
-                    <template v-for="(content, key) in item.contentArr" :key="key">
-                      <p v-if="key < 3" class="h4-lg h5 mb-2 d-sm-block d-none">
-                        <i class="bi bi-check2"></i>
-                        {{ content }}
-                      </p>
-                    </template>
-                    <a
-                      type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#optionModal"
-                      v-if="item.contentArr.length > 3"
-                      class="text-secondary d-sm-inline d-none"
-                    >
-                      <i class="bi bi-question-diamond-fill"></i>
-                      查看更多方案包含細項
-                    </a>
-                    <!--手機版顯示-->
-                    <a
-                      type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#optionModal"
-                      class="text-secondary d-sm-none mb-2 h5"
-                    >
-                      <i class="bi bi-question-diamond-fill"></i>
-                      查看更多方案包含細項
-                    </a>
-                    <!-- 方案 Modal -->
-                    <div
-                      class="modal fade"
-                      id="optionModal"
-                      tabindex="-1"
-                      aria-labelledby="optionModalLabel"
-                      aria-hidden="true"
-                    >
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header bg-wave mb-3 position-relative">
-                            <h3>
-                              {{ item.optionName }}
-                            </h3>
-                            <div class="cable-car"></div>
-                          </div>
-                          <div class="modal-body p-6">
-                            <p v-for="(content, key) in item.contentArr" :key="key">
-                              <i class="bi bi-check2"></i>
-                              {{ content }}
-                            </p>
-                          </div>
+                <div class="card-body">
+                  <div class="d-flex flex-sm-row justify-content-between mb-3">
+                    <div>
+                      <h3 class="card-title mb-2">
+                        {{ item.optionName }}
+                      </h3>
+                      <p class="h5">集合時間： {{ item.meetingTime }}</p>
+                    </div>
+                    <p class="text-end h4-md h5 w-50 d-sm-inline d-flex flex-column">
+                      <span class="h3-md h4 mb-sm-0 mb-2">NT {{ addComma(item.price) }}</span>
+                      <span class="d-sm-inline d-none"> / {{ item.unit }}</span>
+                      <span class="d-sm-none d-inline">{{ item.unit }}</span>
+                    </p>
+                  </div>
+                  <template v-for="(content, key) in item.contentArr" :key="key">
+                    <p v-if="key < 3" class="h4-md h5 mb-2">
+                      <i class="bi bi-check2"></i>
+                      {{ content }}
+                    </p>
+                  </template>
+                  <a
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#optionModal"
+                    v-if="item.contentArr.length > 3"
+                    class="text-secondary d-md-inline mb-3 d-none"
+                  >
+                    <i class="bi bi-question-diamond-fill"></i>
+                    查看更多方案包含細項
+                  </a>
+                  <!--手機版顯示-->
+                  <a
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#optionModal"
+                    class="text-secondary d-md-none mb-3 h5"
+                  >
+                    <i class="bi bi-question-diamond-fill"></i>
+                    查看更多方案包含細項
+                  </a>
+                  <!-- 方案 Modal -->
+                  <div
+                    class="modal fade"
+                    id="optionModal"
+                    tabindex="-1"
+                    aria-labelledby="optionModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header bg-wave mb-3 position-relative">
+                          <h3>
+                            {{ item.optionName }}
+                          </h3>
+                          <div class="cable-car"></div>
+                        </div>
+                        <div class="modal-body p-6">
+                          <p v-for="(content, key) in item.contentArr" :key="key">
+                            <i class="bi bi-check2"></i>
+                            {{ content }}
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex flex-column justify-content-end w-sm-50 ms-sm-2">
-                    <p class="mb-2 h4-md h5">
-                      <span class="h3-md h4">NT {{ addComma(item.price) }}</span>
-                      / {{ item.unit }}
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-primary d-flex justify-content-center align-items-center"
-                      :ref="`addCartBtn-${index}`"
-                      @click="addCart(item, index)"
-                      :disabled="moreInfo.startDate === '' || moreInfo.tktNum.adult < 1"
-                    >
-                      <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                      <p class="ms-1" v-if="moreInfo.startDate === ''">填寫日期</p>
-                      <p class="ms-1" v-else>現在預訂</p>
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-primary d-flex justify-content-center align-items-center w-100"
+                    :ref="`addCartBtn-${index}`"
+                    @click="addCart(item, index)"
+                    :disabled="moreInfo.startDate === '' || moreInfo.tktNum.adult < 1"
+                  >
+                    <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="ms-1" v-if="moreInfo.startDate === ''">填寫日期</p>
+                    <p class="ms-1" v-else>現在預訂</p>
+                  </button>
                 </div>
               </li>
             </ul>
@@ -651,6 +652,7 @@ export default {
           }
         });
       });
+      this.randomProducts = [];
       const arrSet = new Set([]);
       const maxSize = filterArr.length < 3 ? filterArr.length : 3; // 該品項項目少於三項時，顯示該品項數量即可
       for (let index = 0; arrSet.size < maxSize; index + 1) {

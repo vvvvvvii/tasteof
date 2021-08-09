@@ -40,3 +40,9 @@
     font-size: $h4-font-size;
   }
 }
+
+.h5-md {
+  @include media-breakpoint-up(md) {
+    font-size: $h5-font-size;
+  }
+}
