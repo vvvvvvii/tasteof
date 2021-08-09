@@ -662,9 +662,8 @@ export default {
   watch: {
     '$route.query': {
       handler() {
-        if (this.searchProductTag.includes(this.$route.query.search) === false) {
-          this.searchProductTag.push(this.$route.query.search);
-        }
+        this.searchProductTag = [];
+        this.searchProductTag.push(this.$route.query.search);
       },
     },
     // This resets the data for when the filter is changed

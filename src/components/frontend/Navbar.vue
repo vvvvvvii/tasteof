@@ -31,10 +31,9 @@
         >
           <li class="nav-item px-3">
             <router-link
-              to="/product_list?search=城市導覽"
+              :to="{ path: '/product_list', query: { search: '城市導覽' } }"
+              :class="{ active: this.$route.query.search === '城市導覽' }"
               class="nav-link"
-              active-class="active"
-              exact-path
             >
               活動
             </router-link>
@@ -44,10 +43,9 @@
           </li>
           <li class="nav-item px-3">
             <router-link
-              to="/product_list?search=體驗票券"
+              :to="{ path: '/product_list', query: { search: '體驗票券' } }"
+              :class="{ active: this.$route.query.search === '體驗票券' }"
               class="nav-link"
-              active-class="active"
-              exact-path
             >
               票券
             </router-link>
@@ -57,10 +55,9 @@
           </li>
           <li class="nav-item px-3">
             <router-link
-              to="/product_list?search=包車服務"
+              :to="{ path: '/product_list', query: { search: '包車服務' } }"
+              :class="{ active: this.$route.query.search === '包車服務' }"
               class="nav-link"
-              active-class="active"
-              exact-path
             >
               包車
             </router-link>
