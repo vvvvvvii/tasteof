@@ -109,7 +109,9 @@ export default {
                 couponCheck.push(false);
               }
               // 在每個商品新增對應客人陣列
-              this.cart.carts[key].users = [];
+              this.cart.carts[key].options.forEach((option, optionKey) => {
+                this.cart.carts[key].options[optionKey].users = [];
+              });
             });
             if (couponCheck.every((e) => e === false)) {
               // 加商品，尚未加優惠碼
@@ -234,6 +236,7 @@ export default {
         },
       };
       dataOuter.data.options[key].qtyDetail = qtyDetail;
+      dataOuter.data.options[key].optionQty = qtyDetail.adult + qtyDetail.child;
       this.$http
         .put(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`, dataOuter)
         .then((res) => {

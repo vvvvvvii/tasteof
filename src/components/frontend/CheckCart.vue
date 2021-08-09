@@ -64,11 +64,11 @@
                           class="btn-check"
                           :disabled="
                             user.name === undefined ||
-                              (item.users.length >= item.qty &&
-                                item.users.includes(userIndex) === false)
+                              (item.options[key].users.length >= item.options[key].optionQty &&
+                                item.options[key].users.includes(userIndex) === false)
                           "
                           :value="userIndex"
-                          v-model="item.users"
+                          v-model="item.options[key].users"
                         />
                         <label
                           :for="`${user.name}-${option.optionName}-${option.start_date}`"
@@ -161,7 +161,14 @@
             </div>
           </template>
           <!-- 提示可往下滑的圖案 -->
-          <div class="scroll-btn" v-if="scrollBtnShow">
+          <div
+            class="scroll-btn"
+            ref="scrollTooltip"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="請向下滾動"
+            v-if="scrollBtnShow"
+          >
             <i class="bi bi-arrow-down-short"></i>
           </div>
         </div>
@@ -519,31 +526,23 @@
                 >
                   {{ key + 1 }}
                 </button>
-                <div>
-                  <button
-                    type="button"
-                    ref="deletePaxTooltip"
-                    class="delete-pax-num"
-                    :class="{
-                      'd-none': key === 0 || customerDetail.users.length <= productMaxPaxQty,
-                    }"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    :title="`刪除第 ${key + 1} 位旅客`"
-                    @click="deletePax(key)"
-                  >
-                    <i class="bi bi-x"></i>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  class="delete-pax-num"
+                  :class="{
+                    'd-none': key === 0 || customerDetail.users.length <= productMaxPaxQty,
+                  }"
+                  :title="`刪除第 ${key + 1} 位旅客`"
+                  @click="deletePax(key)"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
               </li>
               <li class="nav-item">
                 <button
                   type="button"
-                  ref="addPaxTooltip"
                   class="nav-link nav-link-outline-primary rounded-1 ms-3"
                   :class="{ 'd-none': customerDetail.users.length >= totalProductsMaxPaxQty }"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
                   title="新增旅客"
                   @click="addPax()"
                 >
@@ -612,6 +611,7 @@
 </template>
 <script>
 import Alert from '@/components/backend/Alert.vue';
+import { Tooltip } from 'bootstrap';
 import flushPromises from 'flush-promises';
 
 export default {
@@ -629,8 +629,7 @@ export default {
       cart: {},
       customerDetail: {},
       otherDetail: [],
-      addPaxTooltip: '',
-      deletePaxTooltip: '',
+      scrollTooltip: '',
       productMaxPaxQty: 0,
       totalProductsMaxPaxQty: 0,
       scrollBtnShow: true,
@@ -659,28 +658,6 @@ export default {
       // 新增一個空物件讓新方案的內容可以放入
       this.customerDetail.users[this.customerDetail.users.length] = {};
     },
-    // 若綁定姓名確認沒問題可拿掉這串
-    // 可達成功能，但想讓他可以自動改而不是手動調
-    // addUser(cartItem, name, userIndex) {
-    //   // 確認 cartItem.users 裡的物件，是否有相同的 userIndex
-    //   const userIndexArr = cartItem.users.map((item) => item.userIndex);
-    //   if (userIndexArr.includes(userIndex) === false) {
-    //     // 不曾加過這個編號的客人就加進去
-    //     cartItem.users.push({
-    //       name,
-    //       userIndex,
-    //     });
-    //   } else {
-    //     // 曾加過的話判斷是改名字？還是要拿掉？
-    //     const repeatItem = cartItem.users[userIndexArr.indexOf(userIndex)];
-    //     if (name !== repeatItem.name) {
-    //       repeatItem.name = name;
-    //     } else {
-    //       cartItem.users.splice(cartItem.users.indexOf(name), 1);
-    //     }
-    //   }
-    //   console.log(cartItem);
-    // },
     deletePax(num) {
       this.customerDetail.users.splice(num, 1);
     },
@@ -690,11 +667,13 @@ export default {
         this.productWarningShow[i] = false;
       }
       this.cart.carts.forEach((product, productKey) => {
-        // 確認是否每個商品登陸的人數，等於該商品要使用的人數（不可放在 async validationCheck 會來不及正確運行）
-        if (product.users.length !== product.qty) {
-          // 沒有的那項調成 true
-          this.productWarningShow[productKey] = true;
-        }
+        product.options.forEach((option) => {
+          // 確認是否每個商品登陸的人數，等於該商品要使用的人數（不可放在 async validationCheck 會來不及正確運行）
+          if (option.users.length !== option.optionQty) {
+            // 沒有的那項調成 true
+            this.productWarningShow[productKey] = true;
+          }
+        });
       });
       // 只要 productWarningShow 裡含有 true 就秀警告且不可繼續運行 emit
       if (this.productWarningShow.includes(true)) {
@@ -805,16 +784,17 @@ export default {
             }
           }
         });
-        // 把各項商品方案的總人數抽出來相加，代表如果每個方案的人都不一樣，最多可以有這麼多不同的旅客資料
-        const qtyArr = this.cart.carts.map((i) => i.qty);
-        this.totalProductsMaxPaxQty = qtyArr.reduce((x, y) => x + y, 0);
         // 把各項商品方案的總人數抽出來，找到最高值，this.customerDetail.users 要包進 productMaxPaxQty 長度的空物件
-        [this.productMaxPaxQty] = qtyArr.sort((x, y) => y - x);
+        const qtyArr = [];
+        this.cart.carts.forEach((item) => {
+          const optionQtyArr = item.options.map((i) => i.optionQty);
+          qtyArr.push(optionQtyArr);
+        });
+        [this.productMaxPaxQty] = qtyArr.flat().sort((x, y) => y - x);
+        // 把各項商品方案的總人數抽出來相加，代表如果每個方案的人都不一樣，最多可以有這麼多不同的旅客資料
+        this.totalProductsMaxPaxQty = qtyArr.flat().reduce((x, y) => x + y, 0);
         const difference = this.customerDetail.users.length - this.productMaxPaxQty;
-        if (difference > 0) {
-          // this.customerDetail.users.length 比較大 > 剪掉 this.customerDetail.users 後面的空物件直到長度相同
-          this.customerDetail.users.splice(-1, difference);
-        } else if (difference < 0) {
+        if (difference < 0) {
           // this.customerDetail.users.length 比較小 > 增加 this.customerDetail.users 後面的空物件直到長度相同
           this.customerDetail.users = [{}];
           for (let i = 0; i < this.productMaxPaxQty - 1; i += 1) {
@@ -846,6 +826,7 @@ export default {
     this.otherDetail = [...this.otherInfo];
   },
   mounted() {
+    this.scrollTooltip = new Tooltip(this.$refs.scrollTooltip);
     this.listener = () => {
       const btn = this.$refs.scrollBtn;
       this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 800;

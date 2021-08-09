@@ -682,6 +682,9 @@ export default {
                   this.carts[repeatIndex].options[optionIndex].qtyDetail.child
                   + this.moreInfo.tktNum.child,
               },
+              optionQty:
+                dataOuter.data.options[optionIndex].adult
+                + dataOuter.data.options[optionIndex].child,
               start_date: this.moreInfo.startDate,
               optionName: item.optionName,
               optionPrice: Number(item.price),
@@ -703,6 +706,9 @@ export default {
             optionPrice: Number(item.price),
           };
           const { qtyDetail } = dataOuter.data.options[dataOuter.data.options.length - 1];
+          dataOuter.data.options.forEach((i, key) => {
+            dataOuter.data.options[key].optionQty = i.qtyDetail.adult + i.qtyDetail.child;
+          });
           dataOuter.data.qty = qtyDetail.adult + qtyDetail.child;
         }
       } else {
@@ -723,6 +729,7 @@ export default {
         dataOuter.data.qty = qtyDetail.adult + qtyDetail.child;
       }
       dataOuter.data.options.forEach((i, key) => {
+        dataOuter.data.options[key].optionQty = i.qtyDetail.adult + i.qtyDetail.child;
         dataOuter.data.options[key].total = i.optionPrice * (i.qtyDetail.adult + i.qtyDetail.child);
       });
       this.$http
