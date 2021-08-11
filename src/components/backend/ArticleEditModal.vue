@@ -6,7 +6,7 @@
     aria-labelledby="articleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content article-modal-bg">
         <div class="modal-body">
           <div class="text-end">

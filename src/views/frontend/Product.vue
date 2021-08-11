@@ -134,7 +134,7 @@
             aria-labelledby="productPageImgModalLabel"
             aria-hidden="true"
           >
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
               <div class="modal-content rounded-0">
                 <div class="modal-body p-0">
                   <Swiper
@@ -204,99 +204,8 @@
               >
             </p>
           </div>
-          <div class="px-md-6 py-7">
-            <div
-              class="d-flex flex-md-row flex-column
-              justify-content-between mb-6"
-              id="packageOptionsSection"
-            >
-              <h3 class="text-primary mb-md-0 mb-3">選擇方案</h3>
-              <div class="d-flex h5 justify-content-md-end justify-content-center">
-                <div class="d-flex flex-column align-items-center">
-                  <label
-                    for="tktAdultNum"
-                    class="h5-md h4 mb-md-1 mb-3"
-                    v-if="moreInfo.productInfo.lowestPriceUnit === '每人'"
-                  >
-                    成人
-                  </label>
-                  <label
-                    for="tktOthersNum"
-                    class="h5-md h4 mb-md-1 mb-3"
-                    v-else-if="
-                      moreInfo.productInfo.category !== '包車服務' &&
-                        moreInfo.productInfo.lowestPriceUnit !== '每人'
-                    "
-                  >
-                    數量
-                  </label>
-                  <label
-                    for="tktCarNum"
-                    class="h5-md h4 mb-md-1 mb-3"
-                    v-else-if="
-                      moreInfo.productInfo.category === '包車服務' &&
-                        moreInfo.productInfo.lowestPriceUnit !== '每人'
-                    "
-                  >
-                    台
-                  </label>
-                  <div class="d-flex align-items-center">
-                    <button
-                      type="button"
-                      class="border-0 bg-transparent p-2"
-                      @click="changeTktNum('adult', 'minus')"
-                    >
-                      <i class="bi bi-dash-lg"></i>
-                    </button>
-                    <p class="p-1">
-                      {{ moreInfo.tktNum.adult }}
-                    </p>
-                    <button
-                      type="button"
-                      class="border-0 bg-transparent p-2"
-                      @click="changeTktNum('adult', 'plus')"
-                    >
-                      <i class="bi bi-plus-lg"></i>
-                    </button>
-                  </div>
-                </div>
-                <div
-                  class="d-flex flex-column align-items-center ms-sm-2"
-                  v-if="moreInfo.productInfo.lowestPriceUnit === '每人'"
-                >
-                  <label for="tktChildNum" class="h5-md h4 mb-md-1 mb-3">孩童</label>
-                  <div class="d-flex align-items-center">
-                    <button
-                      type="button"
-                      class="border-0 bg-transparent p-2"
-                      @click="changeTktNum('child', 'minus')"
-                    >
-                      <i class="bi bi-dash-lg"></i>
-                    </button>
-                    <p class="p-1">
-                      {{ moreInfo.tktNum.child }}
-                    </p>
-                    <button
-                      type="button"
-                      class="border-0 bg-transparent p-2"
-                      @click="changeTktNum('child', 'plus')"
-                    >
-                      <i class="bi bi-plus-lg"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="d-flex flex-column ms-sm-2">
-                  <label for="startDate" class="h5-md h4 mb-md-2 mb-3 text-center">日期</label>
-                  <flat-pickr
-                    id="startDate"
-                    ref="startDate"
-                    :config="config"
-                    v-model="moreInfo.startDate"
-                    class="py-1 mb-1 text-center"
-                  ></flat-pickr>
-                </div>
-              </div>
-            </div>
+          <div class="px-md-6 pt-7" id="packageOptionsSection">
+            <h3 class="text-primary mb-6">選擇方案</h3>
             <ul class="mb-7">
               <li
                 v-for="(item, index) in moreInfo.productInfo.packageOptions"
@@ -349,7 +258,7 @@
                     <i class="bi bi-question-diamond-fill"></i>
                     查看更多方案包含細項
                   </a>
-                  <!-- 方案 Modal -->
+                  <!-- 方案細項 Modal -->
                   <div
                     class="modal fade"
                     id="optionModal"
@@ -357,7 +266,7 @@
                     aria-labelledby="optionModalLabel"
                     aria-hidden="true"
                   >
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header bg-wave mb-3 position-relative">
                           <h3>
@@ -376,20 +285,22 @@
                   </div>
                   <button
                     type="button"
-                    class="btn btn-primary d-flex justify-content-center align-items-center w-100"
-                    :ref="`addCartBtn-${index}`"
-                    @click="addCart(item, index)"
-                    :disabled="moreInfo.startDate === '' || moreInfo.tktNum.adult < 1"
+                    @click="openModal(item)"
+                    class="btn btn-primary d-flex
+                    justify-content-center align-items-center w-100 py-2"
                   >
-                    <div class="spinner-border spinner-border-sm text-dark d-none" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="ms-1" v-if="moreInfo.startDate === ''">填寫日期</p>
-                    <p class="ms-1" v-else>現在預訂</p>
+                    現在預訂
                   </button>
                 </div>
               </li>
             </ul>
+            <!-- 預訂 Modal -->
+            <Option-modal
+              ref="bookingModal"
+              :temp="temp"
+              :more-info="moreInfo"
+              @emit-add-cart="addCart"
+            ></Option-modal>
             <div id="ruleSection" :class="{ 'mb-7': moreInfo.productInfo.comments }">
               <h3 class="text-primary mb-6">
                 相關規定
@@ -509,8 +420,8 @@
     <div class="bg-wave py-7" id="moreActivitiesSection" v-if="randomProducts.length !== 0">
       <div class="container">
         <h3 class="text-primary mb-5">更多相似活動</h3>
-        <div class="row">
-          <div class="col-4" v-for="(item, key) in randomProducts" :key="key">
+        <div class="row flex-nowrap overflow-scroll">
+          <div class="col-sm-4 col-5" v-for="(item, key) in randomProducts" :key="key">
             <router-link :to="`/product/${item.id}`" title="查看更多" class="card overflow-hidden">
               <div class="card-img-outer">
                 <img :src="item.imageUrl" :alt="item.title" class="card-img" />
@@ -543,18 +454,14 @@
 </template>
 <script>
 import Alert from '@/components/backend/Alert.vue';
-import FlatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
+
+import { Modal } from 'bootstrap';
+import OptionModal from '@/components/frontend/OptionModal.vue';
 import emitter from '../../assets/js/emitter';
 
 export default {
   data() {
     return {
-      config: {
-        altFormat: 'F j, Y',
-        dateFormat: 'Y-m-d',
-        minDate: 'today',
-      },
       moreInfo: {
         productInfo: {
           comments: [],
@@ -574,12 +481,14 @@ export default {
       buyBtnShow: true,
       thumbsSwiper: null,
       thumbsSwiperMobile: null,
+      bookingModal: {},
+      temp: {},
     };
   },
   props: ['id'],
   components: {
     Alert,
-    FlatPickr,
+    OptionModal,
   },
   methods: {
     getData() {
@@ -691,20 +600,25 @@ export default {
     setThumbsSwiperMobile(swiper) {
       this.thumbsSwiperMobile = swiper;
     },
-    addCart(item, index) {
-      const addCartBtn = this.$refs[`addCartBtn-${index}`];
+    openModal(item) {
+      this.temp = { ...item };
+      this.bookingModal.show();
+    },
+    addCart(productDetail, optionDetail) {
+      const { addCartBtn } = this.$refs.bookingModal.$refs;
       addCartBtn.classList.add('disabled');
       addCartBtn.children[0].classList.remove('d-none');
       let dataOuter = {};
+      this.moreInfo = JSON.parse(JSON.stringify(productDetail));
       const cartIds = this.carts.map((product) => product.product_id);
       if (cartIds.includes(this.moreInfo.productInfo.id)) {
+        // 如果是 true 代表曾經加入過同商品，找出曾被加入的商品的 index
         const repeatIndex = cartIds.indexOf(this.moreInfo.productInfo.id);
         // 比對方案是否相同 列出所有相同方案名稱的物件
         // 比對日期是否相同
-        // 如果是 true 代表曾經加入過同商品，找出曾被加入的商品的 index
         this.carts[repeatIndex].options.forEach((option, optionIndex) => {
           if (
-            option.optionName === item.optionName
+            option.optionName === optionDetail.optionName
             && option.start_date === this.moreInfo.startDate
           ) {
             // 日期跟方案名稱都同時相同，代表購物車裡已經有相同的方案名稱
@@ -727,8 +641,8 @@ export default {
                 dataOuter.data.options[optionIndex].adult
                 + dataOuter.data.options[optionIndex].child,
               start_date: this.moreInfo.startDate,
-              optionName: item.optionName,
-              optionPrice: Number(item.price),
+              optionName: optionDetail.optionName,
+              optionPrice: Number(optionDetail.price),
             };
             dataOuter.data.qty = this.moreInfo.tktNum.adult + this.moreInfo.tktNum.child;
           }
@@ -743,8 +657,8 @@ export default {
           dataOuter.data.options[dataOuter.data.options.length] = {
             qtyDetail: { ...this.moreInfo.tktNum },
             start_date: this.moreInfo.startDate,
-            optionName: item.optionName,
-            optionPrice: Number(item.price),
+            optionName: optionDetail.optionName,
+            optionPrice: Number(optionDetail.price),
           };
           const { qtyDetail } = dataOuter.data.options[dataOuter.data.options.length - 1];
           dataOuter.data.options.forEach((i, key) => {
@@ -761,10 +675,10 @@ export default {
           },
         };
         dataOuter.data.options.push({
-          optionName: item.optionName,
           qtyDetail: { ...this.moreInfo.tktNum },
           start_date: this.moreInfo.startDate,
-          optionPrice: Number(item.price),
+          optionName: optionDetail.optionName,
+          optionPrice: Number(optionDetail.price),
         });
         const { qtyDetail } = dataOuter.data.options[0];
         dataOuter.data.qty = qtyDetail.adult + qtyDetail.child;
@@ -784,6 +698,7 @@ export default {
             this.moreInfo.tktNum.child = 0;
             addCartBtn.classList.remove('disabled');
             addCartBtn.children[0].classList.add('d-none');
+            this.bookingModal.hide();
             emitter.emit('update-cart');
           } else {
             this.customAlert(res.data.message);
@@ -800,21 +715,6 @@ export default {
           addCartBtn.children[0].classList.add('d-none');
           emitter.emit('update-cart');
         });
-    },
-    changeTktNum(tktType, calcType) {
-      if (tktType === 'adult') {
-        if (calcType === 'plus') {
-          this.moreInfo.tktNum.adult += 1;
-        } else if (calcType === 'minus' && this.moreInfo.tktNum.adult >= 2) {
-          this.moreInfo.tktNum.adult -= 1;
-        }
-      } else if (tktType === 'child') {
-        if (calcType === 'plus') {
-          this.moreInfo.tktNum.child += 1;
-        } else if (calcType === 'minus' && this.moreInfo.tktNum.child >= 1) {
-          this.moreInfo.tktNum.child -= 1;
-        }
-      }
     },
     customAlert(msg) {
       this.alertMsg = msg;
@@ -849,6 +749,9 @@ export default {
       this.buyBtnShow = window.scrollY < document.body.clientHeight - 900;
     };
     window.addEventListener('scroll', this.listener);
+    this.bookingModal = new Modal(document.getElementById('bookingModal'), {
+      keyboard: false,
+    });
   },
   unmounted() {
     window.removeEventListener('scroll', this.listener);

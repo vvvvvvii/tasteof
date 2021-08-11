@@ -20,7 +20,7 @@
             aria-labelledby="filterArticlePadModalLabel"
             aria-hidden="true"
           >
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header bg-wave py-2 mb-3 position-relative">
                   <h5 class="modal-title fw-bold h4" id="filterArticlePadModalLabel">

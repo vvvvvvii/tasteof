@@ -1,7 +1,7 @@
 <template>
   <div class="bg-primary py-6">
     <div class="container">
-      <ul class="d-flex justify-content-evenly pb-7 mb-5 border-bottom border-gray-dark">
+      <ul class="d-flex justify-content-evenly pb-7 mb-5 border-bottom border-gray-dark h4-sm h5">
         <li>
           <p class="text-white mb-5 ps-3">關於我們</p>
           <ul class="border-start border-gray ps-3">

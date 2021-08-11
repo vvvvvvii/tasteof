@@ -18,3 +18,8 @@
     width: 100% !important;
   }
 }
+.w-sm-auto {
+  @include media-breakpoint-up(sm) {
+    width: auto !important;
+  }
+}

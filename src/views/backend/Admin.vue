@@ -61,7 +61,7 @@
     aria-labelledby="accountModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content bg-secondary">
         <div class="modal-body px-3">
           <div class="container-fluid">

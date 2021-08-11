@@ -7,7 +7,7 @@
     aria-labelledby="deleteModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content delete-modal-bg">
         <div class="modal-body">
           <div class="text-end">

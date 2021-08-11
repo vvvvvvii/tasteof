@@ -24,8 +24,8 @@
   <div class="bg-wave py-7" id="moreActivitiesSection">
     <div class="container">
       <h3 class="text-primary mb-5">更多活動？</h3>
-      <div class="row">
-        <div class="col-4" v-for="(item, key) in randomProducts" :key="key">
+      <div class="row flex-nowrap overflow-scroll">
+        <div class="col-sm-4 col-5" v-for="(item, key) in randomProducts" :key="key">
           <router-link :to="`/product/${item.id}`" title="查看更多" class="card overflow-hidden">
             <div class="card-img-outer">
               <img :src="item.imageUrl" :alt="item.title" class="card-img" />

@@ -6,6 +6,9 @@
     opacity: 0.8;
   }
 }
+.swiper-button-disabled {
+  display: none;
+}
 .swiper-container {
   overflow: hidden !important;
 }
@@ -103,4 +106,9 @@
 
 .gallery-thumbs .swiper-slide-thumb-active {
   opacity: 1;
+}
+
+.addCartSwiper .swiper-wrapper {
+  display: flex;
+  align-items: center;
 }

@@ -51,7 +51,7 @@
                 aria-labelledby="filterProductPadModalLabel"
                 aria-hidden="true"
               >
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header bg-wave mb-3 position-relative">
                       <h5 class="modal-title fw-bold h4" id="filterProductPadModalLabel">
@@ -122,7 +122,7 @@
                 aria-labelledby="sortProductPadModalLabel"
                 aria-hidden="true"
               >
-                <div class="modal-dialog">
+                <div class="modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header bg-wave mb-3 position-relative">
                       <h5 class="modal-title fw-bold h4" id="exampleModalLabel">

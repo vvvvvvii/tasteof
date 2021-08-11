@@ -352,7 +352,7 @@
         aria-labelledby="productRemarkLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header bg-wave mb-3 position-relative">
               <h3 class="modal-title">商品備註</h3>
