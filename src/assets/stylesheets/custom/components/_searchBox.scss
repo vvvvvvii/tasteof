@@ -9,7 +9,7 @@
   &-body {
     border-radius: inherit;
     @include media-breakpoint-up(lg) {
-      border-top: 3px solid #9a5836;
+      border-top: 3px solid $secondary;
       background: $white;
       padding: 2rem 1.5rem;
     }

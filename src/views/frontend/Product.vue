@@ -270,7 +270,7 @@
                       <div class="modal-content">
                         <div class="modal-header bg-wave mb-3 position-relative">
                           <h3>
-                            {{ item.optionName }}
+                            方案內含：
                           </h3>
                           <div class="cable-car"></div>
                         </div>
@@ -280,6 +280,16 @@
                             {{ content }}
                           </p>
                         </div>
+                        <button
+                          type="button"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          @click="openModal(item)"
+                          class="btn btn-primary py-2 rounded-0
+                          d-flex justify-content-center align-items-center"
+                        >
+                          現在預訂
+                        </button>
                       </div>
                     </div>
                   </div>
