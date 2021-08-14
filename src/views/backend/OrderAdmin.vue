@@ -196,17 +196,16 @@ export default {
             this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;
@@ -244,19 +243,16 @@ export default {
             this.getData();
             orderAdminBtn.classList.remove('disabled');
             orderAdminBtn.children[0].classList.add('d-none');
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             orderAdminBtn.classList.remove('disabled');
             orderAdminBtn.children[0].classList.add('d-none');
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           orderAdminBtn.classList.remove('disabled');
           orderAdminBtn.children[0].classList.add('d-none');
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteOrder() {
@@ -269,15 +265,12 @@ export default {
             this.getData();
             this.clearModal();
             this.deleteModal.hide();
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteAll() {
@@ -287,15 +280,12 @@ export default {
           if (res.data.success) {
             this.customAlert('刪除成功');
             this.getData();
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
   },

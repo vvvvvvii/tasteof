@@ -519,12 +519,10 @@ export default {
             this.getCartInfo();
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getTotalProducts() {
@@ -549,12 +547,10 @@ export default {
             this.getRandomProducts();
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getRandomProducts() {
@@ -591,12 +587,10 @@ export default {
             this.carts = res.data.data.carts;
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     goAnchor(selector) {
@@ -702,7 +696,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.customAlert('已加入購物車');
-            window.setTimeout(this.closeCustomAlert, 5000);
             this.moreInfo.startDate = '';
             this.moreInfo.tktNum.adult = 1;
             this.moreInfo.tktNum.child = 0;
@@ -712,7 +705,6 @@ export default {
             emitter.emit('update-cart');
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
             addCartBtn.classList.remove('disabled');
             addCartBtn.children[0].classList.add('d-none');
             emitter.emit('update-cart');
@@ -720,7 +712,6 @@ export default {
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
           addCartBtn.classList.remove('disabled');
           addCartBtn.children[0].classList.add('d-none');
           emitter.emit('update-cart');
@@ -728,7 +719,8 @@ export default {
     },
     customAlert(msg) {
       this.alertMsg = msg;
-      this.showAlert = true; // 秀出 alert
+      this.showAlert = true;
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;

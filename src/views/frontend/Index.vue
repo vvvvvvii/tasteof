@@ -339,12 +339,10 @@ export default {
             this.getRandomCity();
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getArticles() {
@@ -356,12 +354,10 @@ export default {
             this.articles = articles;
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getRandomCity() {
@@ -376,6 +372,7 @@ export default {
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;

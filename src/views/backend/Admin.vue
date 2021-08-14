@@ -162,19 +162,18 @@ export default {
             this.checkSuccess = true;
           } else {
             this.customAlert('您尚未登入');
-            window.setTimeout(this.closeCustomAlert, 5000);
             this.$router.push('/login');
           }
         });
       } else {
         this.customAlert('您尚未登入');
-        window.setTimeout(this.closeCustomAlert, 5000);
         this.$router.push('/login');
       }
     },
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;
@@ -192,7 +191,6 @@ export default {
       logoutBtn.classList.remove('disabled');
       logoutBtn.children[0].classList.add('d-none');
       this.customAlert('已成功登出');
-      window.setTimeout(this.closeCustomAlert, 5000);
       this.accountBsModal.hide();
       this.$router.push('/'); // 自動跳轉畫面
     },

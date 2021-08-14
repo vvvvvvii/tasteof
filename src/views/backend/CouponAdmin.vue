@@ -125,17 +125,16 @@ export default {
             this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;
@@ -181,19 +180,16 @@ export default {
               this.getData();
               couponAdminBtn.classList.remove('disabled');
               couponAdminBtn.children[0].classList.add('d-none');
-              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               couponAdminBtn.classList.remove('disabled');
               couponAdminBtn.children[0].classList.add('d-none');
               this.customAlert(res.data.message);
-              window.setTimeout(this.closeCustomAlert, 5000);
             }
           })
           .catch((err) => {
             couponAdminBtn.classList.remove('disabled');
             couponAdminBtn.children[0].classList.add('d-none');
             this.customAlert(err.response);
-            window.setTimeout(this.closeCustomAlert, 5000);
           });
       } else if (target === '完成編輯') {
         // 若是開編輯產品的 modal
@@ -210,19 +206,16 @@ export default {
               this.getData();
               couponAdminBtn.classList.remove('disabled');
               couponAdminBtn.children[0].classList.add('d-none');
-              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               couponAdminBtn.classList.remove('disabled');
               couponAdminBtn.children[0].classList.add('d-none');
               this.customAlert(res.data.message);
-              window.setTimeout(this.closeCustomAlert, 5000);
             }
           })
           .catch((err) => {
             couponAdminBtn.classList.remove('disabled');
             couponAdminBtn.children[0].classList.add('d-none');
             this.customAlert(err.response);
-            window.setTimeout(this.closeCustomAlert, 5000);
           });
       }
     },
@@ -236,15 +229,12 @@ export default {
             this.getData();
             this.clearModal();
             this.deleteModal.hide();
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
   },

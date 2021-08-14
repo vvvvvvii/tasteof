@@ -537,40 +537,23 @@
       </div>
     </div>
   </div>
-  <!--alert-->
-  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
-
 export default {
   props: ['modalTitle', 'temp', 'tagCategory'],
-  emits: ['emit-product-modal'],
+  emits: ['emit-product-modal', 'emit-alert'],
   data() {
     return {
       tempProduct: {},
-      showAlert: false,
-      alertMsg: '',
     };
   },
-  components: {
-    alert,
-  },
   methods: {
-    customAlert(msg) {
-      this.alertMsg = msg;
-      this.showAlert = true; // 秀出 alert
-    },
-    closeCustomAlert() {
-      this.showAlert = false;
-    },
     addImgs() {
       if (this.tempProduct.imagesUrl.length < 5) {
         this.tempProduct.imagesUrl.push(this.tempProduct.otherImageUrl);
         this.tempProduct.otherImageUrl = '';
       } else {
-        this.customAlert('最多只可上傳六張照片');
-        window.setTimeout(this.closeCustomAlert, 5000);
+        this.$emit('emit-alert', '最多只可上傳六張照片');
       }
     },
     deleteImgs(e, target) {

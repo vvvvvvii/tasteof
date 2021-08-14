@@ -116,12 +116,10 @@ export default {
             this.getTotalProducts();
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getTotalProducts() {
@@ -146,12 +144,10 @@ export default {
             this.getRandomProducts();
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getRandomProducts() {
@@ -205,7 +201,8 @@ export default {
     },
     customAlert(msg) {
       this.alertMsg = msg;
-      this.showAlert = true; // 秀出 alert
+      this.showAlert = true;
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;

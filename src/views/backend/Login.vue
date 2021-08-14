@@ -95,6 +95,7 @@ export default {
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;
@@ -111,7 +112,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.customAlert('登入成功，請稍候');
-            window.setTimeout(this.closeCustomAlert, 5000);
             // token expired 放到 cookie，時效內不用一直登入
             const { token, expired } = res.data;
             // 把 token 開始及結束時間整理成好閱讀的格式
@@ -141,12 +141,9 @@ export default {
           this.customAlert('登入失敗，請確認帳密是否正確');
           loginBtn.classList.remove('disabled');
           loginBtn.children[0].classList.add('d-none');
-
-          window.setTimeout(this.closeCustomAlert, 5000);
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
           loginBtn.classList.remove('disabled');
           loginBtn.children[0].classList.add('d-none');
         });

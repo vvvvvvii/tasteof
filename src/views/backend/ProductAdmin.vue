@@ -152,6 +152,7 @@
       :temp="temp"
       :tag-category="tagCategory"
       @emit-product-modal="addNewProduct"
+      @emit-alert="customAlert"
       ref="productModal"
     ></Product-edit-modal>
     <!--edit comment modal-->
@@ -271,12 +272,10 @@ export default {
             this.getTotalData();
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getTotalData() {
@@ -315,17 +314,16 @@ export default {
             });
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;
@@ -407,17 +405,14 @@ export default {
               productAdminBtn.classList.remove('disabled');
               productAdminBtn.children[0].classList.add('d-none');
               this.productModal.hide();
-              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
-              window.setTimeout(this.closeCustomAlert, 5000);
               productAdminBtn.classList.remove('disabled');
               productAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
-            window.setTimeout(this.closeCustomAlert, 5000);
             productAdminBtn.classList.remove('disabled');
             productAdminBtn.children[0].classList.add('d-none');
           });
@@ -436,7 +431,6 @@ export default {
               productAdminBtn.classList.remove('disabled');
               productAdminBtn.children[0].classList.add('d-none');
               this.productModal.hide();
-              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
               productAdminBtn.classList.remove('disabled');
@@ -460,15 +454,12 @@ export default {
             this.getData();
             this.clearModal();
             this.deleteModal.hide();
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     deleteMainProduct(product) {
@@ -481,15 +472,12 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.customAlert('刪除成功');
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     addNewComment(tempProduct) {
@@ -546,7 +534,6 @@ export default {
             commentAdminBtn.classList.remove('disabled');
             commentAdminBtn.children[0].classList.add('d-none');
             this.commentModal.hide();
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
             commentAdminBtn.classList.remove('disabled');

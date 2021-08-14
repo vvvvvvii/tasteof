@@ -38,7 +38,7 @@
   }
 }
 .cart-scroll-box {
-  height: 750px; //限定高度
+  height: 550px; //限定高度
   overflow-y: auto; //自動產生 y 軸捲軸
 }
 .scroll-btn {
@@ -165,4 +165,20 @@
     bottom: 10px;
     right: 10px;
   }
+}
+
+.payment-box {
+  display: block;
+  background: $white;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  border: 1px solid $white;
+  &:hover {
+    cursor: pointer;
+    border: 1px solid $primary;
+  }
+}
+.payment-box.active {
+  border: 1px solid $primary;
 }

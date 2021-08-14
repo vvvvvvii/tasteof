@@ -33,10 +33,16 @@
         :customer="customerDetail"
         :other-info="otherDetail"
         :cart-info="cart"
+        :scroll-btn-status="scrollBtnShow"
+        :contact-info-input-status="contactInfoInputShow"
+        :product-max-pax="productMaxPaxQty"
+        :total-products-max-pax="totalProductsMaxPaxQty"
         @emit-change-tkt-num="changeTktNum"
+        @emit-delete-tab="deleteTab"
         @emit-delete-product="deleteProduct"
         @emit-delete-all-products="deleteAllProducts"
         @emit-next-page="saveCustomerDetail"
+        @emit-alert="customAlert"
       ></CheckCart>
       <ConfirmCart
         v-if="confirmCartPageShow"
@@ -45,11 +51,16 @@
         :cart-info="cart"
         :other-info="otherDetail"
         :payment="paymentDetail"
+        :scroll-btn-status="scrollBtnShow"
         @emit-check-coupon="checkCoupon"
         @emit-pre-page="backToFirstPage"
         @emit-add-order="addOrder"
       ></ConfirmCart>
-      <FinishCart v-if="finishCartPageShow" :order-detail="orderDetail"></FinishCart>
+      <FinishCart
+        v-if="finishCartPageShow"
+        :order-detail="orderDetail"
+        @emit-alert="customAlert"
+      ></FinishCart>
     </div>
   </div>
   <!--alert-->
@@ -66,12 +77,13 @@ export default {
   data() {
     return {
       customerDetail: {
-        users: [{}],
+        users: [],
         message: '無備註事項',
       },
       cart: {},
       paymentDetail: {
         method: '',
+        sendMethod: '',
         taxIdNum: '',
         coupon: '',
       },
@@ -85,6 +97,10 @@ export default {
       checkCartPageShow: true,
       confirmCartPageShow: false,
       finishCartPageShow: false,
+      contactInfoInputShow: [false],
+      productMaxPaxQty: 0,
+      totalProductsMaxPaxQty: 0,
+      scrollBtnShow: true,
     };
   },
   components: {
@@ -101,6 +117,7 @@ export default {
           if (res.data.success) {
             this.cart = res.data.data;
             const couponCheck = [];
+            const paxQtyArr = [];
             this.cart.carts.forEach((product, key) => {
               if (Object.keys(product).includes('coupon')) {
                 // 有加入優惠券時，會以商品為一項（即使很多方案），顯示 true
@@ -108,11 +125,27 @@ export default {
               } else {
                 couponCheck.push(false);
               }
-              // 在每個商品新增對應客人陣列
               this.cart.carts[key].options.forEach((option, optionKey) => {
+                // 在每個商品新增對應客人陣列
                 this.cart.carts[key].options[optionKey].users = [];
+                // 把各項商品方案的總人數抽出來，找到最高值，this.customerDetail.users 要包進 productMaxPaxQty 長度的空物件
+                paxQtyArr.push(option.optionQty);
               });
             });
+            [this.productMaxPaxQty] = paxQtyArr.flat().sort((x, y) => y - x);
+            // 把各項商品方案的總人數抽出來相加，代表如果每個方案的人都不一樣，最多可以有這麼多不同的旅客資料
+            this.totalProductsMaxPaxQty = paxQtyArr.flat().reduce((x, y) => x + y, 0);
+            const difference = this.customerDetail.users.length - this.productMaxPaxQty;
+            if (difference < 0) {
+              for (let i = this.customerDetail.users.length; i < this.productMaxPaxQty; i += 1) {
+                this.customerDetail.users.push({});
+              }
+            } else {
+              for (let i = this.productMaxPaxQty; i < this.customerDetail.users.length; i += 1) {
+                this.deleteTab(this.customerDetail.users.length - 1);
+                this.customerDetail.users.pop();
+              }
+            }
             if (couponCheck.every((e) => e === false)) {
               // 加商品，尚未加優惠碼
               // couponCheck 每個都是 false ，計算購物車正確價錢
@@ -165,6 +198,11 @@ export default {
               });
               this.cart.final_total = Math.floor(this.cart.final_total); // 去掉小數點
             }
+            const totalOptionNum = this.cart.carts.map((i) => i.options).flat().length;
+            if (totalOptionNum <= 1) {
+              // 如果總商品、方案數小於一，不秀出 this.scrollBtnShow
+              this.scrollBtnShow = false;
+            }
             if (status) {
               // 若有傳入參數才進行這塊
               status.children[0].classList.add('d-none');
@@ -172,7 +210,6 @@ export default {
             }
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
             if (status) {
               // 若有傳入參數才進行這塊
               status.children[0].classList.add('d-none');
@@ -182,7 +219,6 @@ export default {
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
           if (status) {
             // 若有傳入參數才進行這塊
             status.children[0].classList.add('d-none');
@@ -190,9 +226,21 @@ export default {
           }
         });
     },
+    deleteTab(key) {
+      // 如果使用者在要刪掉的客人 tab 頁面，刪掉時會自動往前跳到前一個客人 tab
+      if (Array.from(document.querySelector(`#pills-tab-${key}`).classList).includes('active')) {
+        document.querySelector(`#pills-tab-${key}`).classList.remove('active');
+        document.querySelector(`#pills-pax-${key}`).classList.remove('active');
+        document.querySelector(`#pills-pax-${key}`).classList.remove('show');
+        document.querySelector(`#pills-tab-${key - 1}`).classList.add('active');
+        document.querySelector(`#pills-pax-${key - 1}`).classList.add('active');
+        document.querySelector(`#pills-pax-${key - 1}`).classList.add('show');
+      }
+    },
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;
@@ -248,7 +296,6 @@ export default {
             }
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
             if (tktType === 'adult') {
               adultStatus.children[0].classList.add('d-none');
               adultStatus.children[1].classList.remove('d-none');
@@ -260,7 +307,6 @@ export default {
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
           if (tktType === 'adult') {
             adultStatus.children[0].classList.add('d-none');
             adultStatus.children[1].classList.remove('d-none');
@@ -291,16 +337,13 @@ export default {
           .then((res) => {
             if (res.data.success && res.data.message !== '更新購物車有誤') {
               this.customAlert('已清除商品');
-              window.setTimeout(this.closeCustomAlert, 5000);
               this.getCartInfo();
             } else {
               this.customAlert(res.data.message);
-              window.setTimeout(this.closeCustomAlert, 5000);
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
-            window.setTimeout(this.closeCustomAlert, 5000);
           });
       } else {
         // 如果該產品已經沒有任何方案 那整個用 delete api 刪掉
@@ -312,17 +355,14 @@ export default {
               deleteCartProduct.children[1].classList.add('d-none');
               this.customAlert('已清除商品');
               this.getCartInfo();
-              window.setTimeout(this.closeCustomAlert, 5000);
               emitter.emit('update-cart'); // navbar 即時更新
             } else {
               this.customAlert(res.data.message);
-              window.setTimeout(this.closeCustomAlert, 5000);
               emitter.emit('update-cart'); // navbar 即時更新
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
-            window.setTimeout(this.closeCustomAlert, 5000);
           });
       }
     },
@@ -338,12 +378,10 @@ export default {
             this.getCartInfo();
             deleteOrderBtn.classList.remove('disabled');
             deleteOrderBtn.children[0].classList.add('d-none');
-            window.setTimeout(this.closeCustomAlert, 3500);
             window.setTimeout(this.backToHomePage, 4000);
             emitter.emit('update-cart');
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
             deleteOrderBtn.classList.remove('disabled');
             deleteOrderBtn.children[0].classList.add('d-none');
             emitter.emit('update-cart');
@@ -351,14 +389,14 @@ export default {
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
           deleteOrderBtn.classList.remove('disabled');
           deleteOrderBtn.children[0].classList.add('d-none');
         });
     },
-    saveCustomerDetail(info, remark) {
+    saveCustomerDetail(info, remark, contactInfoInputStatus) {
       this.customerDetail = info;
       this.otherDetail = remark;
+      this.contactInfoInputShow = contactInfoInputStatus;
       this.checkCartPageShow = false; // 關掉第一頁
       this.confirmCartPageShow = true; // 換成第二頁
     },
@@ -381,20 +419,17 @@ export default {
           if (res.data.success) {
             const { data } = res;
             this.customAlert(data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
             this.getCartInfo();
             checkCouponBtn.classList.remove('disabled');
             checkCouponBtn.children[0].classList.add('d-none');
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
             checkCouponBtn.classList.remove('disabled');
             checkCouponBtn.children[0].classList.add('d-none');
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
           checkCouponBtn.classList.remove('disabled');
           checkCouponBtn.children[0].classList.add('d-none');
         });
@@ -412,6 +447,7 @@ export default {
               total: this.cart.total,
               final_total: this.cart.final_total,
               payment_method: this.paymentDetail.method,
+              send_method: this.paymentDetail.sendMethod,
               taxIdNum: this.paymentDetail.taxIdNum,
               coupon: this.paymentDetail.coupon,
             },
@@ -433,7 +469,6 @@ export default {
             emitter.emit('update-cart');
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
             addOrderBtn.classList.remove('disabled');
             addOrderBtn.children[0].classList.add('d-none');
             emitter.emit('update-cart');
@@ -441,7 +476,6 @@ export default {
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
           addOrderBtn.classList.remove('disabled');
           addOrderBtn.children[0].classList.add('d-none');
         });

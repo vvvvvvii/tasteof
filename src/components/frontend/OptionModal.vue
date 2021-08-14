@@ -72,8 +72,11 @@
                 <div
                   class="d-flex flex-column align-items-center w-sm-auto w-50
                   p-3 bg-light rounded-2 ms-sm-3"
+                  v-if="productDetail.productInfo.lowestPriceUnit === '每人'"
                 >
-                  <p class="mb-3">孩童</p>
+                  <p class="mb-3">
+                    孩童
+                  </p>
                   <div class="d-flex align-items-center">
                     <button
                       type="button"

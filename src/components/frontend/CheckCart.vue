@@ -12,29 +12,35 @@
                   'border-danger': productWarningShow[itemKey],
                 }"
               >
-                <div
-                  class="row justify-content-between pb-3 mb-2
-                border-bottom border-gray"
-                >
-                  <div class="col-4">
-                    <p class="mb-2">{{ option.start_date }}</p>
-                    <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
-                  </div>
-                  <div class="col-8 d-flex flex-column justify-content-between">
-                    <div>
-                      <p class="h3-sm">{{ item.product.title }}</p>
-                      <p class="h4-sm h5 mb-3">{{ option.optionName }}</p>
+                <div class="pb-3 mb-3 border-bottom border-gray">
+                  <div class="row justify-content-between mb-3">
+                    <div class="col-4">
+                      <p class="h5 mb-2">{{ option.start_date.split('-').join(' / ') }}</p>
+
+                      <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
                     </div>
-                    <p class="text-end">
-                      NT
-                      {{
-                        addComma(
-                          option.optionPrice * (option.qtyDetail.adult + option.qtyDetail.child),
-                        )
-                      }}
-                    </p>
+                    <div class="col-8 d-flex flex-column justify-content-between">
+                      <div class="mb-6">
+                        <router-link
+                          :to="`/product/${item.product.id}`"
+                          title="查看更多"
+                          class="text-secondary h3-sm mb-2"
+                        >
+                          {{ item.product.title }}
+                        </router-link>
+                        <p class="h4-sm h5">{{ option.optionName }}</p>
+                      </div>
+                      <p class="text-end">
+                        NT
+                        {{
+                          addComma(
+                            option.optionPrice * (option.qtyDetail.adult + option.qtyDetail.child),
+                          )
+                        }}
+                      </p>
+                    </div>
                   </div>
-                  <div class="mt-3 d-flex">
+                  <div class="d-flex align-items-center">
                     <p
                       class="w-25"
                       :class="{
@@ -44,19 +50,16 @@
                     >
                       選擇旅客：
                     </p>
-                    <!-- 套用客人輸入的名字全部顯示在這裡，並可選擇 -->
                     <div
                       class="d-flex flex-wrap btn-group"
                       role="group"
                       aria-label="Basic checkbox toggle button group"
                     >
                       <div
-                        class="me-2 mb-2"
+                        class="me-2"
                         v-for="(user, userIndex) in customerDetail.users"
                         :key="user.name"
                       >
-                        <!-- 因為名字客人可能會改來改去， v-model 姓名會導致無法即時更新
-                          所以綁定他在 customerDetail.users 的 index 位置，需要的時候（例如確認訂單頁）再找到最終不會再更改的名字對應回去-->
                         <input
                           type="checkbox"
                           :id="`${user.name}-${option.optionName}-${option.start_date}`"
@@ -167,7 +170,7 @@
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="請向下滾動"
-            v-if="scrollBtnShow"
+            v-show="scrollBtnShow"
           >
             <i class="bi bi-arrow-down-short"></i>
           </div>
@@ -185,10 +188,20 @@
                 role="tabpanel"
                 :aria-labelledby="`pills-tab-${key}`"
               >
-                <p class="mb-6 h3">
-                  第 {{ key + 1 }} 位旅客
-                  <span v-if="key === 0"> / 主要聯絡人</span>
-                </p>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-6 h3">
+                    第 {{ key + 1 }} 位旅客
+                    <span class="h4" v-if="key === 0"> / 主要聯絡人</span>
+                  </p>
+                  <div v-if="key !== 0">
+                    <input
+                      type="checkbox"
+                      :id="`sameInfo-${key}`"
+                      v-model="contactInfoInputShow[key]"
+                    />
+                    <label :for="`sameInfo-${key}`" class="ms-1">聯絡資料等同主要聯絡人</label>
+                  </div>
+                </div>
                 <div class="mb-3">
                   <label :for="`bookNameCartInput-${key}`" class="form-label">姓名</label>
                   <Field
@@ -251,7 +264,7 @@
                     class="form-control"
                     :id="`bookPassportNumCartInput-${key}`"
                     :class="{ 'is-invalid': errors[`第 ${key + 1} 位護照號碼`] }"
-                    rules="length:9|numeric"
+                    rules="required|length:9|numeric"
                     v-model="customerDetail.users[key].passportNum"
                   ></Field>
                   <ErrorMessage
@@ -259,7 +272,7 @@
                     class="invalid-feedback"
                   ></ErrorMessage>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" v-if="contactInfoInputShow[key] === false">
                   <label :for="`bookTelCartInput-${key}`" class="form-label">聯繫電話</label>
                   <Field
                     type="tel"
@@ -275,7 +288,7 @@
                     class="invalid-feedback"
                   ></ErrorMessage>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" v-if="contactInfoInputShow[key] === false">
                   <label :for="`bookEmailCartInput-${key}`" class="form-label">
                     電子信箱
                   </label>
@@ -294,7 +307,7 @@
                     class="invalid-feedback"
                   ></ErrorMessage>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" v-if="contactInfoInputShow[key] === false">
                   <label :for="`bookAddrCartInput-${key}`" class="form-label">地址</label>
                   <Field
                     type="text"
@@ -414,7 +427,7 @@
                             'is-invalid':
                               errors[`${detail.product.title}：${detail.optionName} 的出生日期`],
                           }"
-                          rules="required"
+                          :rules="isBirthday"
                           placeholder="1900 / 01 / 01"
                           v-model="otherDetail[key].childBd"
                         ></Field>
@@ -436,7 +449,7 @@
                             'is-invalid':
                               errors[`${detail.product.title}：${detail.optionName} 的孩童身高`],
                           }"
-                          rules="required"
+                          rules="required|numeric|max:3"
                           placeholder="公分"
                           v-model="otherDetail[key].childHeight"
                         ></Field>
@@ -458,7 +471,7 @@
                             'is-invalid':
                               errors[`${detail.product.title}：${detail.optionName} 的孩童體重`],
                           }"
-                          rules="required"
+                          rules="required|numeric|max:3"
                           placeholder="公斤"
                           v-model="otherDetail[key].childWeight"
                         ></Field>
@@ -499,7 +512,7 @@
             </div>
             <ul
               class="nav nav-pills justify-content-center flex-wrap mb-8"
-              id="pills-tab"
+              id="check-cart-customer-pills-tab"
               role="tablist"
             >
               <li
@@ -606,23 +619,30 @@
       </div>
     </div>
   </div>
-  <!--alert-->
-  <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
 </template>
 <script>
-import Alert from '@/components/backend/Alert.vue';
 import { Tooltip } from 'bootstrap';
 import flushPromises from 'flush-promises';
 
 export default {
-  props: ['cartInfo', 'customer', 'otherInfo'],
+  props: [
+    'cartInfo',
+    'customer',
+    'otherInfo',
+    'contactInfoInputStatus',
+    'scrollBtnStatus',
+    'productMaxPax',
+    'totalProductsMaxPax',
+  ],
   emits: [
     'emit-delete-all-products',
     'emit-change-tkt-num',
     'emit-delete-product',
     'emit-add-pax',
     'emit-delete-pax',
+    'emit-delete-tab',
     'emit-next-page',
+    'emit-alert',
   ],
   data() {
     return {
@@ -630,36 +650,32 @@ export default {
       customerDetail: {},
       otherDetail: [],
       scrollTooltip: '',
-      productMaxPaxQty: 0,
-      totalProductsMaxPaxQty: 0,
       scrollBtnShow: true,
+      contactInfoInputShow: [],
       noteWarningShow: false,
       pageWarningShow: [],
       productWarningShow: [],
-      showAlert: false,
+      productMaxPaxQty: 0,
+      totalProductsMaxPaxQty: 0,
     };
   },
-  components: {
-    Alert,
-  },
   methods: {
-    customAlert(msg) {
-      this.alertMsg = msg;
-      this.showAlert = true; // 秀出 alert
-    },
-    closeCustomAlert() {
-      this.showAlert = false;
-    },
     isIdNum(value) {
       const idNum = /^[A-Z][0-9]{9}$/;
       return idNum.test(value) ? true : '請輸入正確的身分證字號';
     },
+    isBirthday(value) {
+      const birthday = /^\d{4} \/ \d{2} \/ \d{2}$/;
+      return birthday.test(value) ? true : '請以正確格式輸入生日';
+    },
     addPax() {
-      // 新增一個空物件讓新方案的內容可以放入
       this.customerDetail.users[this.customerDetail.users.length] = {};
+      this.contactInfoInputShow[this.customerDetail.users.length - 1] = false;
     },
     deletePax(num) {
+      this.$emit('emit-delete-tab', num);
       this.customerDetail.users.splice(num, 1);
+      this.contactInfoInputShow.splice(num, 1);
     },
     toNextPage() {
       // 初始化 productWarningShow ，長度要等於商品數，每個都調成 false
@@ -677,10 +693,14 @@ export default {
       });
       // 只要 productWarningShow 裡含有 true 就秀警告且不可繼續運行 emit
       if (this.productWarningShow.includes(true)) {
-        this.customAlert('請登錄每項商品的客戶');
-        window.setTimeout(this.closeCustomAlert, 5000);
+        this.$emit('emit-alert', '請登錄每項商品的客戶');
       } else {
-        this.$emit('emit-next-page', this.customerDetail, this.otherDetail);
+        this.$emit(
+          'emit-next-page',
+          this.customerDetail,
+          this.otherDetail,
+          this.contactInfoInputShow,
+        );
       }
     },
     async validationCheck() {
@@ -691,8 +711,7 @@ export default {
       let errorPageArr = [];
       if (errorArr.length > 0) {
         // 如果陣列裡有東西代表有錯誤
-        this.customAlert('請填寫客戶資料及相關備註');
-        window.setTimeout(this.closeCustomAlert, 5000);
+        this.$emit('emit-alert', '請填寫客戶資料及相關備註');
         errorArr.forEach((error) => {
           errorIdArr.push(error.id.split('-'));
         });
@@ -728,10 +747,6 @@ export default {
         this.cart = {
           ...this.cartInfo,
         }; // props 有變時更改資料
-        const totalOptionNum = this.cart.carts.map((i) => i.options).flat().length;
-        if (totalOptionNum <= 2) {
-          this.scrollBtnShow = false;
-        }
         this.cart.final_total = this.cartInfo.final_total;
         this.cart.carts.forEach((item) => {
           // 處理特殊備註是否要顯示翻譯接送等表格
@@ -784,22 +799,13 @@ export default {
             }
           }
         });
-        // 把各項商品方案的總人數抽出來，找到最高值，this.customerDetail.users 要包進 productMaxPaxQty 長度的空物件
-        const qtyArr = [];
-        this.cart.carts.forEach((item) => {
-          const optionQtyArr = item.options.map((i) => i.optionQty);
-          qtyArr.push(optionQtyArr);
-        });
-        [this.productMaxPaxQty] = qtyArr.flat().sort((x, y) => y - x);
-        // 把各項商品方案的總人數抽出來相加，代表如果每個方案的人都不一樣，最多可以有這麼多不同的旅客資料
-        this.totalProductsMaxPaxQty = qtyArr.flat().reduce((x, y) => x + y, 0);
-        const difference = this.customerDetail.users.length - this.productMaxPaxQty;
-        if (difference < 0) {
-          // this.customerDetail.users.length 比較小 > 增加 this.customerDetail.users 後面的空物件直到長度相同
-          this.customerDetail.users = [{}];
-          for (let i = 0; i < this.productMaxPaxQty - 1; i += 1) {
-            this.customerDetail.users.push({});
-          }
+        // 初始化讓每個顧客都先顯示完整資料表單
+        for (
+          let i = this.contactInfoInputShow.length;
+          i < this.customerDetail.users.length;
+          i += 1
+        ) {
+          this.contactInfoInputShow[i] = false;
         }
       },
       deep: true,
@@ -807,6 +813,24 @@ export default {
     customer: {
       handler() {
         this.customerDetail = { ...this.customer };
+      },
+      deep: true,
+    },
+    scrollBtnStatus: {
+      handler() {
+        this.scrollBtnShow = this.scrollBtnStatus;
+      },
+      deep: true,
+    },
+    productMaxPax: {
+      handler() {
+        this.productMaxPaxQty = this.productMaxPax;
+      },
+      deep: true,
+    },
+    totalProductsMaxPax: {
+      handler() {
+        this.totalProductsMaxPaxQty = this.totalProductsMaxPax;
       },
       deep: true,
     },
@@ -824,12 +848,16 @@ export default {
     this.cart = { ...this.cartInfo };
     this.customerDetail = { ...this.customer };
     this.otherDetail = [...this.otherInfo];
+    this.contactInfoInputShow = [...this.contactInfoInputStatus];
+    this.scrollBtnShow = this.scrollBtnStatus;
+    this.productMaxPaxQty = this.productMaxPax;
+    this.totalProductsMaxPaxQty = this.totalProductsMaxPax;
   },
   mounted() {
     this.scrollTooltip = new Tooltip(this.$refs.scrollTooltip);
     this.listener = () => {
       const btn = this.$refs.scrollBtn;
-      this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 800;
+      this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 600;
     };
     this.$refs.scrollBtn.addEventListener('scroll', this.listener);
   },

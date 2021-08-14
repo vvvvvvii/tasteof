@@ -208,21 +208,16 @@
       </div>
     </div>
   </div>
-  <!--alert-->
-  <alert v-if="showAlert" :alert-msg="alertMsg"></alert>
 </template>
 <script>
-import alert from '@/components/backend/Alert.vue';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 
 export default {
   props: ['modalTitle', 'temp', 'tagCategory'],
-  emits: ['emit-article-modal'],
+  emits: ['emit-article-modal', 'emit-alert'],
   data() {
     return {
       tempArticle: {},
-      showAlert: false,
-      alertMsg: '',
       editor: ClassicEditor,
       editorConfig: {
         toolbar: {
@@ -234,24 +229,13 @@ export default {
       },
     };
   },
-  components: {
-    alert,
-  },
   methods: {
-    customAlert(msg) {
-      this.alertMsg = msg;
-      this.showAlert = true; // 秀出 alert
-    },
-    closeCustomAlert() {
-      this.showAlert = false;
-    },
     addImgs() {
       if (this.tempArticle.imagesUrl.length < 5) {
         this.tempArticle.imagesUrl.push(this.tempArticle.otherImageUrl);
         this.tempArticle.otherImageUrl = '';
       } else {
-        this.customAlert('最多只可上傳六張照片');
-        window.setTimeout(this.closeCustomAlert, 5000);
+        this.$emit('emit-alert', '最多只可上傳六張照片');
       }
     },
     deleteImgs(e, target) {

@@ -99,6 +99,7 @@
       :temp="temp"
       :tag-category="tagCategory"
       @emit-article-modal="addNewArticle"
+      @emit-alert="customAlert"
       ref="articleModal"
     ></Article-edit-modal>
     <!--delete modal-->
@@ -197,12 +198,10 @@ export default {
             this.pagination = res.data.pagination;
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     getSingleData(id) {
@@ -214,17 +213,16 @@ export default {
             this.temp = data.article;
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
     customAlert(msg) {
       this.alertMsg = msg;
       this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
     },
     closeCustomAlert() {
       this.showAlert = false;
@@ -282,19 +280,14 @@ export default {
               articleAdminBtn.classList.remove('disabled');
               articleAdminBtn.children[0].classList.add('d-none');
               this.articleModal.hide();
-              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
-              window.setTimeout(this.closeCustomAlert, 5000);
-
               articleAdminBtn.classList.remove('disabled');
               articleAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
-            window.setTimeout(this.closeCustomAlert, 5000);
-
             articleAdminBtn.classList.remove('disabled');
             articleAdminBtn.children[0].classList.add('d-none');
           });
@@ -313,19 +306,14 @@ export default {
               articleAdminBtn.classList.remove('disabled');
               articleAdminBtn.children[0].classList.add('d-none');
               this.articleModal.hide();
-              window.setTimeout(this.closeCustomAlert, 5000);
             } else {
               this.customAlert(res.data.message);
-              window.setTimeout(this.closeCustomAlert, 5000);
-
               articleAdminBtn.classList.remove('disabled');
               articleAdminBtn.children[0].classList.add('d-none');
             }
           })
           .catch((err) => {
             this.customAlert(err.response);
-            window.setTimeout(this.closeCustomAlert, 5000);
-
             articleAdminBtn.classList.remove('disabled');
             articleAdminBtn.children[0].classList.add('d-none');
           });
@@ -341,15 +329,12 @@ export default {
             this.getData();
             this.clearModal();
             this.deleteModal.hide();
-            window.setTimeout(this.closeCustomAlert, 5000);
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
     },
   },

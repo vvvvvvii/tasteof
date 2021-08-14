@@ -87,8 +87,11 @@
       </div>
     </div>
   </nav>
+  <!--alert-->
+  <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
 </template>
 <script>
+import Alert from '@/components/backend/Alert.vue';
 import emitter from '../../assets/js/emitter';
 
 export default {
@@ -97,8 +100,14 @@ export default {
       cart: {
         carts: [],
       },
+      showAlert: false,
+      alertMsg: '',
     };
   },
+  components: {
+    Alert,
+  },
+
   methods: {
     getCartInfo() {
       this.$http
@@ -110,13 +119,19 @@ export default {
             this.cart.totalAmount = this.cart.carts.map((item) => item.options).flat().length;
           } else {
             this.customAlert(res.data.message);
-            window.setTimeout(this.closeCustomAlert, 5000);
           }
         })
         .catch((err) => {
           this.customAlert(err.response);
-          window.setTimeout(this.closeCustomAlert, 5000);
         });
+    },
+    customAlert(msg) {
+      this.alertMsg = msg;
+      this.showAlert = true; // 秀出 alert
+      window.setTimeout(this.closeCustomAlert, 5000);
+    },
+    closeCustomAlert() {
+      this.showAlert = false;
     },
   },
   mounted() {
