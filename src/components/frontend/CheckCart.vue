@@ -1,11 +1,19 @@
 <template>
   <div class="container py-8 position-relative">
-    <div class="bg-light rounded-3 p-7">
-      <div v-show="cart.total > 0" class="row g-7">
-        <div class="col-6 cart-scroll-box position-relative" ref="scrollBtn">
+    <div class="bg-light rounded-3 p-sm-7 p-3">
+      <div v-show="cart.total > 0" class="row g-sm-7 g-3">
+        <div
+          class="col-lg-6 cart-scroll-box position-relative d-lg-block d-flex mb-lg-0 mb-md-3 mb-6"
+          ref="scrollBtn"
+        >
           <!--訂單內容-->
           <template v-for="(item, itemKey) in cart.carts" :key="item.id">
-            <div v-for="(option, key) in item.options" :key="key">
+            <div
+              v-for="(option, key) in item.options"
+              :key="key"
+              class="d-inline-block cart-scroll-box-item ms-lg-0"
+              :class="{ 'ms-3': itemKey !== 0 }"
+            >
               <div
                 class="px-3 py-4 mb-6 border border-primary rounded-1 position-relative"
                 :class="{
@@ -13,14 +21,18 @@
                 }"
               >
                 <div class="pb-3 mb-3 border-bottom border-gray">
-                  <div class="row justify-content-between mb-3">
+                  <div class="row justify-content-between mb-sm-3 mb-2">
                     <div class="col-4">
-                      <p class="h5 mb-2">{{ option.start_date.split('-').join(' / ') }}</p>
-
+                      <p class="h5 mb-2 d-sm-inline d-none">
+                        {{ option.start_date.split('-').join(' / ') }}
+                      </p>
                       <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
                     </div>
                     <div class="col-8 d-flex flex-column justify-content-between">
-                      <div class="mb-6">
+                      <p class="h5 mb-2 d-sm-none">
+                        {{ option.start_date.split('-').join(' / ') }}
+                      </p>
+                      <div class="mb-sm-6 mb-3">
                         <router-link
                           :to="`/product/${item.product.id}`"
                           title="查看更多"
@@ -40,11 +52,10 @@
                       </p>
                     </div>
                   </div>
-                  <div class="d-flex align-items-center">
+                  <div class="d-sm-flex align-items-center">
                     <p
-                      class="w-25"
+                      class="w-sm-25 mb-sm-0 mb-2 text-secondary fw-bold"
                       :class="{
-                        'fw-bold': productWarningShow[itemKey],
                         'text-danger': productWarningShow[itemKey],
                       }"
                     >
@@ -56,7 +67,7 @@
                       aria-label="Basic checkbox toggle button group"
                     >
                       <div
-                        class="me-2"
+                        class="ms-sm-2 me-sm-0 me-2"
                         v-for="(user, userIndex) in customerDetail.users"
                         :key="user.name"
                       >
@@ -163,10 +174,10 @@
               </div>
             </div>
           </template>
-          <!-- 提示可往下滑的圖案 -->
+          <!-- 電腦版提示可往下滑的圖案 -->
           <div
-            class="scroll-btn"
-            ref="scrollTooltip"
+            class="scroll-btn d-lg-inline d-none"
+            ref="scrollTooltipDownCheck"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="請向下滾動"
@@ -175,7 +186,7 @@
             <i class="bi bi-arrow-down-short"></i>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6">
           <!--客戶資料-->
           <Form v-slot="{ errors }" @submit="toNextPage">
             <div class="tab-content mb-6">
@@ -649,7 +660,7 @@ export default {
       cart: {},
       customerDetail: {},
       otherDetail: [],
-      scrollTooltip: '',
+      scrollTooltipDownCheck: '',
       scrollBtnShow: true,
       contactInfoInputShow: [],
       noteWarningShow: false,
@@ -854,7 +865,7 @@ export default {
     this.totalProductsMaxPaxQty = this.totalProductsMaxPax;
   },
   mounted() {
-    this.scrollTooltip = new Tooltip(this.$refs.scrollTooltip);
+    this.scrollTooltipDownCheck = new Tooltip(this.$refs.scrollTooltipDownCheck);
     this.listener = () => {
       const btn = this.$refs.scrollBtn;
       this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 600;

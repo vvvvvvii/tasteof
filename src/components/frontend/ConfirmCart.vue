@@ -1,20 +1,33 @@
 <template>
   <div class="container py-8">
-    <div class="bg-light rounded-3 p-7">
-      <div class="row g-7">
-        <div class="col-6 cart-scroll-box position-relative" ref="scrollBtn">
+    <div class="bg-light rounded-3 p-sm-7 p-3">
+      <div class="row g-sm-7 g-3">
+        <div
+          class="col-lg-6 cart-scroll-box position-relative d-lg-block d-flex mb-lg-0 mb-sm-3 mb-6"
+          ref="scrollBtn"
+        >
           <!--訂單內容-->
-          <template v-for="item in cart.carts" :key="item.id">
-            <div v-for="(option, key) in item.options" :key="key">
+          <template v-for="(item, itemKey) in cart.carts" :key="item.id">
+            <div
+              v-for="(option, key) in item.options"
+              :key="key"
+              class="d-inline-block cart-scroll-box-item ms-lg-0"
+              :class="{ 'ms-3': itemKey !== 0 }"
+            >
               <div class="px-3 py-4 mb-6 border border-primary rounded-1 position-relative">
-                <div class="pb-2 mb-3 border-bottom border-gray">
-                  <div class="row justify-content-between mb-3">
+                <div class="pb-3 mb-3 border-bottom border-gray">
+                  <div class="row justify-content-between mb-sm-3 mb-2">
                     <div class="col-4">
-                      <p class="h5 mb-2">{{ option.start_date.split('-').join(' / ') }}</p>
+                      <p class="h5 mb-2 d-sm-inline d-none">
+                        {{ option.start_date.split('-').join(' / ') }}
+                      </p>
                       <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
                     </div>
                     <div class="col-8 d-flex flex-column justify-content-between">
-                      <div class="mb-6">
+                      <p class="h5 mb-2 d-sm-none">
+                        {{ option.start_date.split('-').join(' / ') }}
+                      </p>
+                      <div class="mb-sm-6 mb-3">
                         <p class="h3-sm mb-2">{{ item.product.title }}</p>
                         <p class="h4-sm h5">
                           {{ option.optionName }}
@@ -144,8 +157,8 @@
                   </template>
                   <p class="mb-2" v-if="otherDetail.length === 0">此商品無備註項目</p>
                 </div>
-                <div class="d-flex align-items-center">
-                  <p class="w-25">
+                <div class="d-sm-flex align-items-center">
+                  <p class="w-sm-25 mb-sm-0 mb-2">
                     <span v-if="item.product.lowestPriceUnit === '每人'">旅客：</span>
                     <span v-else>主要聯繫人：</span>
                   </p>
@@ -154,22 +167,24 @@
                     role="group"
                     aria-label="Basic checkbox toggle button group"
                   >
-                    <div
-                      class="me-2 btn btn-secondary rounded-2"
-                      v-for="user in option.users"
-                      :key="user"
-                    >
-                      {{ customerDetail.users[user].name }}
+                    <div class="ms-sm-2 me-sm-0 me-2">
+                      <div
+                        class="btn btn-secondary rounded-2"
+                        v-for="user in option.users"
+                        :key="user"
+                      >
+                        {{ customerDetail.users[user].name }}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </template>
-          <!-- 提示可往下滑的圖案 -->
+          <!-- 電腦版提示可往下滑的圖案 -->
           <div
-            class="scroll-btn"
-            ref="scrollTooltip"
+            class="scroll-btn d-lg-inline d-none"
+            ref="scrollTooltipDownCfm"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="請向下滾動"
@@ -178,7 +193,7 @@
             <i class="bi bi-arrow-down-short"></i>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6">
           <!--客戶資料-->
           <div class="tab-content mb-6">
             <div
@@ -227,8 +242,8 @@
               </ul>
               <p class="mb-6">個人明細</p>
               <template v-for="option in item.products.product" :key="option.optionName">
-                <div class="d-flex pb-3 mb-3">
-                  <p class="w-25">
+                <div class="d-flex align-items-center pb-3 mb-3">
+                  <p class="w-25 h5">
                     {{ option.date.split('-').join(' / ') }}
                   </p>
                   <div class="ms-3 w-75">
@@ -304,13 +319,13 @@
       </div>
       <!--付款資料-->
       <Form :validation-schema="schema" @submit="addOrder">
-        <div class="w-50 mx-auto">
+        <div class="w-lg-50 mx-auto">
           <h2 class="h3 text-primary mb-6">付款資料</h2>
           <div class="row mb-7">
             <div class="mb-6">
               <label class="form-label mb-3">付款方式</label>
               <ErrorMessage name="payment" class="mb-3 d-block text-danger"></ErrorMessage>
-              <div class="row">
+              <div class="row g-sm-3 g-2">
                 <div class="col-4">
                   <Field
                     type="radio"
@@ -350,7 +365,7 @@
                     <div class="mb-3">
                       <i class="bi bi-cash-coin h2"></i>
                     </div>
-                    ATM 轉帳
+                    ATM
                   </label>
                 </div>
                 <div class="col-4">
@@ -371,7 +386,7 @@
                     <div class="mb-3">
                       <i class="bi bi-shop h2"></i>
                     </div>
-                    到貨付款
+                    貨到付
                   </label>
                 </div>
               </div>
@@ -379,8 +394,8 @@
             <div class="mb-6">
               <label class="form-label mb-3">取件方式</label>
               <ErrorMessage name="send" class="mb-3 d-block text-danger"></ErrorMessage>
-              <div class="row justify-content-center">
-                <div class="col-4">
+              <div class="row g-sm-3 g-2 justify-content-center">
+                <div class="col-md-4 col-6">
                   <Field
                     type="radio"
                     id="sendByPost"
@@ -401,7 +416,7 @@
                     郵寄
                   </label>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 col-6">
                   <Field
                     type="radio"
                     id="inStorePickup"
@@ -508,7 +523,7 @@ export default {
       otherDetail: [],
       paymentDetail: {},
       temp: {},
-      scrollTooltip: '',
+      scrollTooltipDownCfm: '',
       scrollBtnShow: true,
       schema: {
         payment: (value) => {
@@ -620,7 +635,7 @@ export default {
     this.organizeUserProduct();
   },
   mounted() {
-    this.scrollTooltip = new Tooltip(this.$refs.scrollTooltip);
+    this.scrollTooltipDownCfm = new Tooltip(this.$refs.scrollTooltipDownCfm);
     this.listener = () => {
       const btn = this.$refs.scrollBtn;
       this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 800;

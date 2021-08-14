@@ -8,6 +8,11 @@
     width: 50%;
   }
 }
+.w-lg-50 {
+  @include media-breakpoint-up(lg) {
+    width: 50%;
+  }
+}
 .w-lg-75 {
   @include media-breakpoint-up(lg) {
     width: 75%;
