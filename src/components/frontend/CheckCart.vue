@@ -349,23 +349,12 @@
                     </div>
                     <div class="mb-3" v-if="detail.product.transfer.time">
                       <label :for="`note-pickupTime-${key}`" class="form-label">接送時間</label>
-                      <Field
-                        type="text"
+                      <FlatPickr
+                        :config="config"
                         :id="`note-pickupTime-${key}`"
-                        :name="`${detail.product.title}：${detail.optionName} 的接送時間`"
                         class="form-control"
-                        :class="{
-                          'is-invalid':
-                            errors[`${detail.product.title}：${detail.optionName} 的接送時間`],
-                        }"
-                        rules="required"
                         v-model="otherDetail[key].pickUpTime"
-                      >
-                      </Field>
-                      <ErrorMessage
-                        :name="`${detail.product.title}：${detail.optionName} 的接送時間`"
-                        class="invalid-feedback"
-                      ></ErrorMessage>
+                      ></FlatPickr>
                     </div>
                     <div
                       class="mb-3"
@@ -634,6 +623,8 @@
 <script>
 import { Tooltip } from 'bootstrap';
 import flushPromises from 'flush-promises';
+import FlatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
 
 export default {
   props: [
@@ -657,6 +648,13 @@ export default {
   ],
   data() {
     return {
+      config: {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: 'H:i',
+        time_24hr: true,
+        defaultDate: '08:00',
+      },
       cart: {},
       customerDetail: {},
       otherDetail: [],
@@ -669,6 +667,9 @@ export default {
       productMaxPaxQty: 0,
       totalProductsMaxPaxQty: 0,
     };
+  },
+  components: {
+    FlatPickr,
   },
   methods: {
     isIdNum(value) {
@@ -808,6 +809,12 @@ export default {
                 });
               });
             }
+          }
+        });
+        // 解決 flatPickr 設定 defaultDate 後不會自動將預設值綁定到 v-model 的問題
+        this.otherDetail.forEach((detail, key) => {
+          if (detail.product.transfer.time) {
+            this.otherDetail[key].pickUpTime = this.config.defaultDate;
           }
         });
         // 初始化讓每個顧客都先顯示完整資料表單

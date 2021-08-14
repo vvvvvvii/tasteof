@@ -76,14 +76,14 @@
                     :disabled="tempCoupon.over_due"
                     :placeholder="tempCoupon.due_date"
                   />
-                  <flat-pickr
+                  <FlatPickr
                     v-else
                     id="couponDueDate"
                     ref="couponDueDate"
                     class="form-control"
                     :config="config"
                     v-model="tempCoupon.due_date"
-                  ></flat-pickr>
+                  ></FlatPickr>
                 </div>
               </div>
               <div class="form-check">
@@ -125,7 +125,7 @@
   </div>
 </template>
 <script>
-import flatPickr from 'vue-flatpickr-component';
+import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {
@@ -142,7 +142,7 @@ export default {
     };
   },
   components: {
-    flatPickr,
+    FlatPickr,
   },
   methods: {
     emitData() {
