@@ -181,7 +181,7 @@
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="請向下滾動"
-            v-show="scrollBtnShow"
+            v-if="scrollBtnShow"
           >
             <i class="bi bi-arrow-down-short"></i>
           </div>

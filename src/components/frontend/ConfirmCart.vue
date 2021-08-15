@@ -132,7 +132,9 @@
                               <div class="cable-car"></div>
                             </div>
                             <div class="modal-body p-6">
-                              {{ detail.schedule || '暫無規劃' }}
+                              <p class="text-break">
+                                {{ detail.schedule || '暫無規劃' }}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -213,14 +215,12 @@
                     role="group"
                     aria-label="Basic checkbox toggle button group"
                   >
-                    <div class="ms-sm-2 me-sm-0 me-2">
-                      <div
-                        class="btn btn-secondary rounded-2"
-                        v-for="user in option.users"
-                        :key="user"
-                      >
-                        {{ customerDetail.users[user].name }}
-                      </div>
+                    <div
+                      class="btn btn-secondary rounded-2 ms-sm-2 me-sm-0 me-2"
+                      v-for="user in option.users"
+                      :key="user"
+                    >
+                      {{ customerDetail.users[user].name }}
                     </div>
                   </div>
                 </div>
@@ -234,7 +234,7 @@
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="請向下滾動"
-            v-show="scrollBtnShow"
+            v-if="scrollBtnShow"
           >
             <i class="bi bi-arrow-down-short"></i>
           </div>
@@ -385,7 +385,7 @@
                   <label
                     for="paymentMethodCreditCard"
                     class="payment-box paymentGroup"
-                    @click="addActive('paymentGroup', $event.target)"
+                    @click="addActive('paymentGroup', 0)"
                   >
                     <div class="mb-3">
                       <i class="bi bi-credit-card-2-back h2"></i>
@@ -406,7 +406,7 @@
                   <label
                     for="paymentMethodATM"
                     class="payment-box paymentGroup"
-                    @click="addActive('paymentGroup', $event.target)"
+                    @click="addActive('paymentGroup', 1)"
                   >
                     <div class="mb-3">
                       <i class="bi bi-cash-coin h2"></i>
@@ -427,7 +427,7 @@
                   <label
                     for="paymentMethodCash"
                     class="payment-box paymentGroup"
-                    @click="addActive('paymentGroup', $event.target)"
+                    @click="addActive('paymentGroup', 2)"
                   >
                     <div class="mb-3">
                       <i class="bi bi-shop h2"></i>
@@ -454,7 +454,7 @@
                   <label
                     for="sendByPost"
                     class="payment-box sendGroup"
-                    @click="addActive('sendGroup', $event.target)"
+                    @click="addActive('sendGroup', 0)"
                   >
                     <div class="mb-3">
                       <i class="bi bi-mailbox h2"></i>
@@ -475,7 +475,7 @@
                   <label
                     for="inStorePickup"
                     class="payment-box sendGroup"
-                    @click="addActive('sendGroup', $event.target)"
+                    @click="addActive('sendGroup', 1)"
                   >
                     <div class="mb-3">
                       <i class="bi bi-shop h2"></i>
@@ -590,10 +590,13 @@ export default {
   methods: {
     addActive(groupName, target) {
       // 目標加上 active 其他相同群組的 active 刪掉
-      document.querySelectorAll(`.${groupName}`).forEach((item) => {
-        item.classList.remove('active');
+      document.querySelectorAll(`.${groupName}`).forEach((item, index) => {
+        if (index !== target) {
+          item.classList.remove('active');
+        } else {
+          item.classList.add('active');
+        }
       });
-      target.classList.add('active');
     },
     addOrder() {
       this.$emit('emit-add-order', this.paymentDetail, this.customerDetail.productsArr);
