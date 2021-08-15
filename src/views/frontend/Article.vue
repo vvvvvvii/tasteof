@@ -163,7 +163,7 @@ export default {
             || e === '苗栗',
         )
       ) {
-        area = '雙北';
+        area = '大台北';
       } else if (
         tagCheck.find((e) => e === '台中' || e === '彰化' || e === '南投' || e === '雲林')
       ) {

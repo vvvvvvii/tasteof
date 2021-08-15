@@ -43,7 +43,6 @@
     width: 120px;
     height: 180px;
   }
-
   &:hover {
     cursor: pointer;
   }
@@ -53,6 +52,7 @@
     top: 10px;
     font-weight: bold;
     font-size: 1rem;
+    color: $light;
     @include media-breakpoint-up(xl) {
       left: 38px;
       top: 23px;

@@ -3,6 +3,9 @@
   display: flex;
   align-items: center;
   border-radius: 1rem;
+  &:hover {
+    transform: translateY(-4px);
+  }
   &-img {
     width: 80px;
     height: 80px;
@@ -18,5 +21,10 @@
     @include media-breakpoint-up(lg) {
       font-size: 2rem;
     }
+  }
+  &-description {
+    margin-left: 1rem;
+    font-size: 0.75rem;
+    color: $gray-600;
   }
 }

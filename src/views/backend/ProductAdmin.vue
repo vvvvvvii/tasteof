@@ -200,7 +200,7 @@ export default {
         comments: [],
       },
       tagCategory: [
-        '雙北',
+        '大台北',
         '中彰投',
         '嘉南',
         '高屏',

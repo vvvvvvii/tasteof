@@ -330,7 +330,7 @@ export default {
         tooltipPlacement: 'top',
       },
       tagCategory: [
-        '雙北',
+        '大台北',
         '中彰投',
         '嘉南',
         '高屏',

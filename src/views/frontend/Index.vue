@@ -3,13 +3,14 @@
     <div class="banner-outer">
       <h2 class="banner-title">品嚐旅程滋味</h2>
       <div class="banner"></div>
-      <div class="banner-subtitle" v-if="bannerSubTitle !== ''">
+      <div class="banner-subtitle">
         <p class="h4-sm h5">
-          {{ bannerSubTitle }}
+          {{ bannerSubTitle || '點選圖示' }}
         </p>
       </div>
-      <div class="banner-text" v-if="bannerSubTitle !== ''">
+      <div class="banner-text">
         <p class="h4-sm h5 mb-3">
+          <span v-if="bannerSubTitle === ''">盡情探索 自己的路</span>
           <span v-if="bannerSubTitle === '城市導覽'">深入導覽 城市之美</span>
           <span v-if="bannerSubTitle === '體驗票券'">一票在手 歡樂無窮</span>
           <span v-if="bannerSubTitle === '包車服務'">你負責玩 我們開車</span>
@@ -26,7 +27,7 @@
       <div class="banner-icon banner-tpe" @click="showBannerText('城市導覽')"></div>
       <div class="banner-icon banner-tnn" @click="showBannerText('城市導覽')"></div>
       <div class="banner-icon banner-kao" @click="showBannerText('城市導覽')"></div>
-      <div class="banner-icon banner-hun" @click="showBannerText('體驗票券')"></div>
+      <!-- <div class="banner-icon banner-hun" @click="showBannerText('體驗票券')"></div> -->
       <div class="banner-icon banner-tkt" @click="showBannerText('體驗票券')"></div>
       <div class="banner-icon banner-car" @click="showBannerText('包車服務')"></div>
       <div class="banner-icon banner-sky-lantern" @click="showBannerText('城市導覽')"></div>
@@ -38,39 +39,45 @@
   <div class="bg-light pb-7">
     <div class="container pt-8">
       <div class="mb-7">
-        <h2 class="h2 text-primary mb-3">你愛的都在這！</h2>
+        <h2 class="h2 text-primary mb-6">你愛的都在這！</h2>
         <ul class="row">
           <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in popularCategories" :key="key">
             <router-link
               :to="`/product_list?search=${item.urlTitle}`"
-              class="tab bg-white"
+              class="tab bg-white border border-primary"
               active-class="active"
               exact-path
             >
               <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
-              <div class="tab-title">{{ item.name }}</div>
+              <div>
+                <h3 class="tab-title mb-2">{{ item.name }}</h3>
+                <p class="tab-description">{{ item.description }}</p>
+              </div>
             </router-link>
           </li>
         </ul>
       </div>
       <div>
-        <h2 class="h2 text-primary mb-3">下個目的地？</h2>
+        <h2 class="h2 text-primary mb-6">下個目的地？</h2>
         <ul class="row">
           <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in cities" :key="key">
             <router-link
               :to="`/product_list?search=${item.name}`"
-              class="tab bg-white"
+              class="tab bg-white border border-primary"
               active-class="active"
               exact-path
             >
               <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
-              <div class="tab-title">{{ item.name }}</div>
+              <div>
+                <h3 class="tab-title mb-2">{{ item.name }}</h3>
+                <p class="tab-description">{{ item.description }}</p>
+              </div>
             </router-link>
           </li>
           <li class="col-lg-4 col-sm-6 mb-4">
             <router-link
               :to="`/product_list?search=${randomCity}`"
-              class="tab bg-white"
+              class="tab bg-white border border-primary"
               active-class="active"
               exact-path
             >
@@ -79,8 +86,8 @@
                 alt="來點驚喜"
                 class="tab-img"
               />
-              <div class="tab-title">
-                <p>來點<br />驚喜</p>
+              <div>
+                <h3 class="tab-title">來點<br />驚喜</h3>
               </div>
             </router-link>
           </li>
@@ -271,53 +278,64 @@ export default {
           name: '活動',
           urlTitle: '城市導覽',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tour.png?raw=true',
+          description: '帶您深入探索不曾接觸過的城市新樣貌',
         },
         {
           name: '票券',
           urlTitle: '體驗票券',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tkt.png?raw=true',
+          description: '一生一定要體驗一次的風景，都在這裡',
         },
         {
           name: '包車',
           urlTitle: '包車服務',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/car.png?raw=true',
+          description: '不再需要攜老扶幼、大包小包趕車轉車',
         },
         {
           name: '親子',
           urlTitle: '親子',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/children.png?raw=true',
+          description: '和孩子一起創造無可取代的專屬寶藏',
         },
         {
           name: '浪漫',
           urlTitle: '浪漫',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/romance.png?raw=true',
+          description: '聽說一年有十三個情人節，準備好了嗎',
         },
         {
           name: '獨家',
           urlTitle: '獨家代理',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/special.png?raw=true',
+          description: '只有我們有這些超讚行程，還在等什麼',
         },
       ],
       cities: [
         {
-          name: '雙北',
+          name: '大台北',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TPE.png?raw=true',
+          description: '＃台北 101 ＃平溪天燈 ＃坪林採茶',
         },
         {
           name: '中彰投',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TXG.png?raw=true',
+          description: '＃彩虹眷村 ＃合歡山觀星 ＃日月潭',
         },
         {
           name: '嘉南',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TNN.png?raw=true',
+          description: '＃阿里山神木小火車 ＃台南美食之旅',
         },
         {
           name: '高屏',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/KAO.png?raw=true',
+          description: '＃高雄建築巡禮',
         },
         {
           name: '花東',
           imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/HUN.png?raw=true',
+          description: '＃清水斷崖獨木舟',
         },
       ],
       randomCity: '',

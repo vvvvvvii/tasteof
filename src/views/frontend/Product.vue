@@ -556,7 +556,7 @@ export default {
     getRandomProducts() {
       const { tagCheck } = this.moreInfo.productInfo;
       const area = tagCheck.find(
-        (e) => e === '雙北' || e === '中彰投' || e === '嘉南' || e === '高屏' || e === '花東',
+        (e) => e === '大台北' || e === '中彰投' || e === '嘉南' || e === '高屏' || e === '花東',
       );
       const filterArr = [];
       this.totalProducts.forEach((item) => {

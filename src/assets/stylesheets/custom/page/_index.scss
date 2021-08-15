@@ -54,39 +54,35 @@
   }
 }
 .banner {
-  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E8%83%8C%E6%99%AF.png?raw=true);
+  background-image: url(https://images.unsplash.com/photo-1583395145517-1e3177037600?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1334&q=80);
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;
-  background-size: 180%;
-  background-position: right bottom;
+  background-size: cover;
+  background-position: right 50%;
   position: absolute;
-  @include media-breakpoint-up(sm) {
-    background-size: 160%;
-  }
-  @include media-breakpoint-up(md) {
-    background-size: contain;
-  }
   &-title {
     position: absolute;
-    top: 10%;
     z-index: 2;
     font-weight: bold;
     font-size: $h2-font-size;
     color: $primary;
     width: 100%;
     text-align: center;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0%);
     @include media-breakpoint-up(sm) {
       font-size: $h1-font-size;
-      left: 5%;
-      width: auto;
     }
     @include media-breakpoint-up(md) {
-      top: 20%;
+      color: $white;
+      top: 50%;
+      left: -20%;
+      transform: translate(0, -50%);
     }
     @include media-breakpoint-up(lg) {
-      top: 50%;
-      transform: translate(0, -50%);
+      left: -30%;
     }
   }
   &-text,
@@ -101,39 +97,39 @@
     align-items: center;
   }
   &-subtitle {
-    top: 25%;
-    left: 8%;
+    top: 50%;
+    left: 55%;
     padding: 22px 5px;
     @include media-breakpoint-up(sm) {
       padding: 30px 10px;
-      top: 28%;
-      left: 5%;
+      top: 55%;
+      left: 58%;
     }
     @include media-breakpoint-up(md) {
-      top: 4%;
+      top: 15%;
       left: 52%;
     }
     @include media-breakpoint-up(lg) {
       top: 8%;
-      left: 40%;
+      left: 65%;
     }
   }
   &-text {
-    top: 36%;
-    left: 12%;
+    top: 62%;
+    left: 60%;
     padding: 31px 11px;
     @include media-breakpoint-up(sm) {
       padding: 50px 24px;
-      top: 30%;
-      left: 17%;
+      top: 65%;
+      left: 65%;
     }
     @include media-breakpoint-up(md) {
-      top: 12%;
+      top: 20%;
       left: 60%;
     }
     @include media-breakpoint-up(lg) {
       top: 16%;
-      left: 43%;
+      left: 70%;
     }
   }
   &-icon {
@@ -141,8 +137,8 @@
     background-size: contain;
     position: absolute;
     background-position: center;
-    width: 15%;
-    height: 15%;
+    width: 20%;
+    height: 20%;
     &:hover {
       cursor: pointer;
     }
@@ -157,29 +153,32 @@
   }
   &-tpe {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E9%9B%99%E5%8C%97.png?raw=true);
-    right: 41%;
-    bottom: 5%;
+    right: 54%;
+    bottom: 30%;
+    width: 8%;
+    height: 15%;
     @include media-breakpoint-up(sm) {
-      right: 35%;
-      bottom: 5%;
+      display: none;
     }
     @include media-breakpoint-up(md) {
-      right: 20%;
-      bottom: 4%;
+      display: block;
+      right: 38%;
+      bottom: 30%;
     }
     @include media-breakpoint-up(lg) {
-      right: 17%;
-      bottom: 5%;
+      right: 40%;
+      bottom: 28%;
     }
   }
   &-tnn {
     width: 10%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E5%98%89%E5%8D%97.png?raw=true);
-    right: 7.3%;
-    bottom: 20.8%;
+    right: 4%;
+    bottom: 25%;
     @include media-breakpoint-up(sm) {
-      right: 6.2%;
-      bottom: 22%;
+      width: 15%;
+      right: 2%;
+      bottom: 28%;
     }
     @include media-breakpoint-up(md) {
       right: 2%;
@@ -187,25 +186,26 @@
     }
     @include media-breakpoint-up(lg) {
       right: 1.3%;
-      bottom: 23.3%;
+      bottom: 15%;
     }
   }
   &-kao {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E9%AB%98%E5%B1%8F.png?raw=true);
-    width: 5%;
+    width: 7%;
     right: 90%;
-    bottom: 20%;
+    bottom: 42%;
     @include media-breakpoint-up(sm) {
-      right: 80%;
-      bottom: 21%;
+      right: 90%;
+      bottom: 35%;
     }
     @include media-breakpoint-up(md) {
-      right: 49%;
-      bottom: 20%;
+      display: none;
     }
     @include media-breakpoint-up(lg) {
-      right: 44%;
-      bottom: 24%;
+      display: block;
+      right: 50%;
+      bottom: 55%;
+      width: 4%;
     }
   }
   &-hun {
@@ -229,48 +229,50 @@
     }
   }
   &-tkt {
-    width: 10%;
+    width: 15%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E9%AB%94%E9%A9%97.png?raw=true);
-    right: 5%;
-    bottom: 0%;
+    right: 39%;
+    bottom: 5%;
     animation-duration: 3s;
     @include media-breakpoint-up(sm) {
-      right: 4%;
-      bottom: 0%;
+      right: 38%;
+      bottom: 10%;
     }
     @include media-breakpoint-up(md) {
-      right: 1%;
-      bottom: 0%;
+      right: 24%;
+      bottom: 10%;
     }
     @include media-breakpoint-up(lg) {
-      right: 1%;
-      bottom: 2.14%;
+      right: 20%;
+      bottom: 10%;
     }
   }
   &-car {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E5%8C%85%E8%BB%8A.png?raw=true);
-    right: 25%;
-    bottom: 32%;
+    right: 55%;
+    bottom: 49%;
     animation-name: rentCar;
     animation-duration: 5s;
     animation-iteration-count: infinite;
     @include media-breakpoint-up(sm) {
-      right: 20%;
-      bottom: 34%;
+      right: 60%;
+      bottom: 40%;
+      width: 18%;
     }
     @include media-breakpoint-up(md) {
-      right: 13%;
-      bottom: 29%;
-      width: 10%;
+      right: 65%;
+      bottom: 63%;
+      width: 12%;
     }
     @include media-breakpoint-up(lg) {
-      right: 12%;
-      bottom: 35.71%;
+      width: 10%;
+      right: 65%;
+      bottom: 70%;
     }
   }
   &-sky-lantern {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E5%A4%A9%E7%87%88.png?raw=true);
-    right: 5%;
+    right: 3%;
     bottom: 57.14%;
     animation-name: skyLantern;
     animation-duration: 15s;
@@ -279,6 +281,8 @@
   &-footprint1,
   &-footprint2,
   &-footprint3 {
+    width: 9%;
+    height: 9%;
     animation-duration: 10s;
     animation-iteration-count: infinite;
     &:hover {
@@ -287,18 +291,14 @@
   }
   &-footprint1 {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E8%85%B3%E5%8D%B01.png?raw=true);
-    width: 5%;
-    height: 5%;
+    width: 8%;
+    height: 8%;
     left: 5%;
-    bottom: 13%;
+    bottom: 25%;
     animation-name: footprint1;
-    @include media-breakpoint-up(sm) {
-      left: 1%;
-      bottom: 20%;
-    }
     @include media-breakpoint-up(md) {
       left: 10.71%;
-      bottom: 48%;
+      bottom: 34%;
     }
     @include media-breakpoint-up(lg) {
       left: 10.71%;
@@ -307,18 +307,16 @@
   }
   &-footprint2 {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E8%85%B3%E5%8D%B02.png?raw=true);
-    width: 6%;
-    height: 6%;
-    left: 8%;
-    bottom: 5%;
+    left: 10%;
+    bottom: 10%;
     animation-name: footprint2;
     @include media-breakpoint-up(sm) {
-      left: 3%;
-      bottom: 9%;
+      left: 15%;
+      bottom: 15%;
     }
     @include media-breakpoint-up(md) {
       left: 12.85%;
-      bottom: 30%;
+      bottom: 20%;
     }
     @include media-breakpoint-up(lg) {
       left: 12.85%;
@@ -327,17 +325,15 @@
   }
   &-footprint3 {
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E8%85%B3%E5%8D%B03.png?raw=true);
-    width: 6%;
-    height: 6%;
     left: 5%;
     bottom: -2.857%;
     animation-name: footprint3;
     @include media-breakpoint-up(sm) {
-      left: 1%;
+      left: 5%;
     }
     @include media-breakpoint-up(md) {
       left: 7.14%;
-      bottom: 10%;
+      bottom: 1%;
     }
     @include media-breakpoint-up(lg) {
       left: 7.14%;
