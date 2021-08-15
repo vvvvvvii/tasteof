@@ -512,7 +512,6 @@ export default {
               break;
           }
         });
-        console.log((scoreArr[4] / item.data.comments.length) * 100);
         scoreArr = scoreArr.map((score) => ((score / item.data.comments.length) * 100).toFixed(1));
         const scoreObj = {
           star1: scoreArr[0],

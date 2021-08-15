@@ -416,7 +416,6 @@ export default {
       const { addOrderBtn } = this.$refs.confirmCart.$refs;
       addOrderBtn.classList.add('disabled');
       addOrderBtn.children[0].classList.remove('d-none');
-      console.log(this.customerDetail);
       const data = {
         data: {
           user: {
@@ -438,7 +437,6 @@ export default {
           message: this.customerDetail.message,
         },
       };
-      console.log(data);
       this.orderDetail.total = this.cart.final_total;
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)
