@@ -1,28 +1,31 @@
 <template>
   <div class="pt-7 flex-fill">
     <div class="pt-5">
-      <ul class="step-list d-flex justify-content-center">
-        <li class="step-item" :class="{ 'bg-warning': checkCartPageShow }">
+      <ul
+        class="step-list d-flex justify-content-center"
+        v-if="checkCartPageShow || confirmCartPageShow"
+      >
+        <li class="step-item" :class="{ 'bg-secondary': checkCartPageShow }">
           <div class="step-icon">
             <i class="bi bi-flag-fill d-block" v-if="checkCartPageShow"></i>
           </div>
-          <p class="step-text h3-md h4 text-center" :class="{ 'text-dark': checkCartPageShow }">
+          <p class="step-text h3-md h4 text-center" :class="{ 'text-light': checkCartPageShow }">
             查看
           </p>
         </li>
-        <li class="step-item ms-md-5 ms-3" :class="{ 'bg-danger': confirmCartPageShow }">
+        <li class="step-item ms-md-5 ms-3" :class="{ 'bg-secondary': confirmCartPageShow }">
           <div class="step-icon">
             <i class="bi bi-flag-fill d-block" v-if="confirmCartPageShow"></i>
           </div>
-          <p class="step-text h3-md h4 text-center" :class="{ 'text-dark': confirmCartPageShow }">
+          <p class="step-text h3-md h4 text-center" :class="{ 'text-light': confirmCartPageShow }">
             確認
           </p>
         </li>
-        <li class="step-item ms-md-5 ms-3" :class="{ 'bg-success': finishCartPageShow }">
+        <li class="step-item ms-md-5 ms-3">
           <div class="step-icon">
             <i class="bi bi-flag-fill d-block" v-if="finishCartPageShow"></i>
           </div>
-          <p class="step-text h3-md h4 text-center" :class="{ 'text-dark': finishCartPageShow }">
+          <p class="step-text h3-md h4 text-center">
             完成
           </p>
         </li>
@@ -40,7 +43,6 @@
         @emit-change-tkt-num="changeTktNum"
         @emit-delete-tab="deleteTab"
         @emit-delete-product="deleteProduct"
-        @emit-delete-all-products="deleteAllProducts"
         @emit-next-page="saveCustomerDetail"
         @emit-alert="customAlert"
       ></CheckCart>
@@ -78,6 +80,7 @@ export default {
     return {
       customerDetail: {
         users: [],
+        productsArr: [],
         message: '無備註事項',
       },
       cart: {},
@@ -366,33 +369,6 @@ export default {
           });
       }
     },
-    deleteAllProducts() {
-      const { deleteOrderBtn } = this.$refs.checkCart.$refs;
-      deleteOrderBtn.classList.add('disabled');
-      deleteOrderBtn.children[0].classList.remove('d-none');
-      this.$http
-        .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/carts`)
-        .then((res) => {
-          if (res.data.success) {
-            this.customAlert('已清除購物車');
-            this.getCartInfo();
-            deleteOrderBtn.classList.remove('disabled');
-            deleteOrderBtn.children[0].classList.add('d-none');
-            window.setTimeout(this.backToHomePage, 4000);
-            emitter.emit('update-cart');
-          } else {
-            this.customAlert(res.data.message);
-            deleteOrderBtn.classList.remove('disabled');
-            deleteOrderBtn.children[0].classList.add('d-none');
-            emitter.emit('update-cart');
-          }
-        })
-        .catch((err) => {
-          this.customAlert(err.response);
-          deleteOrderBtn.classList.remove('disabled');
-          deleteOrderBtn.children[0].classList.add('d-none');
-        });
-    },
     saveCustomerDetail(info, remark, contactInfoInputStatus) {
       this.customerDetail = info;
       this.otherDetail = remark;
@@ -434,15 +410,20 @@ export default {
           checkCouponBtn.children[0].classList.add('d-none');
         });
     },
-    addOrder(info) {
+    addOrder(info, products) {
       this.paymentDetail = info;
+      this.customerDetail.productsArr = products;
       const { addOrderBtn } = this.$refs.confirmCart.$refs;
       addOrderBtn.classList.add('disabled');
       addOrderBtn.children[0].classList.remove('d-none');
+      console.log(this.customerDetail);
       const data = {
         data: {
           user: {
-            ...this.customerDetail.users[0],
+            name: this.customerDetail.users[0].name,
+            email: this.customerDetail.users[0].email,
+            tel: this.customerDetail.users[0].tel,
+            address: this.customerDetail.users[0].address,
             paymentDetail: {
               total: this.cart.total,
               final_total: this.cart.final_total,
@@ -451,10 +432,13 @@ export default {
               taxIdNum: this.paymentDetail.taxIdNum,
               coupon: this.paymentDetail.coupon,
             },
+            customerDetail: [...this.customerDetail.users],
+            products: [...this.customerDetail.productsArr],
           },
           message: this.customerDetail.message,
         },
       };
+      console.log(data);
       this.orderDetail.total = this.cart.final_total;
       this.$http
         .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`, data)

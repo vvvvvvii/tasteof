@@ -12,13 +12,13 @@
               v-for="(option, key) in item.options"
               :key="key"
               class="d-inline-block cart-scroll-box-item ms-lg-0"
-              :class="{ 'ms-3': itemKey !== 0 }"
+              :class="{ 'ms-3': itemKey !== 0 || key !== 0 }"
             >
               <div class="px-3 py-4 mb-6 border border-primary rounded-1 position-relative">
                 <div class="pb-3 mb-3 border-bottom border-gray">
                   <div class="row justify-content-between mb-sm-3 mb-2">
                     <div class="col-4">
-                      <p class="h5 mb-2 d-sm-inline d-none">
+                      <p class="h5 mb-2 d-sm-block d-none">
                         {{ option.start_date.split('-').join(' / ') }}
                       </p>
                       <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
@@ -78,7 +78,8 @@
                     <div
                       v-if="
                         detail.product.title === item.product.title &&
-                          option.optionName === detail.optionName
+                          detail.optionName === option.optionName &&
+                          detail.start_date === option.start_date
                       "
                     >
                       <p class="mb-2" v-if="detail.product.transfer.time">
@@ -90,12 +91,12 @@
                         class="mb-2"
                         v-if="
                           detail.product.transfer.place &&
-                            detail.optionName.includes('火車' || '高鐵') === false
+                            detail.optionName.includes('火車') === false &&
+                            detail.optionName.includes('高鐵') === false
                         "
                       >
                         <i class="bi bi-check"></i>
                         <span class="ms-1">接送地點：</span>
-
                         <span class="ms-1">{{ detail.pickUpPlace }}</span>
                       </p>
                       <a
@@ -109,7 +110,7 @@
                         class="text-secondary mb-2"
                       >
                         <i class="bi bi-check"></i>
-                        包車行程規劃
+                        <span class="ms-1">包車行程規劃</span>
                       </a>
                       <div
                         class="modal fade"
@@ -136,13 +137,48 @@
                           </div>
                         </div>
                       </div>
-                      <p class="mb-2" v-if="detail.includeChild">
+                      <a
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#childInfoNoteModal"
+                        v-if="detail.includeChild"
+                        class="text-secondary mb-2"
+                      >
                         <i class="bi bi-check"></i>
-                        <span class="ms-1">未滿 4 歲孩童：</span>
-                        <span class="ms-1">{{ detail.childBd }} 出生（</span>
-                        <span class="ms-1">{{ detail.childHeight }} 公分、</span>
-                        <span class="ms-1">{{ detail.childWeight }} 公斤）</span>
-                      </p>
+                        <span class="ms-1">含未滿 4 歲孩童</span>
+                      </a>
+                      <div
+                        class="modal fade"
+                        id="childInfoNoteModal"
+                        tabindex="-1"
+                        aria-labelledby="childInfoNoteModalLabel"
+                        aria-hidden="true"
+                        v-if="detail.includeChild"
+                      >
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header bg-wave mb-3 position-relative">
+                              <h3>
+                                未滿 4 歲孩童：
+                              </h3>
+                              <div class="cable-car"></div>
+                            </div>
+                            <div class="modal-body p-6 text-center">
+                              <p class="mb-3">
+                                <span class="h3">{{ detail.childBd }}</span>
+                                <span class="ms-2 h5">出生</span>
+                              </p>
+                              <p class="mb-3">
+                                <span class="h3">{{ detail.childHeight }}</span>
+                                <span class="ms-2 h5">公分</span>
+                                <span class="ms-2">/</span>
+                                <span class="h3 ms-2">{{ detail.childWeight }}</span>
+                                <span class="ms-2 h5">公斤</span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <p
                         class="mb-2"
                         v-if="detail.product.translate.eng || detail.product.translate.jpy"
@@ -151,11 +187,21 @@
                         <span class="ms-1">{{ detail.translateLanguage }}</span>
                       </p>
                     </div>
-                    <div v-else>
-                      <p class="mb-2">此商品無備註項目</p>
-                    </div>
                   </template>
-                  <p class="mb-2" v-if="otherDetail.length === 0">此商品無備註項目</p>
+                  <p
+                    class="mb-2"
+                    v-if="
+                      otherDetail.length === 0 ||
+                        otherDetail
+                          .map((detail) => detail.product.title)
+                          .includes(item.product.title) === false ||
+                        otherDetail
+                          .map((detail) => detail.optionName)
+                          .includes(option.optionName) === false
+                    "
+                  >
+                    此商品無備註項目
+                  </p>
                 </div>
                 <div class="d-sm-flex align-items-center">
                   <p class="w-sm-25 mb-sm-0 mb-2">
@@ -527,14 +573,12 @@ export default {
       scrollBtnShow: true,
       schema: {
         payment: (value) => {
-          console.log(value);
           if (value) {
             return true;
           }
           return '請選擇付款方式';
         },
         send: (value) => {
-          console.log(value);
           if (value) {
             return true;
           }
@@ -552,7 +596,7 @@ export default {
       target.classList.add('active');
     },
     addOrder() {
-      this.$emit('emit-add-order', this.paymentDetail);
+      this.$emit('emit-add-order', this.paymentDetail, this.customerDetail.productsArr);
     },
     organizeUserProduct() {
       // 照產品分類分（該產品有哪些人買）
@@ -568,6 +612,7 @@ export default {
             productName: product.product.title,
             optionName: option.optionName,
             date: option.start_date,
+            productImg: product.product.imageUrl,
             users,
           });
         });
@@ -587,6 +632,7 @@ export default {
           product,
         };
         this.customerDetail.users[userKey].products = usersArr[userKey];
+        this.customerDetail.productsArr = productsArr;
       });
     },
   },

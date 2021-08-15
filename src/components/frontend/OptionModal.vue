@@ -132,7 +132,8 @@
             </p>
             <button
               type="button"
-              class="btn btn-primary w-50 d-flex justify-content-center align-items-center py-2"
+              class="btn btn-light w-50
+              d-flex justify-content-center align-items-center py-2"
               ref="addCartBtn"
               @click="$emit('emit-add-cart', this.productDetail, this.optionDetail)"
               :disabled="productDetail.startDate === '' || productDetail.tktNum.adult < 1"

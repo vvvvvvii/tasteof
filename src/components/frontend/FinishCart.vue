@@ -1,23 +1,135 @@
 <template>
   <div class="container py-8">
-    <div class="d-flex flex-md-row flex-column align-items-center">
+    <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
       <img
         src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/finish%20cart.png?raw=true"
         alt="恭喜您完成付款"
-        class="w-50"
+        class="w-25"
       />
-      <div class="text-primary">
+      <div class="ms-6">
         <h2 class="h1 mb-lg-7 mb-3 text-md-start text-center">
           完成付款！
           <span class="h2 ms-lg-3 d-lg-inline d-none"
-            >NT {{ addComma(Math.floor(orderDetail.total)) }}</span
-          >
+            >NT {{ addComma(paymentDetail.final_total) }}
+          </span>
         </h2>
         <p class="h2 text-md-end text-center d-lg-none mb-6">
-          NT {{ addComma(Math.floor(orderDetail.total)) }}
+          NT {{ addComma(paymentDetail.final_total) }}
         </p>
-        <p class="mb-3 text-md-start text-center"><a class="h3-md text-primary">查看訂單細節</a></p>
-        <p class="h2 text-md-start text-center">{{ orderDetail.orderId }}</p>
+        <a
+          class="h3-md text-secondary text-md-start text-center"
+          data-bs-toggle="modal"
+          data-bs-target="#checkOrderDetailModal"
+        >
+          <span class="d-block mb-3">
+            查看訂單細節
+          </span>
+          <span class="d-block h2">{{ orderDetail.orderId }}</span>
+        </a>
+        <!-- 訂單細節 Modal -->
+        <div
+          class="modal fade"
+          id="checkOrderDetailModal"
+          tabindex="-1"
+          aria-labelledby="checkOrderDetailModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header bg-wave mb-3 position-relative">
+                <h3>訂單明細</h3>
+                <div class="cable-car"></div>
+              </div>
+              <div class="modal-body p-6">
+                <div class="pb-6 mb-6 border-bottom border-gray">
+                  <h3 class="text-primary mb-1">訂單資料</h3>
+                  <p class="text-gray mb-3">編號：{{ orderDetail.orderId }}</p>
+                  <div class="order-scroll-box d-flex">
+                    <div
+                      v-for="(product, key) in products"
+                      :key="`${product.productName}-${key}`"
+                      class="px-3 py-4 border border-primary rounded-1
+                    order-scroll-box-item"
+                      :class="{ 'ms-3': key !== 0 }"
+                    >
+                      <div class="pb-3 mb-3 border-bottom border-gray">
+                        <div class="row mb-sm-3 mb-2">
+                          <div class="col-sm-4 col-3">
+                            <p class="h5 mb-2 d-sm-block d-none">
+                              {{ product.date.split('-').join(' / ') }}
+                            </p>
+                            <img
+                              :src="product.productImg"
+                              :alt="product.productName"
+                              class="order-img"
+                            />
+                          </div>
+                          <div class="col-sm-8 col-9">
+                            <p class="h5 mb-1 d-sm-none text-gray">
+                              {{ product.date.split('-').join(' / ') }}
+                            </p>
+                            <p class="h3-sm mb-2">{{ product.productName }}</p>
+                            <p class="h4-sm h5">{{ product.optionName }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <p class="w-25">
+                          旅客：
+                        </p>
+                        <p v-for="(user, userKey) in product.users" :key="user" class="ms-1">
+                          {{ user }}
+                          <span v-if="userKey !== product.users.length - 1" class="ms-1">、</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h3 class="mb-3 text-primary">付款及收件資料</h3>
+                <div class="mb-6">
+                  <div class="mb-3">
+                    <p class="mb-1">
+                      <i class="bi bi-check"></i>
+                      <span class="ms-1">{{ paymentDetail.payment_method }}</span>
+                    </p>
+                    <p v-if="paymentDetail.taxIdNum" class="mb-1">
+                      <i class="bi bi-check"></i>
+                      <span class="ms-1">統一編號：</span>
+                      <span class="ms-1">{{ paymentDetail.taxIdNum }}</span>
+                    </p>
+                    <p class="mb-1">
+                      <i class="bi bi-check"></i>
+                      <span class="ms-1">{{ paymentDetail.send_method }}</span>
+                    </p>
+                  </div>
+
+                  <div
+                    v-if="paymentDetail.send_method === '郵寄'"
+                    class="rounded-1 px-5 py-6 bg-light"
+                  >
+                    <p class="h3 text-center mb-3">
+                      {{ contactDetail.name }}
+                      <span class="ms-1 h4">收</span>
+                    </p>
+                    <p class="mb-1">
+                      <i class="text-primary bi bi-telephone-fill"></i>
+                      <span class="ms-3">{{ contactDetail.tel }}</span>
+                    </p>
+                    <p class="mb-1">
+                      <i class="text-primary bi bi-envelope-fill"></i>
+                      <span class="ms-3">{{ contactDetail.email }}</span>
+                    </p>
+                    <p class="mb-1">
+                      <i class="text-primary bi bi-signpost-2-fill"></i>
+                      <span class="ms-3">{{ contactDetail.address }}</span>
+                    </p>
+                  </div>
+                </div>
+                <p class="h2 text-end">NT {{ addComma(paymentDetail.final_total) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -46,11 +158,36 @@ export default {
   emits: ['emit-alert'],
   data() {
     return {
+      paymentDetail: {},
+      contactDetail: {},
+      products: [],
+      orderModal: {},
       totalProducts: [],
       randomProducts: [],
     };
   },
   methods: {
+    getOrder(id) {
+      this.$http
+        .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order/${id}`)
+        .then((res) => {
+          if (res.data.success) {
+            this.paymentDetail = { ...res.data.order.user.paymentDetail };
+            this.products = [...res.data.order.user.products];
+            this.contactDetail = {
+              name: res.data.order.user.name,
+              email: res.data.order.user.email,
+              tel: res.data.order.user.tel,
+              address: res.data.order.user.address,
+            };
+          } else {
+            this.$emit('emit-alert', res.data.message);
+          }
+        })
+        .catch((err) => {
+          this.$emit('emit-alert', err.response);
+        });
+    },
     getTotalProducts() {
       this.$http
         .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`)
@@ -72,6 +209,7 @@ export default {
               });
             });
             this.getRandomProducts();
+            this.getOrder(this.orderDetail.orderId);
           } else {
             this.$emit('emit-alert', res.data.message);
           }
@@ -96,9 +234,12 @@ export default {
   computed: {
     addComma() {
       return (price) => {
-        const parts = price.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return `${parts.join('.')}`;
+        if (typeof price !== 'undefined') {
+          const parts = price.toString().split('.');
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          return `${parts.join('.')}`;
+        }
+        return 0;
       };
     },
   },

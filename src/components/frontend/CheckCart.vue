@@ -12,7 +12,7 @@
               v-for="(option, key) in item.options"
               :key="key"
               class="d-inline-block cart-scroll-box-item ms-lg-0"
-              :class="{ 'ms-3': itemKey !== 0 }"
+              :class="{ 'ms-3': itemKey !== 0 || key !== 0 }"
             >
               <div
                 class="px-3 py-4 mb-6 border border-primary rounded-1 position-relative"
@@ -23,7 +23,7 @@
                 <div class="pb-3 mb-3 border-bottom border-gray">
                   <div class="row justify-content-between mb-sm-3 mb-2">
                     <div class="col-4">
-                      <p class="h5 mb-2 d-sm-inline d-none">
+                      <p class="h5 mb-2 d-sm-block d-none">
                         {{ option.start_date.split('-').join(' / ') }}
                       </p>
                       <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
@@ -342,8 +342,9 @@
                 aria-labelledby="pills-tab-note"
               >
                 <template v-for="(detail, key) in otherDetail" :key="key">
-                  <div class="mb-6 pb-6 border-bottom border-gray">
+                  <div class="mb-6 pb-3 border-bottom border-gray">
                     <div class="mb-3">
+                      <p class="h5 text-gray-dark mb-1">{{ detail.start_date }}</p>
                       <h4 class="h3 mb-1">{{ detail.product.title }}</h4>
                       <h4>{{ detail.optionName }}</h4>
                     </div>
@@ -360,7 +361,8 @@
                       class="mb-3"
                       v-if="
                         detail.product.transfer.place &&
-                          detail.optionName.includes('火車' || '高鐵') === false
+                          detail.optionName.includes('火車') === false &&
+                          detail.optionName.includes('高鐵') === false
                       "
                     >
                       <label :for="`note-pickupPlace-${key}`" class="form-label">接送地點</label>
@@ -760,6 +762,7 @@ export default {
           ...this.cartInfo,
         }; // props 有變時更改資料
         this.cart.final_total = this.cartInfo.final_total;
+        this.otherDetail = [];
         this.cart.carts.forEach((item) => {
           // 處理特殊備註是否要顯示翻譯接送等表格
           if (
