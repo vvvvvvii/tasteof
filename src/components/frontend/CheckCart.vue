@@ -814,8 +814,8 @@ export default {
             }
           }
         });
-        // 解決 flatPickr 設定 defaultDate 後不會自動將預設值綁定到 v-model 的問題
         this.otherDetail.forEach((detail, key) => {
+          // 解決 flatPickr 設定 defaultDate 後不會自動將預設值綁定到 v-model 的問題
           if (detail.product.transfer.time) {
             this.otherDetail[key].pickUpTime = this.config.defaultDate;
           }

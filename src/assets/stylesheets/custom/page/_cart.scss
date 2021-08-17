@@ -212,3 +212,8 @@
 .payment-box.active {
   border: 1px solid $primary;
 }
+.payment-box.disabled {
+  border: 1px solid $gray;
+  color: $gray;
+  pointer-events: none;
+}

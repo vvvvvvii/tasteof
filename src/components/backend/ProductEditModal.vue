@@ -479,7 +479,7 @@
                         />
                       </div>
                     </div>
-                    <div class="mb-6">
+                    <div class="mb-2">
                       <div class="d-flex justify-content-between mb-4">
                         <label class="form-label">方案內含</label>
                         <button
@@ -507,6 +507,19 @@
                             </button>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                    <div class="mb-7">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          :id="`etkt-${key}`"
+                          v-model="tempProduct.packageOptions[key].is_etkt"
+                        />
+                        <label class="form-check-label" :for="`etkt-${key}`"
+                          >此方案為電子票券</label
+                        >
                       </div>
                     </div>
                   </div>

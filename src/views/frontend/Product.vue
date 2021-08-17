@@ -647,6 +647,7 @@ export default {
               start_date: this.moreInfo.startDate,
               optionName: optionDetail.optionName,
               optionPrice: Number(optionDetail.price),
+              isEtkt: this.temp.is_etkt || false,
             };
             dataOuter.data.qty = this.moreInfo.tktNum.adult + this.moreInfo.tktNum.child;
           }
@@ -663,6 +664,7 @@ export default {
             start_date: this.moreInfo.startDate,
             optionName: optionDetail.optionName,
             optionPrice: Number(optionDetail.price),
+            isEtkt: this.temp.is_etkt || false,
           };
           const { qtyDetail } = dataOuter.data.options[dataOuter.data.options.length - 1];
           dataOuter.data.options.forEach((i, key) => {
@@ -683,6 +685,7 @@ export default {
           start_date: this.moreInfo.startDate,
           optionName: optionDetail.optionName,
           optionPrice: Number(optionDetail.price),
+          isEtkt: this.temp.is_etkt || false,
         });
         const { qtyDetail } = dataOuter.data.options[0];
         dataOuter.data.qty = qtyDetail.adult + qtyDetail.child;

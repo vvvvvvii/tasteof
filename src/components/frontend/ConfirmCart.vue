@@ -427,6 +427,7 @@
                   <label
                     for="paymentMethodCash"
                     class="payment-box paymentGroup"
+                    :class="{ disabled: onlyEtkt }"
                     @click="addActive('paymentGroup', 2)"
                   >
                     <div class="mb-3">
@@ -439,9 +440,34 @@
             </div>
             <div class="mb-6">
               <label class="form-label mb-3">取件方式</label>
+              <p class="h5 text-primary mb-3" :class="{ 'd-none': onlyEtkt }">
+                訂單明細及電子憑證仍將以電子郵件寄給您
+              </p>
               <ErrorMessage name="send" class="mb-3 d-block text-danger"></ErrorMessage>
-              <div class="row g-sm-3 g-2 justify-content-center">
-                <div class="col-md-4 col-6">
+              <div class="row g-sm-3 g-2">
+                <div class="col-4">
+                  <Field
+                    type="radio"
+                    id="emailPickup"
+                    name="send"
+                    class="d-none"
+                    value="電子郵件取貨"
+                    v-model="paymentDetail.sendMethod"
+                  >
+                  </Field>
+                  <label
+                    for="emailPickup"
+                    class="payment-box sendGroup"
+                    :class="{ disabled: onlyEtkt === false, active: onlyEtkt }"
+                    @click="addActive('sendGroup', 0)"
+                  >
+                    <div class="mb-3">
+                      <i class="bi bi-envelope h2"></i>
+                    </div>
+                    電子信箱
+                  </label>
+                </div>
+                <div class="col-4">
                   <Field
                     type="radio"
                     id="sendByPost"
@@ -454,7 +480,8 @@
                   <label
                     for="sendByPost"
                     class="payment-box sendGroup"
-                    @click="addActive('sendGroup', 0)"
+                    :class="{ disabled: onlyEtkt }"
+                    @click="addActive('sendGroup', 1)"
                   >
                     <div class="mb-3">
                       <i class="bi bi-mailbox h2"></i>
@@ -462,7 +489,7 @@
                     郵寄
                   </label>
                 </div>
-                <div class="col-md-4 col-6">
+                <div class="col-4">
                   <Field
                     type="radio"
                     id="inStorePickup"
@@ -475,7 +502,8 @@
                   <label
                     for="inStorePickup"
                     class="payment-box sendGroup"
-                    @click="addActive('sendGroup', 1)"
+                    :class="{ disabled: onlyEtkt }"
+                    @click="addActive('sendGroup', 2)"
                   >
                     <div class="mb-3">
                       <i class="bi bi-shop h2"></i>
@@ -585,6 +613,7 @@ export default {
           return '請選擇取件方式';
         },
       },
+      onlyEtkt: false,
     };
   },
   methods: {
@@ -638,12 +667,29 @@ export default {
         this.customerDetail.productsArr = productsArr;
       });
     },
+    organizeEtkt() {
+      // 取出所有產品及方案 isEtkt 放到 etktCheck
+      const etktCheck = [];
+      this.cart.carts.forEach((item) => {
+        etktCheck.push(item.options.map((option) => option.isEtkt));
+      });
+      if (etktCheck.flat().every((e) => e === true)) {
+        // 若其中都是 etkt=true ，那只能選擇電子票券出件，且不可選貨到付款
+        this.paymentDetail.sendMethod = '電子郵件取貨';
+        this.onlyEtkt = true;
+      } else {
+        // 不然只能選電子票券以外的
+        this.paymentDetail.sendMethod = '';
+        this.onlyEtkt = false;
+      }
+    },
   },
   watch: {
     cartInfo: {
       handler() {
         this.cart = { ...this.cartInfo }; // props 有變時更改資料
         this.cart.final_total = this.cartInfo.final_total;
+        this.organizeEtkt();
       },
       deep: true,
     },
@@ -682,6 +728,7 @@ export default {
     this.paymentDetail = { ...this.payment };
     this.scrollBtnShow = this.scrollBtnStatus;
     this.organizeUserProduct();
+    this.organizeEtkt();
   },
   mounted() {
     if (this.scrollBtnShow) {
