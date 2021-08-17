@@ -11,9 +11,9 @@
       <div class="banner-text">
         <p class="h4-sm h5 mb-3">
           <span v-if="bannerSubTitle === ''">盡情探索 自己的路</span>
-          <span v-if="bannerSubTitle === '城市導覽'">深入導覽 城市之美</span>
-          <span v-if="bannerSubTitle === '體驗票券'">一票在手 歡樂無窮</span>
-          <span v-if="bannerSubTitle === '包車服務'">你負責玩 我們開車</span>
+          <span v-else-if="bannerSubTitle === '城市導覽'">深入導覽 城市之美</span>
+          <span v-else-if="bannerSubTitle === '體驗票券'">一票在手 歡樂無窮</span>
+          <span v-else-if="bannerSubTitle === '包車服務'">你負責玩 我們開車</span>
         </p>
         <router-link
           :to="`/product_list?search=${bannerSubTitle}`"

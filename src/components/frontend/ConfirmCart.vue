@@ -684,10 +684,12 @@ export default {
     this.organizeUserProduct();
   },
   mounted() {
-    this.scrollTooltipDownCfm = new Tooltip(this.$refs.scrollTooltipDownCfm);
+    if (this.scrollBtnShow) {
+      this.scrollTooltipDownCfm = new Tooltip(this.$refs.scrollTooltipDownCfm);
+    }
     this.listener = () => {
       const btn = this.$refs.scrollBtn;
-      this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 800;
+      this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 600;
     };
     this.$refs.scrollBtn.addEventListener('scroll', this.listener);
   },

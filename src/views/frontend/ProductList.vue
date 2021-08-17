@@ -84,12 +84,12 @@
                       d-flex justify-content-between align-items-center"
                       >
                         <h4 class="fw-bold">口袋有多深？</h4>
-                        <vue-slider
+                        <Vue-slider
                           v-model="budget"
                           v-bind="options"
                           :tooltip-formatter="'NT {value}'"
                           class="w-50"
-                        ></vue-slider>
+                        ></Vue-slider>
                       </div>
                       <div
                         class="d-flex flex-wrap btn-group"
@@ -185,11 +185,11 @@
                 </select>
                 <div class="mb-6 pb-6 border-bottom border-gray position-relative">
                   <h4 class="mb-6 h3">預算</h4>
-                  <vue-slider
+                  <Vue-slider
                     v-model="budget"
                     v-bind="options"
                     :tooltip-formatter="'NT {value}'"
-                  ></vue-slider>
+                  ></Vue-slider>
                   <div class="cable-car"></div>
                 </div>
                 <h4 class="pt-3 mb-6 h3">早已心有所屬？</h4>
@@ -364,7 +364,11 @@ export default {
       alertMsg: '',
     };
   },
-  components: { Alert, Pagination, VueSlider },
+  components: {
+    Alert,
+    Pagination,
+    VueSlider,
+  },
   methods: {
     getTotalData(currentPage = 1) {
       this.$http

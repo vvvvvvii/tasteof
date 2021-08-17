@@ -107,13 +107,13 @@
                   <label for="startDate" class="mb-3">
                     日期
                   </label>
-                  <flat-pickr
+                  <Flat-pickr
                     id="startDate"
                     ref="startDate"
                     :config="config"
                     v-model="productDetail.startDate"
                     class="py-sm-2 text-center"
-                  ></flat-pickr>
+                  ></Flat-pickr>
                 </div>
               </div>
             </SwiperSlide>
