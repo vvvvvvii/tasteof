@@ -15,9 +15,10 @@
               :class="{ 'ms-3': itemKey !== 0 || key !== 0 }"
             >
               <div
-                class="px-3 py-4 mb-6 border border-primary rounded-1 position-relative"
+                class="px-3 py-4 border border-primary bg-white rounded-1 position-relative"
                 :class="{
                   'border-danger': productWarningShow[itemKey],
+                  'mb-lg-6': itemKey !== cart.carts.length - 1 || key !== item.options.length - 1,
                 }"
               >
                 <div class="pb-3 mb-3 border-bottom border-gray">
@@ -32,7 +33,7 @@
                       <p class="h5 mb-2 d-sm-none">
                         {{ option.start_date.split('-').join(' / ') }}
                       </p>
-                      <div class="mb-sm-6 mb-3">
+                      <div class="mb-md-8 mb-6">
                         <router-link
                           :to="`/product/${item.product.id}`"
                           title="查看更多"
@@ -52,7 +53,7 @@
                       </p>
                     </div>
                   </div>
-                  <div class="d-sm-flex align-items-center">
+                  <!-- <div class="d-sm-flex align-items-center">
                     <p
                       class="w-sm-25 mb-sm-0 mb-2 text-secondary fw-bold"
                       :class="{
@@ -91,7 +92,7 @@
                         </label>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="d-flex justify-content-evenly">
                   <div class="d-flex align-items-center h4-sm h5" v-if="option.qtyDetail">
@@ -174,7 +175,7 @@
               </div>
             </div>
           </template>
-          <!-- 電腦版提示可往下滑的圖案 -->
+          <!-- 提示可往下滑的圖案 -->
           <div
             class="scroll-btn d-lg-inline d-none"
             ref="scrollTooltipDownCheck"
@@ -183,12 +184,13 @@
             title="請向下滾動"
             v-if="scrollBtnShow"
           >
+            <span class="ms-1">請向下滾動</span>
             <i class="bi bi-arrow-down-short"></i>
           </div>
         </div>
         <div class="col-lg-6">
           <!--客戶資料-->
-          <Form v-slot="{ errors }" @submit="toNextPage">
+          <Form v-slot="{ errors }" @submit="openPaxModal">
             <div class="tab-content mb-6">
               <div
                 v-for="(item, key) in customerDetail.users"
@@ -598,6 +600,162 @@
           </Form>
         </div>
       </div>
+      <!-- 配對旅客 Modal -->
+      <div
+        class="modal fade"
+        id="paxModal"
+        tabindex="-1"
+        aria-labelledby="paxModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-body p-6">
+              <h3 class="text-center mb-6 pb-3 border-bottom border-gray">請配對各商品旅客</h3>
+              <div class="cart-scroll-box position-relative d-block mb-6" ref="scrollBtnModal">
+                <!--訂單內容-->
+                <template v-for="(item, itemKey) in cart.carts" :key="item.id">
+                  <div
+                    v-for="(option, key) in item.options"
+                    :key="key"
+                    class="d-inline-block cart-scroll-box-item ms-lg-0"
+                    :class="{ 'ms-3': itemKey !== 0 || key !== 0 }"
+                  >
+                    <div
+                      class="px-3 py-4 border border-primary bg-white rounded-1 position-relative"
+                      :class="{
+                        'border-danger': productWarningShow[itemKey],
+                        'mb-lg-6':
+                          itemKey !== cart.carts.length - 1 || key !== item.options.length - 1,
+                      }"
+                    >
+                      <div class="pb-3 mb-3 border-bottom border-gray">
+                        <div class="row justify-content-between mb-sm-3 mb-2">
+                          <div class="col-4">
+                            <p class="h5 mb-2 d-sm-block d-none">
+                              {{ option.start_date.split('-').join(' / ') }}
+                            </p>
+                            <img :src="item.product.imageUrl" :alt="item.title" class="cart-img" />
+                          </div>
+                          <div class="col-8 d-flex flex-column justify-content-between">
+                            <p class="h5 mb-2 d-sm-none">
+                              {{ option.start_date.split('-').join(' / ') }}
+                            </p>
+                            <div class="mb-sm-6 mb-3">
+                              <p class="h3-sm mb-2">
+                                {{ item.product.title }}
+                              </p>
+                              <p class="h4-sm h5">{{ option.optionName }}</p>
+                            </div>
+                            <p class="text-end">
+                              NT
+                              {{
+                                addComma(
+                                  option.optionPrice *
+                                    (option.qtyDetail.adult + option.qtyDetail.child),
+                                )
+                              }}
+                            </p>
+                          </div>
+                        </div>
+                        <div class="d-sm-flex align-items-center">
+                          <p
+                            class="w-sm-25 mb-sm-0 mb-2 text-secondary fw-bold"
+                            :class="{
+                              'text-danger': productWarningShow[itemKey],
+                            }"
+                          >
+                            選擇旅客：
+                          </p>
+                          <div
+                            class="d-flex flex-wrap btn-group"
+                            role="group"
+                            aria-label="Basic checkbox toggle button group"
+                          >
+                            <div
+                              class="ms-sm-2 me-sm-0 me-2"
+                              v-for="(user, userIndex) in customerDetail.users"
+                              :key="user.name"
+                            >
+                              <input
+                                type="checkbox"
+                                :id="`${user.name}-${option.optionName}-${option.start_date}`"
+                                autocomplete="off"
+                                class="btn-check"
+                                :disabled="
+                                  user.name === undefined ||
+                                    (item.options[key].users.length >=
+                                      item.options[key].optionQty &&
+                                      item.options[key].users.includes(userIndex) === false)
+                                "
+                                :value="userIndex"
+                                v-model="item.options[key].users"
+                              />
+                              <label
+                                :for="`${user.name}-${option.optionName}-${option.start_date}`"
+                                class="btn btn-outline-secondary rounded-2"
+                                >{{ user.name || '待填' }}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-evenly">
+                        <div class="d-flex align-items-center h4-sm h5" v-if="option.qtyDetail">
+                          <div class="p-1">
+                            <p>{{ option.qtyDetail.adult }}</p>
+                          </div>
+                          <span v-if="item.product.lowestPriceUnit === '每人'">大</span>
+                          <span
+                            v-else-if="
+                              item.product.category !== '包車服務' &&
+                                item.product.lowestPriceUnit !== '每人'
+                            "
+                            >組</span
+                          >
+                          <span
+                            v-else-if="
+                              item.product.category === '包車服務' &&
+                                item.product.lowestPriceUnit !== '每人'
+                            "
+                            >台</span
+                          >
+                        </div>
+                        <div
+                          class="d-flex align-items-center h4-sm h5"
+                          v-if="option.qtyDetail && item.product.lowestPriceUnit === '每人'"
+                        >
+                          <div class="p-1">
+                            <p>{{ option.qtyDetail.child }}</p>
+                          </div>
+                          小
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <!-- modal 提示可往下滑的圖案 -->
+                <div
+                  class="scroll-btn d-lg-inline d-none"
+                  ref="scrollTooltipDownCheckModal"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="請向下滾動"
+                  v-if="scrollBtnModalShow"
+                >
+                  <span class="ms-1">請向下滾動</span>
+                  <i class="bi bi-arrow-down-short"></i>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="button" class="btn btn-primary w-50 py-2" @click="toNextPage">
+                  下一步
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!--無商品時顯示-->
       <div class="text-center" v-show="cart.total === 0">
         <p class="mb-4">
@@ -623,7 +781,7 @@
   </div>
 </template>
 <script>
-import { Tooltip } from 'bootstrap';
+import { Tooltip, Modal } from 'bootstrap';
 import flushPromises from 'flush-promises';
 import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
@@ -661,13 +819,16 @@ export default {
       customerDetail: {},
       otherDetail: [],
       scrollTooltipDownCheck: '',
+      scrollTooltipDownCheckModal: '',
       scrollBtnShow: true,
+      scrollBtnModalShow: true,
       contactInfoInputShow: [],
       noteWarningShow: false,
       pageWarningShow: [],
       productWarningShow: [],
       productMaxPaxQty: 0,
       totalProductsMaxPaxQty: 0,
+      paxModal: {},
     };
   },
   components: {
@@ -715,10 +876,14 @@ export default {
           this.otherDetail,
           this.contactInfoInputShow,
         );
+        this.paxModal.hide();
       }
     },
+    openPaxModal() {
+      this.paxModal.show();
+    },
     async validationCheck() {
-      // 如果有東西沒填，會直接不跑 toNextPage() ，所以按下下一步時多設一個函式檢查
+      // 如果有東西沒填，會直接不跑 openPaxModal() ，所以按下下一步時多設一個函式檢查
       await flushPromises(); // 先確定渲染完，再跑下面的
       const errorArr = document.querySelectorAll('.is-invalid');
       const errorIdArr = [];
@@ -876,11 +1041,20 @@ export default {
   },
   mounted() {
     this.scrollTooltipDownCheck = new Tooltip(this.$refs.scrollTooltipDownCheck);
-    this.listener = () => {
+    this.scrollTooltipDownCheckModal = new Tooltip(this.$refs.scrollTooltipDownCheckModal);
+    this.listenerScrollBtn = () => {
       const btn = this.$refs.scrollBtn;
       this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 600;
     };
-    this.$refs.scrollBtn.addEventListener('scroll', this.listener);
+    this.listenerScrollBtnModal = () => {
+      const btn = this.$refs.scrollBtnModal;
+      this.scrollBtnModalShow = btn.scrollTop < btn.scrollHeight - 600;
+    };
+    this.$refs.scrollBtn.addEventListener('scroll', this.listenerScrollBtn);
+    this.$refs.scrollBtnModal.addEventListener('scroll', this.listenerScrollBtnModal);
+    this.paxModal = new Modal(document.getElementById('paxModal'), {
+      keyboard: false,
+    });
   },
 };
 </script>

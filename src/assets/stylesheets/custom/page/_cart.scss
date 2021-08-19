@@ -38,6 +38,9 @@
   }
 }
 .cart-scroll-box {
+  background-color: rgba($secondary, 0.1);
+  padding: 1rem;
+  border-radius: 0.5rem;
   overflow-x: scroll;
   overflow-y: auto;
   @include media-breakpoint-up(lg) {
@@ -48,7 +51,7 @@
   &-item {
     min-width: 90%;
     width: 90%;
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(lg) {
       min-width: 100%;
       width: 100%;
     }
@@ -68,9 +71,8 @@
   left: 100%;
   background: $secondary;
   color: $light;
-  font-size: $h3-font-size;
-  padding: 0 0.25rem;
-  border-radius: 50%;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
   animation-name: scroll-btn;
   animation-duration: 1s;
   animation-iteration-count: infinite;

@@ -14,7 +14,12 @@
               class="d-inline-block cart-scroll-box-item ms-lg-0"
               :class="{ 'ms-3': itemKey !== 0 || key !== 0 }"
             >
-              <div class="px-3 py-4 mb-6 border border-primary rounded-1 position-relative">
+              <div
+                class="px-3 py-4 border border-primary bg-white rounded-1 position-relative"
+                :class="{
+                  'mb-lg-6': itemKey !== cart.carts.length - 1 || key !== item.options.length - 1,
+                }"
+              >
                 <div class="pb-3 mb-3 border-bottom border-gray">
                   <div class="row justify-content-between mb-sm-3 mb-2">
                     <div class="col-4">
@@ -236,6 +241,7 @@
             title="請向下滾動"
             v-if="scrollBtnShow"
           >
+            <span class="ms-1">請向下滾動</span>
             <i class="bi bi-arrow-down-short"></i>
           </div>
         </div>
