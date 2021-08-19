@@ -104,6 +104,7 @@ export default {
       productMaxPaxQty: 0,
       totalProductsMaxPaxQty: 0,
       scrollBtnShow: true,
+      scrollBtnModalShow: true,
     };
   },
   components: {
@@ -205,6 +206,7 @@ export default {
             if (totalOptionNum <= 1) {
               // 如果總商品、方案數小於一，不秀出 this.scrollBtnShow
               this.scrollBtnShow = false;
+              this.scrollBtnModalShow = false;
             }
             if (status) {
               // 若有傳入參數才進行這塊

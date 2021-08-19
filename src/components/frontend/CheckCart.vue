@@ -1005,6 +1005,7 @@ export default {
     scrollBtnStatus: {
       handler() {
         this.scrollBtnShow = this.scrollBtnStatus;
+        this.scrollBtnModalShow = this.scrollBtnStatus;
       },
       deep: true,
     },

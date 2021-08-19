@@ -1,4 +1,5 @@
 @import './utils/border';
+@import './utils/cursor';
 @import './utils/ellipsis';
 @import './utils/font-size';
 @import './utils/objectFit';
@@ -206,4 +207,20 @@
   padding: 16px;
   color: white;
   background: $primary;
+}
+
+.random-box {
+  overflow-x: scroll;
+  @include media-breakpoint-up(lg) {
+    overflow-x: none;
+  }
+  &-inner {
+    height: 120px;
+    @include media-breakpoint-up(sm) {
+      height: 130px;
+    }
+    @include media-breakpoint-up(md) {
+      height: 150px;
+    }
+  }
 }

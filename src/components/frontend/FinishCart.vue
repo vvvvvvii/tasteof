@@ -7,17 +7,25 @@
         class="w-25"
       />
       <div class="ms-6">
-        <h2 class="h1 mb-lg-7 mb-3 text-md-start text-center">
+        <h2 class="h1 mb-6 text-md-start text-center">
           完成付款！
           <span class="h2 ms-lg-3 d-lg-inline d-none"
             >NT {{ addComma(paymentDetail.final_total) }}
           </span>
         </h2>
-        <p class="h2 text-md-end text-center d-lg-none mb-6">
+        <p class="h2 text-md-end text-center d-lg-none">
           NT {{ addComma(paymentDetail.final_total) }}
         </p>
+        <div class="text-end">
+          <router-link to="/product_list">
+            <button type="button" class="btn btn-outline-primary mb-7">
+              更多行程在這等著你
+            </button>
+          </router-link>
+        </div>
         <a
-          class="h3-md text-secondary text-md-start text-center"
+          class="h3-md text-secondary text-decoration-underline
+          text-md-start text-center cursor-pointer"
           data-bs-toggle="modal"
           data-bs-target="#checkOrderDetailModal"
         >
@@ -136,15 +144,15 @@
   <div class="bg-wave py-7" id="moreActivitiesSection">
     <div class="container">
       <h3 class="text-primary mb-5">更多活動？</h3>
-      <div class="row flex-nowrap overflow-scroll">
-        <div class="col-sm-4 col-5" v-for="(item, key) in randomProducts" :key="key">
+      <div class="row flex-nowrap random-box">
+        <div class="col-lg-4 col-sm-5 col-9" v-for="(item, key) in randomProducts" :key="key">
           <router-link :to="`/product/${item.id}`" title="查看更多" class="card overflow-hidden">
             <div class="card-img-outer">
               <img :src="item.imageUrl" :alt="item.title" class="card-img" />
             </div>
-            <div class="card-body">
-              <h4 class="card-title ellipsis ellipsis-one-line">{{ item.title }}</h4>
-              <p class="h3-md h5 text-end">NT {{ item.lowestPrice }} 起</p>
+            <div class="card-body random-box-inner">
+              <h4 class="card-title">{{ item.title }}</h4>
+              <p class="h3-md h5 text-end">NT {{ addComma(item.lowestPrice) }} 起</p>
             </div>
           </router-link>
         </div>

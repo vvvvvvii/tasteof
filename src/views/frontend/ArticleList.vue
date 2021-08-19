@@ -82,7 +82,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-wave">
+    <div class="bg-light">
       <div class="container pt-lg-7">
         <div class="row py-lg-8 py-6">
           <!--電腦版搜尋欄-->

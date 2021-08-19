@@ -27,7 +27,6 @@
       <div class="banner-icon banner-tpe" @click="showBannerText('城市導覽')"></div>
       <div class="banner-icon banner-tnn" @click="showBannerText('城市導覽')"></div>
       <div class="banner-icon banner-kao" @click="showBannerText('城市導覽')"></div>
-      <!-- <div class="banner-icon banner-hun" @click="showBannerText('體驗票券')"></div> -->
       <div class="banner-icon banner-tkt" @click="showBannerText('體驗票券')"></div>
       <div class="banner-icon banner-car" @click="showBannerText('包車服務')"></div>
       <div class="banner-icon banner-sky-lantern" @click="showBannerText('城市導覽')"></div>
@@ -82,7 +81,7 @@
               exact-path
             >
               <img
-                src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/random.png?raw=true"
+                src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/random.jpg?raw=true"
                 alt="來點驚喜"
                 class="tab-img"
               />
@@ -277,64 +276,64 @@ export default {
         {
           name: '活動',
           urlTitle: '城市導覽',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tour.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tour.jpg?raw=true',
           description: '帶您深入探索不曾接觸過的城市新樣貌',
         },
         {
           name: '票券',
           urlTitle: '體驗票券',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tkt.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tkt.jpg?raw=true',
           description: '一生一定要體驗一次的風景，都在這裡',
         },
         {
           name: '包車',
           urlTitle: '包車服務',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/car.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/car.jpg?raw=true',
           description: '不再需要攜老扶幼、大包小包趕車轉車',
         },
         {
           name: '親子',
           urlTitle: '親子',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/children.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/children.jpg?raw=true',
           description: '和孩子一起創造無可取代的專屬寶藏',
         },
         {
           name: '浪漫',
           urlTitle: '浪漫',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/romance.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/romance.jpg?raw=true',
           description: '聽說一年有十三個情人節，準備好了嗎',
         },
         {
           name: '獨家',
           urlTitle: '獨家代理',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/special.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/special.jpg?raw=true',
           description: '只有我們有這些超讚行程，還在等什麼',
         },
       ],
       cities: [
         {
           name: '大台北',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TPE.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TPE.jpg?raw=true',
           description: '＃台北 101 ＃平溪天燈 ＃坪林採茶',
         },
         {
           name: '中彰投',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TXG.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TXG.jpg?raw=true',
           description: '＃彩虹眷村 ＃合歡山觀星 ＃日月潭',
         },
         {
           name: '嘉南',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TNN.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TNN.jpg?raw=true',
           description: '＃阿里山神木小火車 ＃台南美食之旅',
         },
         {
           name: '高屏',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/KAO.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/KAO.jpg?raw=true',
           description: '＃高雄建築巡禮',
         },
         {
           name: '花東',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/HUN.png?raw=true',
+          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/HUN.jpg?raw=true',
           description: '＃清水斷崖獨木舟',
         },
       ],

@@ -7,6 +7,7 @@
     transform: translateY(-4px);
   }
   &-img {
+    border-radius: 1rem;
     width: 80px;
     height: 80px;
     @include media-breakpoint-up(lg) {
