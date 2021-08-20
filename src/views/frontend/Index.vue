@@ -1,38 +1,17 @@
 <template>
   <div class="pt-7 flex-fill">
-    <div class="banner-outer">
-      <h2 class="banner-title">品嚐旅程滋味</h2>
-      <div class="banner"></div>
-      <div class="banner-subtitle">
-        <p class="h4-sm h5">
-          {{ bannerSubTitle || '點選圖示' }}
-        </p>
-      </div>
-      <div class="banner-text">
-        <p class="h4-sm h5 mb-3">
-          <span v-if="bannerSubTitle === ''">盡情探索 自己的路</span>
-          <span v-else-if="bannerSubTitle === '城市導覽'">深入導覽 城市之美</span>
-          <span v-else-if="bannerSubTitle === '體驗票券'">一票在手 歡樂無窮</span>
-          <span v-else-if="bannerSubTitle === '包車服務'">你負責玩 我們開車</span>
-        </p>
+    <div class="banner">
+      <div class="banner-inner">
+        <h2 class="banner-title mb-3">品嚐旅程滋味</h2>
         <router-link
           :to="`/product_list?search=${bannerSubTitle}`"
-          class="btn btn-outline-primary h4-sm h5 "
+          class="btn btn-outline-light h4-sm h5"
           active-class="active"
           exact-path
         >
           查看行程
         </router-link>
       </div>
-      <div class="banner-icon banner-tpe" @click="showBannerText('城市導覽')"></div>
-      <div class="banner-icon banner-tnn" @click="showBannerText('城市導覽')"></div>
-      <div class="banner-icon banner-kao" @click="showBannerText('城市導覽')"></div>
-      <div class="banner-icon banner-tkt" @click="showBannerText('體驗票券')"></div>
-      <div class="banner-icon banner-car" @click="showBannerText('包車服務')"></div>
-      <div class="banner-icon banner-sky-lantern" @click="showBannerText('城市導覽')"></div>
-      <div class="banner-icon banner-footprint1"></div>
-      <div class="banner-icon banner-footprint2"></div>
-      <div class="banner-icon banner-footprint3"></div>
     </div>
   </div>
   <div class="bg-light pb-7">
