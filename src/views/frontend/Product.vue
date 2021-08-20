@@ -71,6 +71,7 @@
             </li>
           </ul>
           <ul>
+            <li class="sky-lantern"></li>
             <li class="cloud1"></li>
             <li class="cloud2"></li>
             <li class="cloud3"></li>

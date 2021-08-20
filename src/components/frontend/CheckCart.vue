@@ -599,6 +599,7 @@
             </div>
           </Form>
         </div>
+        <div class="bg-decoration"></div>
       </div>
       <!-- 配對旅客 Modal -->
       <div
@@ -618,14 +619,13 @@
                   <div
                     v-for="(option, key) in item.options"
                     :key="key"
-                    class="d-inline-block cart-scroll-box-item ms-lg-0"
-                    :class="{ 'ms-3': itemKey !== 0 || key !== 0 }"
+                    class="d-inline-block w-100"
                   >
                     <div
                       class="px-3 py-4 border border-primary bg-white rounded-1 position-relative"
                       :class="{
                         'border-danger': productWarningShow[itemKey],
-                        'mb-lg-6':
+                        'mb-6':
                           itemKey !== cart.carts.length - 1 || key !== item.options.length - 1,
                       }"
                     >
@@ -757,25 +757,34 @@
         </div>
       </div>
       <!--無商品時顯示-->
-      <div class="text-center" v-show="cart.total === 0">
-        <p class="mb-4">
-          購物車目前還沒有商品耶
-          <i class="bi bi-eraser"></i>
-        </p>
-        <p class="mb-2">
-          客倌要不要
-          <router-link :to="`/product_list`" title="前往產品頁" class="text-secondary h3">
-            來這裡挑挑看、選選看
+      <div v-show="cart.total === 0">
+        <div class="text-center mb-md-6 mb-3">
+          <p class="mb-4 h3">
+            購物車目前還沒有商品耶
+          </p>
+          <p class="mb-2">
+            要不要
+            <router-link :to="`/product_list`" title="前往產品頁" class="text-secondary fw-bold h3">
+              來這裡挑挑看、選選看
+            </router-link>
+            呢？
+          </p>
+          <p>
+            也可以
+            <router-link :to="`/article_list`" title="前往文章頁" class="text-secondary fw-bold h3">
+              來這裡尋找玩樂靈感
+            </router-link>
+            唷！
+          </p>
+        </div>
+        <div class="empty-cart-img">
+          <router-link :to="`/product_list?search=城市導覽`" class="empty-cart-tour-tag">
           </router-link>
-          呢？
-        </p>
-        <p>
-          也可以
-          <router-link :to="`/article_list`" title="前往文章頁" class="text-secondary h3">
-            來這裡尋找玩樂靈感
+          <router-link :to="`/product_list?search=體驗票券`" class="empty-cart-tkt-tag">
           </router-link>
-          唷！
-        </p>
+          <router-link :to="`/product_list?search=包車服務`" class="empty-cart-car-tag">
+          </router-link>
+        </div>
       </div>
     </div>
   </div>

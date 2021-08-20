@@ -40,10 +40,15 @@
   }
 }
 .banner {
-  background-image: url(https://images.unsplash.com/photo-1583395145517-1e3177037600?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1334&q=80);
+  position: relative;
+  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/photo-1583395145517-1e3177037600.jpeg?raw=true);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 500px;
+  background-position: center;
+  height: 300px;
+  @include media-breakpoint-up(md) {
+    height: 500px;
+  }
   &-inner {
     position: absolute;
     top: 50%;
@@ -53,13 +58,10 @@
   &-title {
     font-weight: bold;
     font-size: $h2-font-size;
-    color: $primary;
+    color: $white;
     width: 100%;
-    @include media-breakpoint-up(sm) {
-      font-size: $h1-font-size;
-    }
     @include media-breakpoint-up(md) {
-      color: $white;
+      font-size: $h1-font-size;
     }
   }
 }

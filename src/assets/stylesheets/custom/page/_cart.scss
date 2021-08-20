@@ -1,3 +1,92 @@
+.empty-cart {
+  &-img {
+    position: relative;
+    background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E8%83%8C%E6%99%AF5.jpg?raw=true');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    height: 180px;
+    @include media-breakpoint-up(md) {
+      height: 250px;
+    }
+    @include media-breakpoint-up(xl) {
+      height: 400px;
+    }
+  }
+  &-tour-tag,
+  &-tkt-tag,
+  &-car-tag {
+    width: 21%;
+    height: 40%;
+    position: absolute;
+    background-repeat: no-repeat;
+    display: block;
+    background-size: contain;
+    @include media-breakpoint-up(sm) {
+      width: 13%;
+      height: 30%;
+    }
+    @include media-breakpoint-up(md) {
+      height: 40%;
+    }
+    &:hover {
+      transform: translateY(-10px) rotate(5deg);
+    }
+  }
+  &-tour-tag {
+    top: 5%;
+    left: 82%;
+    background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/tour%20tag.png?raw=true');
+    @include media-breakpoint-up(sm) {
+      top: 25%;
+      left: 82%;
+    }
+    @include media-breakpoint-up(lg) {
+      top: 26%;
+      left: 78%;
+    }
+    @include media-breakpoint-up(xl) {
+      top: 22%;
+      left: 80%;
+    }
+  }
+  &-tkt-tag {
+    top: 15%;
+    left: 51%;
+    background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/tkt%20tag.png?raw=true');
+    @include media-breakpoint-up(sm) {
+      top: 35%;
+      left: 51%;
+    }
+    @include media-breakpoint-up(lg) {
+      top: 40%;
+      left: 51%;
+    }
+  }
+  &-car-tag {
+    top: 2%;
+    left: 21%;
+    background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/car%20tag.png?raw=true');
+    @include media-breakpoint-up(sm) {
+      top: 18%;
+      left: 25%;
+    }
+    @include media-breakpoint-up(md) {
+      top: 15%;
+      left: 27%;
+    }
+    @include media-breakpoint-up(lg) {
+      top: 18%;
+      left: 28%;
+    }
+    @include media-breakpoint-up(xl) {
+      left: 25%;
+    }
+  }
+}
 .pax-num {
   position: absolute;
   transform: rotateZ(-10deg);
@@ -218,4 +307,17 @@
   border: 1px solid $gray;
   color: $gray;
   pointer-events: none;
+}
+.bg-decoration {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  bottom: 15%;
+  left: 8%;
+  background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/cart-decoration.png?raw=true');
+  background-size: cover;
+  display: none;
+  @include media-breakpoint-up(lg) {
+    display: block;
+  }
 }

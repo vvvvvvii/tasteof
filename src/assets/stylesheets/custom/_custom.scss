@@ -134,6 +134,7 @@
   height: 350px;
 }
 
+.sky-lantern,
 .cloud1,
 .cloud2,
 .cloud3 {
@@ -145,6 +146,12 @@
   height: 100px;
   animation-duration: 50s;
   animation-iteration-count: 5;
+}
+.sky-lantern {
+  top: 15%;
+  left: 60%;
+  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E5%A4%A9%E7%87%88.png?raw=true);
+  animation-name: skyLantern;
 }
 .cloud {
   &1 {
@@ -164,6 +171,14 @@
     left: 40%;
     background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cloud%203.png?raw=true);
     animation-name: cloud3;
+  }
+}
+@keyframes skyLantern {
+  0% {
+    top: 15%;
+  }
+  50% {
+    top: 10%;
   }
 }
 @keyframes cloud1 {

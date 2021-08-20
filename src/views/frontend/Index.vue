@@ -20,18 +20,20 @@
         <h2 class="h2 text-primary mb-6">你愛的都在這！</h2>
         <ul class="row">
           <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in popularCategories" :key="key">
-            <router-link
-              :to="`/product_list?search=${item.urlTitle}`"
-              class="tab bg-white border border-primary"
-              active-class="active"
-              exact-path
-            >
-              <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
-              <div>
-                <h3 class="tab-title mb-2">{{ item.name }}</h3>
-                <p class="tab-description">{{ item.description }}</p>
-              </div>
-            </router-link>
+            <div class="bg-primary rounded-3">
+              <router-link
+                :to="`/product_list?search=${item.urlTitle}`"
+                class="tab bg-white"
+                active-class="active"
+                exact-path
+              >
+                <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
+                <div>
+                  <h3 class="tab-title mb-2">{{ item.name }}</h3>
+                  <p class="tab-description">{{ item.description }}</p>
+                </div>
+              </router-link>
+            </div>
           </li>
         </ul>
       </div>
@@ -39,35 +41,39 @@
         <h2 class="h2 text-primary mb-6">下個目的地？</h2>
         <ul class="row">
           <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in cities" :key="key">
-            <router-link
-              :to="`/product_list?search=${item.name}`"
-              class="tab bg-white border border-primary"
-              active-class="active"
-              exact-path
-            >
-              <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
-              <div>
-                <h3 class="tab-title mb-2">{{ item.name }}</h3>
-                <p class="tab-description">{{ item.description }}</p>
-              </div>
-            </router-link>
+            <div class="bg-primary rounded-3">
+              <router-link
+                :to="`/product_list?search=${item.name}`"
+                class="tab bg-white"
+                active-class="active"
+                exact-path
+              >
+                <img :src="`${item.imgUrl}`" :alt="`${item.name}`" class="tab-img" />
+                <div>
+                  <h3 class="tab-title mb-2">{{ item.name }}</h3>
+                  <p class="tab-description">{{ item.description }}</p>
+                </div>
+              </router-link>
+            </div>
           </li>
           <li class="col-lg-4 col-sm-6 mb-4">
-            <router-link
-              :to="`/product_list?search=${randomCity}`"
-              class="tab bg-white border border-primary"
-              active-class="active"
-              exact-path
-            >
-              <img
-                src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/random.jpg?raw=true"
-                alt="來點驚喜"
-                class="tab-img"
-              />
-              <div>
-                <h3 class="tab-title">來點<br />驚喜</h3>
-              </div>
-            </router-link>
+            <div class="bg-primary rounded-3">
+              <router-link
+                :to="`/product_list?search=${randomCity}`"
+                class="tab bg-white"
+                active-class="active"
+                exact-path
+              >
+                <img
+                  src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/junior-ferreira-7esRPTt38nI-unsplash.jpg?raw=true"
+                  alt="來點驚喜"
+                  class="tab-img"
+                />
+                <div>
+                  <h3 class="tab-title">來點<br />驚喜</h3>
+                </div>
+              </router-link>
+            </div>
           </li>
         </ul>
       </div>
@@ -253,66 +259,77 @@ export default {
       articles: [],
       popularCategories: [
         {
-          name: '活動',
+          name: '導覽',
           urlTitle: '城市導覽',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tour.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/nathaniel-sison-tUC51WMD7Dk-unsplash.jpg?raw=true',
           description: '帶您深入探索不曾接觸過的城市新樣貌',
         },
         {
-          name: '票券',
+          name: '體驗',
           urlTitle: '體驗票券',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/tkt.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/peter-conlan-LEgwEaBVGMo-unsplash.jpg?raw=true',
           description: '一生一定要體驗一次的風景，都在這裡',
         },
         {
           name: '包車',
           urlTitle: '包車服務',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/car.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/casey-horner-JYl_VbBdobw-unsplash.jpg?raw=true',
           description: '不再需要攜老扶幼、大包小包趕車轉車',
         },
         {
           name: '親子',
           urlTitle: '親子',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/children.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/modern-affliction-J69nDHAksiA-unsplash.jpg?raw=true',
           description: '和孩子一起創造無可取代的專屬寶藏',
         },
         {
           name: '浪漫',
           urlTitle: '浪漫',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/romance.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/aj-McsNra2VRQQ-unsplash.jpg?raw=true',
           description: '聽說一年有十三個情人節，準備好了嗎',
         },
         {
           name: '獨家',
           urlTitle: '獨家代理',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/special.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/freestocks-sM2nqDvg0AM-unsplash.jpg?raw=true',
           description: '只有我們有這些超讚行程，還在等什麼',
         },
       ],
       cities: [
         {
           name: '大台北',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TPE.jpg?raw=true',
-          description: '＃台北 101 ＃平溪天燈 ＃坪林採茶',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/adam-jang-zzn0yD84GkQ-unsplash.jpg?raw=true',
+          description: '＃台北 101 ＃九份平溪 ＃坪林採茶',
         },
         {
           name: '中彰投',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TXG.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/steven-su-l58BGug1EtI-unsplash.jpg?raw=true',
           description: '＃彩虹眷村 ＃合歡山觀星 ＃日月潭',
         },
         {
           name: '嘉南',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/TNN.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/gio-rey-tabernero-ZD-DQ37hb6c-unsplash.jpg?raw=true',
           description: '＃阿里山神木小火車 ＃台南美食之旅',
         },
         {
           name: '高屏',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/KAO.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/nadine-marfurt-y_ySHRV_7IU-unsplash.jpg?raw=true',
           description: '＃高雄建築巡禮',
         },
         {
           name: '花東',
-          imgUrl: 'https://github.com/vvvvvvii/tasteof/blob/main/public/img/HUN.jpg?raw=true',
+          imgUrl:
+            'https://github.com/vvvvvvii/tasteof/blob/main/public/img/gigi-_7DxIya3moY-unsplash.jpg?raw=true',
           description: '＃清水斷崖獨木舟',
         },
       ],
