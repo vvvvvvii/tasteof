@@ -236,9 +236,6 @@
           <div
             class="scroll-btn d-lg-inline d-none"
             ref="scrollTooltipDownCfm"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="請向下滾動"
             v-if="scrollBtnShow"
           >
             <span class="ms-1">請向下滾動</span>
@@ -591,8 +588,6 @@
   </div>
 </template>
 <script>
-import { Tooltip } from 'bootstrap';
-
 export default {
   props: ['cartInfo', 'customer', 'otherInfo', 'payment', 'scrollBtnStatus'],
   emits: ['emit-check-coupon', 'emit-pre-page', 'emit-add-order'],
@@ -737,9 +732,6 @@ export default {
     this.organizeEtkt();
   },
   mounted() {
-    if (this.scrollBtnShow) {
-      this.scrollTooltipDownCfm = new Tooltip(this.$refs.scrollTooltipDownCfm);
-    }
     this.listener = () => {
       const btn = this.$refs.scrollBtn;
       this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 600;

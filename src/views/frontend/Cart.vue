@@ -156,7 +156,8 @@ export default {
               this.cart.total = 0; // 整個購物車的總數歸零
               this.cart.carts.forEach((product, key) => {
                 this.cart.carts[key].total = 0; // 各項商品的總數也歸零
-                product.options.forEach((option) => {
+                product.options.forEach((option, oKey) => {
+                  this.cart.carts[key].options[oKey].total = option.optionPrice * option.optionQty;
                   this.cart.carts[key].total += option.total; // 各項商品真正的價格為各項方案價格相加
                   this.cart.total += option.total; // 整個購物車真正的價格為各項產品的各方案價格相加
                 });
@@ -173,7 +174,8 @@ export default {
               this.cart.final_total = 0; // 整個購物車 final_total 歸零
               this.cart.carts.forEach((product, key) => {
                 this.cart.carts[key].total = 0; // 各項商品的總數也歸零
-                product.options.forEach((option) => {
+                product.options.forEach((option, oKey) => {
+                  this.cart.carts[key].options[oKey].total = option.optionPrice * option.optionQty;
                   this.cart.carts[key].total += option.total; // 各項商品真正的價格為各項方案價格相加
                   this.cart.total += option.total; // 整個購物車真正的價格為各項產品的各方案價格相加
                 });
@@ -192,7 +194,8 @@ export default {
               this.cart.carts.forEach((product, key) => {
                 this.cart.carts[key].coupon = coupon; // 每個產品都加上該優惠碼物件
                 this.cart.carts[key].total = 0; // 各項商品的總數也歸零
-                product.options.forEach((option) => {
+                product.options.forEach((option, oKey) => {
+                  this.cart.carts[key].options[oKey].total = option.optionPrice * option.optionQty;
                   this.cart.carts[key].total += option.total; // 各項商品真正的價格為各項方案價格相加
                   this.cart.total += option.total; // 整個購物車真正的價格為各項產品的各方案價格相加
                 });

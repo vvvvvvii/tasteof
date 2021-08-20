@@ -53,46 +53,6 @@
                       </p>
                     </div>
                   </div>
-                  <!-- <div class="d-sm-flex align-items-center">
-                    <p
-                      class="w-sm-25 mb-sm-0 mb-2 text-secondary fw-bold"
-                      :class="{
-                        'text-danger': productWarningShow[itemKey],
-                      }"
-                    >
-                      選擇旅客：
-                    </p>
-                    <div
-                      class="d-flex flex-wrap btn-group"
-                      role="group"
-                      aria-label="Basic checkbox toggle button group"
-                    >
-                      <div
-                        class="ms-sm-2 me-sm-0 me-2"
-                        v-for="(user, userIndex) in customerDetail.users"
-                        :key="user.name"
-                      >
-                        <input
-                          type="checkbox"
-                          :id="`${user.name}-${option.optionName}-${option.start_date}`"
-                          autocomplete="off"
-                          class="btn-check"
-                          :disabled="
-                            user.name === undefined ||
-                              (item.options[key].users.length >= item.options[key].optionQty &&
-                                item.options[key].users.includes(userIndex) === false)
-                          "
-                          :value="userIndex"
-                          v-model="item.options[key].users"
-                        />
-                        <label
-                          :for="`${user.name}-${option.optionName}-${option.start_date}`"
-                          class="btn btn-outline-secondary rounded-2"
-                          >{{ user.name || '待填' }}
-                        </label>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
                 <div class="d-flex justify-content-evenly">
                   <div class="d-flex align-items-center h4-sm h5" v-if="option.qtyDetail">
@@ -179,9 +139,6 @@
           <div
             class="scroll-btn d-lg-inline d-none"
             ref="scrollTooltipDownCheck"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="請向下滾動"
             v-if="scrollBtnShow"
           >
             <span class="ms-1">請向下滾動</span>
@@ -336,6 +293,7 @@
                     class="invalid-feedback"
                   ></ErrorMessage>
                 </div>
+                <div class="bg-decoration" v-show="contactInfoInputShow[key] === false"></div>
               </div>
               <div
                 class="tab-pane fade"
@@ -599,7 +557,6 @@
             </div>
           </Form>
         </div>
-        <div class="bg-decoration"></div>
       </div>
       <!-- 配對旅客 Modal -->
       <div
@@ -738,9 +695,6 @@
                 <div
                   class="scroll-btn d-lg-inline d-none"
                   ref="scrollTooltipDownCheckModal"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="請向下滾動"
                   v-if="scrollBtnModalShow"
                 >
                   <span class="ms-1">請向下滾動</span>
@@ -790,7 +744,7 @@
   </div>
 </template>
 <script>
-import { Tooltip, Modal } from 'bootstrap';
+import { Modal } from 'bootstrap';
 import flushPromises from 'flush-promises';
 import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
@@ -1050,8 +1004,6 @@ export default {
     this.totalProductsMaxPaxQty = this.totalProductsMaxPax;
   },
   mounted() {
-    this.scrollTooltipDownCheck = new Tooltip(this.$refs.scrollTooltipDownCheck);
-    this.scrollTooltipDownCheckModal = new Tooltip(this.$refs.scrollTooltipDownCheckModal);
     this.listenerScrollBtn = () => {
       const btn = this.$refs.scrollBtn;
       this.scrollBtnShow = btn.scrollTop < btn.scrollHeight - 600;
