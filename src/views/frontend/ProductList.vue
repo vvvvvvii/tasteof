@@ -303,6 +303,8 @@
         </div>
         <!--alert-->
         <Alert v-if="showAlert" :alert-msg="alertMsg"></Alert>
+        <!--notice-->
+        <Notice v-if="showNotice" :notice-msg="noticeMsg"></Notice>
       </div>
     </div>
   </div>
@@ -310,8 +312,10 @@
 
 <script>
 import Alert from '@/components/backend/Alert.vue';
+import Notice from '@/components/backend/Notice.vue';
 import Pagination from '@/components/frontend/Pagination.vue';
 import VueSlider from 'vue-slider-component';
+import { Modal } from 'bootstrap';
 
 export default {
   name: 'Product',
@@ -361,11 +365,15 @@ export default {
       },
       btnShow: true,
       showAlert: false,
+      showNotice: false,
       alertMsg: '',
+      noticeMsg: '',
+      sortProductPadModal: {},
     };
   },
   components: {
     Alert,
+    Notice,
     Pagination,
     VueSlider,
   },
@@ -422,8 +430,16 @@ export default {
       this.showAlert = true;
       window.setTimeout(this.closeCustomAlert, 5000);
     },
+    customNotice(msg) {
+      this.noticeMsg = msg;
+      this.showNotice = true;
+      window.setTimeout(this.closeCustomNotice, 5000);
+    },
     closeCustomAlert() {
       this.showAlert = false;
+    },
+    closeCustomNotice() {
+      this.showNotice = false;
     },
     productArrange() {
       let priceArr = [...new Set(this.totalProducts.map((item) => item.lowestPrice))]; // 刪掉重複的價格
@@ -439,6 +455,8 @@ export default {
             });
           });
           this.totalProducts = arr;
+          this.customNotice('排序成功');
+          this.sortProductPadModal.hide();
           break;
         case 'cheapToExpensive':
           priceArr = priceArr.sort((x, y) => x - y);
@@ -450,9 +468,13 @@ export default {
             });
           });
           this.totalProducts = arr;
+          this.customNotice('排序成功');
+          this.sortProductPadModal.hide();
           break;
         default:
           this.getTotalData();
+          this.customNotice('排序成功');
+          this.sortProductPadModal.hide();
           break;
       }
     },
@@ -658,6 +680,9 @@ export default {
       this.btnShow = window.scrollY > 0;
     };
     window.addEventListener('scroll', this.listener);
+    this.sortProductPadModal = new Modal(document.getElementById('sortProductPadModal'), {
+      keyboard: false,
+    });
   },
   unmounted() {
     window.removeEventListener('scroll', this.listener);
@@ -669,11 +694,13 @@ export default {
         this.searchProductTag.push(this.$route.query.search);
       },
     },
-    // This resets the data for when the filter is changed
-    filterProduct() {
+    filterProduct(n, o) {
       this.pagination.current_page = 1;
       this.pagination.page_start = 0;
       this.pagination.page_end = 10;
+      if (o.length !== 0) {
+        this.customNotice('篩選成功');
+      }
     },
   },
 };

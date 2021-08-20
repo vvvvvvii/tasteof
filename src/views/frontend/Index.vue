@@ -3,14 +3,16 @@
     <div class="banner">
       <div class="banner-inner">
         <h2 class="banner-title mb-3">品嚐旅程滋味</h2>
-        <router-link
-          :to="`/product_list?search=${bannerSubTitle}`"
-          class="btn btn-outline-light h4-sm h5"
-          active-class="active"
-          exact-path
-        >
-          查看行程
-        </router-link>
+        <div class="banner-btn-outer">
+          <router-link
+            :to="`/product_list?search=${bannerSubTitle}`"
+            class="btn btn-light text-primary h4-sm h5 banner-btn"
+            active-class="active"
+            exact-path
+          >
+            查看行程
+          </router-link>
+        </div>
       </div>
     </div>
   </div>

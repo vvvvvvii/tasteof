@@ -51,17 +51,39 @@
   }
   &-inner {
     position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translate(0, -50%);
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    text-align: center;
+    @include media-breakpoint-up(md) {
+      top: 50%;
+      left: 5%;
+      transform: translate(0, -50%);
+      text-align: left;
+    }
   }
   &-title {
     font-weight: bold;
     font-size: $h2-font-size;
-    color: $white;
+    color: $primary;
     width: 100%;
     @include media-breakpoint-up(md) {
       font-size: $h1-font-size;
+      color: $white;
+    }
+  }
+  &-btn {
+    width: 100%;
+    &:hover {
+      transform: translate(0, -3px);
+    }
+    &-outer {
+      background: transparent;
+      @include media-breakpoint-up(md) {
+        background: $primary;
+        border-radius: 0.5rem;
+        width: 25%;
+      }
     }
   }
 }
