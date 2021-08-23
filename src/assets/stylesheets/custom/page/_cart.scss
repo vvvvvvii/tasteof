@@ -221,7 +221,6 @@
     height: 100px;
   }
 }
-
 .step {
   &-list {
     position: absolute;
@@ -272,7 +271,6 @@
     color: $gray;
   }
 }
-
 .delete-cart-icon {
   position: absolute;
   bottom: 2px;
@@ -287,7 +285,6 @@
     right: 10px;
   }
 }
-
 .payment-box {
   display: block;
   background: $white;
@@ -319,5 +316,12 @@
   display: none;
   @include media-breakpoint-up(lg) {
     display: block;
+  }
+}
+.finish-img {
+  width: 50%;
+  margin-bottom: 1rem;
+  @include media-breakpoint-up(lg) {
+    width: 25%;
   }
 }

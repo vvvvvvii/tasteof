@@ -1,22 +1,22 @@
 <template>
-  <div class="container py-8">
+  <div class="container py-md-8 py-6">
     <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
       <img
         src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/finish%20cart.png?raw=true"
         alt="恭喜您完成付款"
-        class="w-25"
+        class="finish-img"
       />
-      <div class="ms-6">
+      <div class="ms-md-6">
         <h2 class="h1 mb-6 text-md-start text-center">
           完成付款！
           <span class="h2 ms-lg-3 d-lg-inline d-none"
             >NT {{ addComma(paymentDetail.final_total) }}
           </span>
         </h2>
-        <p class="h2 text-md-end text-center d-lg-none">
+        <p class="h2 text-md-end text-center d-lg-none mb-3">
           NT {{ addComma(paymentDetail.final_total) }}
         </p>
-        <div class="text-end">
+        <div class="text-md-end text-center">
           <router-link to="/product_list">
             <button type="button" class="btn btn-outline-primary mb-7">
               更多行程在這等著你

@@ -1000,6 +1000,7 @@ export default {
     this.otherDetail = [...this.otherInfo];
     this.contactInfoInputShow = [...this.contactInfoInputStatus];
     this.scrollBtnShow = this.scrollBtnStatus;
+    this.scrollBtnModalShow = this.scrollBtnStatus;
     this.productMaxPaxQty = this.productMaxPax;
     this.totalProductsMaxPaxQty = this.totalProductsMaxPax;
   },

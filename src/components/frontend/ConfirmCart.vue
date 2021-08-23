@@ -1,11 +1,8 @@
 <template>
   <div class="container py-8">
     <div class="bg-light rounded-3 p-sm-7 p-3">
-      <div class="row g-sm-7 g-3">
-        <div
-          class="col-lg-6 cart-scroll-box position-relative d-lg-block d-flex mb-lg-0 mb-sm-3 mb-6"
-          ref="scrollBtn"
-        >
+      <div class="row g-sm-7 g-3 mb-8">
+        <div class="col-lg-6 cart-scroll-box position-relative d-lg-block d-flex" ref="scrollBtn">
           <!--訂單內容-->
           <template v-for="(item, itemKey) in cart.carts" :key="item.id">
             <div
@@ -324,7 +321,7 @@
             </div>
           </div>
           <ul
-            class="nav nav-pills justify-content-center flex-wrap mb-8"
+            class="nav nav-pills justify-content-center flex-wrap"
             id="cfm-cart-customer-pills-tab"
             role="tablist"
           >

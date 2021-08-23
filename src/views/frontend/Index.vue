@@ -22,7 +22,7 @@
         <h2 class="h2 text-primary mb-6">你愛的都在這！</h2>
         <ul class="row">
           <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in popularCategories" :key="key">
-            <div class="bg-primary rounded-3">
+            <div class="tab-shadow">
               <router-link
                 :to="`/product_list?search=${item.urlTitle}`"
                 class="tab bg-white"

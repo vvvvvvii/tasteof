@@ -50,12 +50,10 @@
     height: 500px;
   }
   &-inner {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, 0);
     text-align: center;
+    padding-top: 3rem;
     @include media-breakpoint-up(md) {
+      position: absolute;
       top: 50%;
       left: 5%;
       transform: translate(0, -50%);
@@ -73,7 +71,10 @@
     }
   }
   &-btn {
-    width: 100%;
+    width: 30%;
+    @include media-breakpoint-up(md) {
+      width: 100%;
+    }
     &:hover {
       transform: translate(0, -3px);
     }

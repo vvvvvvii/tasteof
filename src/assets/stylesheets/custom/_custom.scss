@@ -227,7 +227,7 @@
 .random-box {
   overflow-x: scroll;
   @include media-breakpoint-up(lg) {
-    overflow-x: none;
+    overflow-x: hidden;
   }
   &-inner {
     height: 120px;

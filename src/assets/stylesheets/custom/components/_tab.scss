@@ -28,4 +28,11 @@
     font-size: 0.75rem;
     color: $gray-600;
   }
+  &-shadow {
+    background: transparent;
+    border-radius: 1rem;
+    &:hover {
+      background: $primary;
+    }
+  }
 }
