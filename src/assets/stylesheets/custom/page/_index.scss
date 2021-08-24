@@ -88,3 +88,13 @@
     }
   }
 }
+.index-topic-icon {
+  transform: rotate(10deg);
+  width: 6%;
+  @include media-breakpoint-up(sm) {
+    width: 5%;
+  }
+  @include media-breakpoint-up(lg) {
+    width: 4%;
+  }
+}

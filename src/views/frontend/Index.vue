@@ -19,7 +19,14 @@
   <div class="bg-light pb-7">
     <div class="container pt-8">
       <div class="mb-7">
-        <h2 class="h2 text-primary mb-6">你愛的都在這！</h2>
+        <h2 class="h2 text-primary mb-6 d-flex align-items-center">
+          <img
+            src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/index-topic-icon.png?raw=true"
+            alt="topic-icon"
+            class="index-topic-icon"
+          />
+          <span class="ms-sm-3 ms-2">你愛的都在這！</span>
+        </h2>
         <ul class="row">
           <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in popularCategories" :key="key">
             <div class="tab-shadow">
