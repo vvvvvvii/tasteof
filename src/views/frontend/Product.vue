@@ -212,7 +212,7 @@
                 alt="topic-icon"
                 class="topic-icon"
               />
-              <span class="ms-1">選擇方案</span>
+              <span>選擇方案</span>
             </h3>
             <ul class="mb-7">
               <li
