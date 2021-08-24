@@ -90,8 +90,11 @@
 }
 .index-topic-icon {
   transform: rotate(10deg);
-  width: 7%;
+  width: 8%;
   @include media-breakpoint-up(sm) {
+    width: 7%;
+  }
+  @include media-breakpoint-up(md) {
     width: 6%;
   }
   @include media-breakpoint-up(lg) {

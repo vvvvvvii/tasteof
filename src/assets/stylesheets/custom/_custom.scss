@@ -223,7 +223,10 @@
   background: $primary;
 }
 .topic-icon {
-  width: 4%;
+  width: 6%;
+  @include media-breakpoint-up(sm) {
+    width: 4%;
+  }
 }
 
 .random-box {
