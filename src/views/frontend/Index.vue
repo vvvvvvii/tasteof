@@ -16,9 +16,9 @@
       </div>
     </div>
   </div>
-  <div class="bg-light pb-7">
+  <div class="bg-light pb-8">
     <div class="container pt-8">
-      <div class="mb-7">
+      <div class="mb-8">
         <h2 class="h2 text-primary mb-6 d-flex align-items-center">
           <img
             src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/index-topic-icon.png?raw=true"
@@ -47,7 +47,14 @@
         </ul>
       </div>
       <div>
-        <h2 class="h2 text-primary mb-6">下個目的地？</h2>
+        <h2 class="h2 text-primary mb-6 d-flex align-items-center">
+          <img
+            src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/index-topic-icon.png?raw=true"
+            alt="topic-icon"
+            class="index-topic-icon"
+          />
+          <span class="ms-sm-3 ms-2">下個目的地？</span>
+        </h2>
         <ul class="row">
           <li class="col-lg-4 col-sm-6 mb-4" v-for="(item, key) in cities" :key="key">
             <div class="bg-primary rounded-3">
@@ -92,8 +99,15 @@
     <div class="position-relative">
       <div class="car"></div>
     </div>
-    <div class="mb-7" v-if="mainProducts.length > 0">
-      <h2 class="h2 text-primary mb-6">本季主打</h2>
+    <div class="mb-8" v-if="mainProducts.length > 0">
+      <h2 class="h2 text-primary mb-6 d-flex align-items-center">
+        <img
+          src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/index-topic-icon.png?raw=true"
+          alt="topic-icon"
+          class="index-topic-icon"
+        />
+        <span class="ms-sm-3 ms-2">本季主打</span>
+      </h2>
       <Swiper
         :autoplay="{
           delay: 5000,
@@ -122,7 +136,14 @@
       <div class="position-relative">
         <div class="car"></div>
       </div>
-      <h2 class="h2 text-primary mb-6">更多玩樂靈感</h2>
+      <h2 class="h2 text-primary mb-6 d-flex align-items-center">
+        <img
+          src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/index-topic-icon.png?raw=true"
+          alt="topic-icon"
+          class="index-topic-icon"
+        />
+        <span class="ms-sm-3 ms-2">更多玩樂靈感</span>
+      </h2>
       <div class="row mb-md-3 mb-2">
         <div class="col-lg-8 col-md-6 mb-md-0 mb-2">
           <div class="list-item rounded-2">
