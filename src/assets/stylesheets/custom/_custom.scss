@@ -224,9 +224,6 @@
 }
 .topic-icon {
   width: 4%;
-  @include media-breakpoint-up(md) {
-    width: 4%;
-  }
 }
 
 .random-box {

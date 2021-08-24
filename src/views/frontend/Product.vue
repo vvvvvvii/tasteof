@@ -212,7 +212,7 @@
                 alt="topic-icon"
                 class="topic-icon"
               />
-              <span>選擇方案</span>
+              <span class="ms-lg-0 ms-1">選擇方案</span>
             </h3>
             <ul class="mb-7">
               <li
@@ -320,13 +320,25 @@
               @emit-add-cart="addCart"
             ></Option-modal>
             <div id="ruleSection" :class="{ 'mb-7': moreInfo.productInfo.comments }">
-              <h3 class="text-primary mb-6">
-                相關規定
+              <h3 class="text-primary mb-6 d-flex align-items-center">
+                <img
+                  src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/footprint.png?raw=true"
+                  alt="topic-icon"
+                  class="topic-icon"
+                />
+                <span class="ms-lg-0 ms-1">相關規定</span>
               </h3>
               <p>{{ moreInfo.productInfo.policy }}</p>
             </div>
             <div id="commentsSection" v-if="moreInfo.productInfo.comments">
-              <h3 class="text-primary mb-6">好評推薦</h3>
+              <h3 class="text-primary mb-6 d-flex align-items-center">
+                <img
+                  src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/footprint.png?raw=true"
+                  alt="topic-icon"
+                  class="topic-icon"
+                />
+                <span class="ms-lg-0 ms-1">好評推薦</span>
+              </h3>
               <div
                 class="d-flex justify-content-around align-items-center
               text-center bg-light py-5 mb-6"
