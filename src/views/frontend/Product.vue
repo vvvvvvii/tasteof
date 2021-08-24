@@ -206,7 +206,9 @@
             </p>
           </div>
           <div class="px-md-6 pt-7" id="packageOptionsSection">
-            <h3 class="text-primary mb-6">選擇方案</h3>
+            <h3 class="text-primary mb-6">
+              選擇方案
+            </h3>
             <ul class="mb-7">
               <li
                 v-for="(item, index) in moreInfo.productInfo.packageOptions"
