@@ -206,8 +206,13 @@
             </p>
           </div>
           <div class="px-md-6 pt-7" id="packageOptionsSection">
-            <h3 class="text-primary mb-6">
-              選擇方案
+            <h3 class="text-primary mb-6 d-flex align-items-center">
+              <img
+                src="https://github.com/vvvvvvii/tasteof/blob/main/public/img/footprint.png?raw=true"
+                alt="topic-icon"
+                class="topic-icon"
+              />
+              <span class="ms-1">選擇方案</span>
             </h3>
             <ul class="mb-7">
               <li

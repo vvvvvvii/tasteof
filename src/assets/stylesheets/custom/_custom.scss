@@ -211,7 +211,6 @@
   object-fit: cover;
   border-radius: 50%;
 }
-
 .buy-now-btn {
   position: fixed;
   z-index: $zindex-offcanvas;
@@ -222,6 +221,12 @@
   padding: 16px;
   color: white;
   background: $primary;
+}
+.topic-icon {
+  width: 4%;
+  @include media-breakpoint-up(md) {
+    width: 3%;
+  }
 }
 
 .random-box {
