@@ -10,10 +10,10 @@
 }
 .car {
   position: absolute;
-  bottom: 0px;
+  bottom: 15px;
   left: 90%;
-  width: 70px;
-  height: 70px;
+  width: 40px;
+  height: 40px;
   overflow: hidden;
   background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/car%20icon.png?raw=true);
   background-size: contain;
@@ -22,6 +22,11 @@
   animation-name: car;
   animation-duration: 20s;
   animation-iteration-count: infinite;
+  @include media-breakpoint-up(md) {
+    bottom: 5px;
+    width: 50px;
+    height: 50px;
+  }
 }
 @keyframes car {
   0% {
