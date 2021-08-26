@@ -1,0 +1,130 @@
+// 開圖片 modal
+.extend-img-btn {
+  position: absolute !important;
+  top: 0.25rem;
+  left: 90%;
+  color: $black;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.2);
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+// 景點線
+.attraction-line {
+  position: relative;
+  &:not(:last-child)::before,
+  &:not(:first-child)::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    background: $black;
+    height: 3px;
+  }
+  &:not(:last-child)::before {
+    left: calc(50% + 10px);
+    width: calc(100% - 15px);
+  }
+  &:not(:first-child)::after {
+    right: calc(50% + 10px);
+    width: calc(100% - 25px);
+  }
+}
+// 標題小圖
+.topic-icon {
+  width: 6%;
+  @include media-breakpoint-up(sm) {
+    width: 4%;
+  }
+}
+// 裝飾
+.sky-lantern,
+.cloud1,
+.cloud2,
+.cloud3 {
+  position: absolute;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100px;
+  height: 100px;
+  animation-duration: 50s;
+  animation-iteration-count: 5;
+}
+.sky-lantern {
+  top: 15%;
+  left: 60%;
+  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/banner%20%E5%A4%A9%E7%87%88.png?raw=true);
+  animation-name: skyLantern;
+}
+.cloud {
+  &1 {
+    top: 10%;
+    left: 60%;
+    background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cloud%201.png?raw=true);
+    animation-name: cloud1;
+  }
+  &2 {
+    top: 15%;
+    left: 13%;
+    background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cloud%202.png?raw=true);
+    animation-name: cloud2;
+  }
+  &3 {
+    top: 8%;
+    left: 40%;
+    background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cloud%203.png?raw=true);
+    animation-name: cloud3;
+  }
+}
+@keyframes skyLantern {
+  0% {
+    top: 15%;
+  }
+  50% {
+    top: 10%;
+  }
+}
+@keyframes cloud1 {
+  0% {
+    left: 60%;
+  }
+  50% {
+    left: 65%;
+  }
+}
+@keyframes cloud2 {
+  0% {
+    left: 13%;
+  }
+  50% {
+    left: 18%;
+  }
+}
+@keyframes cloud3 {
+  0% {
+    left: 40%;
+  }
+  50% {
+    left: 35%;
+  }
+}
+// 評論
+.user-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+// 現在購買按鈕
+.buy-now-btn {
+  position: fixed;
+  z-index: $zindex-offcanvas;
+  bottom: 0;
+  font-size: 1.25rem;
+  text-align: center;
+  width: 100%;
+  padding: 16px;
+  color: white;
+  background: $primary;
+}

@@ -1,0 +1,81 @@
+.bg-wave {
+  background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/%E8%83%8C%E6%99%AF2.png?raw=true');
+  background-repeat: repeat;
+}
+
+.to-top-btn {
+  position: fixed;
+  z-index: $zindex-offcanvas;
+  bottom: 15%;
+  right: 10%;
+  background-image: url('https://github.com/vvvvvvii/tasteof/blob/main/public/img/top.png?raw=true');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 120px;
+  height: 180px;
+  width: 90px;
+  height: 120px;
+  @include media-breakpoint-up(xl) {
+    width: 120px;
+    height: 180px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &-text {
+    position: absolute;
+    left: 29px;
+    top: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: $light;
+    @include media-breakpoint-up(xl) {
+      left: 38px;
+      top: 23px;
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.cable-car {
+  position: absolute;
+  left: 90%;
+  bottom: -40px;
+  background-image: url(https://github.com/vvvvvvii/tasteof/blob/main/public/img/cable-car.png?raw=true);
+  background-size: contain;
+  background-position: center;
+  width: 50px;
+  height: 50px;
+  animation-name: cable-car;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+}
+@keyframes cable-car {
+  0% {
+    left: 90%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 0;
+    opacity: 0;
+  }
+}
+.random-box {
+  overflow-x: scroll;
+  @include media-breakpoint-up(lg) {
+    overflow-x: hidden;
+  }
+  &-inner {
+    height: 120px;
+    @include media-breakpoint-up(sm) {
+      height: 130px;
+    }
+    @include media-breakpoint-up(md) {
+      height: 150px;
+    }
+  }
+}

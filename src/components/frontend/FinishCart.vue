@@ -10,11 +10,11 @@
         <h2 class="h1 mb-6 text-md-start text-center">
           完成付款！
           <span class="h2 ms-lg-3 d-lg-inline d-none"
-            >NT {{ addComma(paymentDetail.final_total) }}
+            >NT {{ $addComma(paymentDetail.final_total) }}
           </span>
         </h2>
         <p class="h2 text-md-end text-center d-lg-none mb-3">
-          NT {{ addComma(paymentDetail.final_total) }}
+          NT {{ $addComma(paymentDetail.final_total) }}
         </p>
         <div class="text-md-end text-center">
           <router-link to="/product_list">
@@ -133,7 +133,7 @@
                     </p>
                   </div>
                 </div>
-                <p class="h2 text-end">NT {{ addComma(paymentDetail.final_total) }}</p>
+                <p class="h2 text-end">NT {{ $addComma(paymentDetail.final_total) }}</p>
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@
             </div>
             <div class="card-body random-box-inner">
               <h4 class="card-title">{{ item.title }}</h4>
-              <p class="h3-md h5 text-end">NT {{ addComma(item.lowestPrice) }} 起</p>
+              <p class="h3-md h5 text-end">NT {{ $addComma(item.lowestPrice) }} 起</p>
             </div>
           </router-link>
         </div>
@@ -236,18 +236,6 @@ export default {
       arrSet.forEach((i) => {
         this.randomProducts.push(this.totalProducts[i]); // 取得未重複的商品放進 randomProducts 陣列中
       });
-    },
-  },
-  computed: {
-    addComma() {
-      return (price) => {
-        if (typeof price !== 'undefined') {
-          const parts = price.toString().split('.');
-          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          return `${parts.join('.')}`;
-        }
-        return 0;
-      };
     },
   },
   created() {

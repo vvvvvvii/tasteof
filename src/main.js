@@ -26,6 +26,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import SwiperCore, { Autoplay, Navigation, Thumbs } from 'swiper/core';
 
 import router from './router';
+import addComma from './assets/js/addComma';
 import App from './App.vue';
 
 export default class ClassicEditor extends ClassicEditorBase {}
@@ -78,7 +79,11 @@ configure({
 setLocale('zh_TW');
 SwiperCore.use([Autoplay, Navigation, Thumbs]);
 
-createApp(App)
+const app = createApp(App);
+
+app.config.globalProperties.$addComma = addComma;
+
+app
   .use(router)
   .use(VueAxios, axios)
   .use(CKEditor)

@@ -5,7 +5,7 @@
         <h2 class="banner-title mb-3">品嚐旅程滋味</h2>
         <div class="banner-btn-outer">
           <router-link
-            :to="`/product_list?search=${bannerSubTitle}`"
+            to="/product_list"
             class="btn btn-light text-primary h4-sm h5 banner-btn"
             active-class="active"
             exact-path
@@ -367,7 +367,6 @@ export default {
       btnShow: false,
       showAlert: false,
       alertMsg: '',
-      bannerSubTitle: '',
     };
   },
   components: { Alert },
@@ -408,9 +407,6 @@ export default {
       const { length } = city;
       const num = Math.floor(Math.random(length) * length);
       this.randomCity = city[num];
-    },
-    showBannerText(type) {
-      this.bannerSubTitle = type;
     },
     customAlert(msg) {
       this.alertMsg = msg;

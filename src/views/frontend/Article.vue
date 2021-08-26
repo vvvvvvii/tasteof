@@ -60,7 +60,7 @@
               </div>
               <div class="card-body random-box-inner">
                 <h4 class="card-title ellipsis ellipsis-one-line">{{ item.title }}</h4>
-                <p class="h3-md h5 text-end">NT {{ addComma(item.lowestPrice) }} 起</p>
+                <p class="h3-md h5 text-end">NT {{ $addComma(item.lowestPrice) }} 起</p>
               </div>
             </router-link>
           </div>
@@ -209,15 +209,6 @@ export default {
     },
     scrollToTop() {
       window.scrollTo(0, 0);
-    },
-  },
-  computed: {
-    addComma() {
-      return (price) => {
-        const parts = price.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return `${parts.join(',')}`;
-      };
     },
   },
   mounted() {

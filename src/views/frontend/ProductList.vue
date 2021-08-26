@@ -277,7 +277,7 @@
                           </p>
                         </div>
                         <p class="card-paragraph text-end">
-                          <span class="card-subtitle">NT {{ addComma(item.lowestPrice) }} 起</span>
+                          <span class="card-subtitle">NT {{ $addComma(item.lowestPrice) }} 起</span>
                           <span class="d-sm-inline d-none"> / {{ item.lowestPriceUnit }}</span>
                         </p>
                       </div>
@@ -662,13 +662,6 @@ export default {
             );
         }
       }
-    },
-    addComma() {
-      return (price) => {
-        const parts = price.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return `${parts.join(',')}`;
-      };
     },
   },
   mounted() {

@@ -107,7 +107,6 @@ export default {
   components: {
     Alert,
   },
-
   methods: {
     getCartInfo() {
       this.$http

@@ -30,7 +30,7 @@
           <div class="d-flex justify-content-between mb-6 px-2">
             <p class="h3">立即預購</p>
             <p class="text-end">
-              <span class="h3">NT {{ moreInfo.productInfo.lowestPrice }} </span>
+              <span class="h3">NT {{ $addComma(moreInfo.productInfo.lowestPrice) }} </span>
               起
             </p>
           </div>
@@ -235,7 +235,7 @@
                       <p class="h5">集合時間： {{ item.meetingTime }}</p>
                     </div>
                     <p class="text-end h4-md h5 w-50 d-sm-inline d-flex flex-column">
-                      <span class="h3-md h4 mb-sm-0 mb-2">NT {{ addComma(item.price) }}</span>
+                      <span class="h3-md h4 mb-sm-0 mb-2">NT {{ $addComma(item.price) }}</span>
                       <span class="d-sm-inline d-none"> / {{ item.unit }}</span>
                       <span class="d-sm-none d-inline">{{ item.unit }}</span>
                     </p>
@@ -458,7 +458,7 @@
               </div>
               <div class="card-body random-box-inner">
                 <h4 class="card-title">{{ item.title }}</h4>
-                <p class="h3-md h5 text-end">NT {{ addComma(item.lowestPrice) }} 起</p>
+                <p class="h3-md h5 text-end">NT {{ $addComma(item.lowestPrice) }} 起</p>
               </div>
             </router-link>
           </div>
@@ -755,15 +755,6 @@ export default {
       setTimeout(() => {
         swiper.update();
       }, 400);
-    },
-  },
-  computed: {
-    addComma() {
-      return (price) => {
-        const parts = price.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return `${parts.join(',')}`;
-      };
     },
   },
   mounted() {

@@ -46,7 +46,7 @@
                       <p class="text-end">
                         NT
                         {{
-                          addComma(
+                          $addComma(
                             option.optionPrice * (option.qtyDetail.adult + option.qtyDetail.child),
                           )
                         }}
@@ -544,7 +544,9 @@
             <div class="d-flex flex-column align-items-end">
               <h5 class="h3 mb-3">
                 總金額
-                <span class="h2 text-primary">NT {{ addComma(Math.floor(cart.final_total)) }}</span>
+                <span class="h2 text-primary"
+                  >NT {{ $addComma(Math.floor(cart.final_total)) }}</span
+                >
               </h5>
               <button
                 type="submit"
@@ -607,7 +609,7 @@
                             <p class="text-end">
                               NT
                               {{
-                                addComma(
+                                $addComma(
                                   option.optionPrice *
                                     (option.qtyDetail.adult + option.qtyDetail.child),
                                 )
@@ -983,15 +985,6 @@ export default {
         this.totalProductsMaxPaxQty = this.totalProductsMaxPax;
       },
       deep: true,
-    },
-  },
-  computed: {
-    addComma() {
-      return (price) => {
-        const parts = price.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return `${parts.join(',')}`;
-      };
     },
   },
   created() {

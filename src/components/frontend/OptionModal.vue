@@ -123,7 +123,7 @@
               NT
               <span class="h2">
                 {{
-                  addComma(
+                  $addComma(
                     this.optionDetail.price *
                       (productDetail.tktNum.adult + productDetail.tktNum.child),
                   )
@@ -204,15 +204,6 @@ export default {
   created() {
     this.productDetail = JSON.parse(JSON.stringify(this.moreInfo));
     this.optionDetail = { ...this.temp };
-  },
-  computed: {
-    addComma() {
-      return (price) => {
-        const parts = price.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return `${parts.join(',')}`;
-      };
-    },
   },
 };
 </script>
