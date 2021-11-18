@@ -1,29 +1,13 @@
 # 旅味
 
-## Project setup
+前一份工作在旅遊產業，又因本身喜愛可愛的插畫風格，而決定融合這兩項特色製作出「旅味」旅遊票券網。希望客人能透過旅行中多彩多姿的體驗，豐富人生的味蕾。
 
-```
-npm install
-```
+使用技術：
 
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* Vue3
+* Vue axios 串接 api
+* Vue Router 管理前端路由
+* 使用 ESLint 規範，撰寫簡潔統一程式碼
+* 以 Bootstrap 5 搭配 SCSS ，以達成客製化需求
+* RWD 響應式網站
+* 以 NPM 下載第三方套件運用（ Swiper / VeeValiadation... ）
