@@ -16,7 +16,7 @@
         v-for="item in pagipages"
         :key="item"
         :class="{ active: pagination.current_page === item }"
-        @click="emitChangePage(item)"
+        @click.prevent="emitChangePage(item)"
       >
         <a class="page-link" href="#">{{ item }}</a>
       </li>
